@@ -10,8 +10,11 @@ import java.text.SimpleDateFormat
 
 class BootStrap {
 
+    def customMarshallerRegistrar
+
     def init = { servletContext ->
         if (Brand.count() == 0) createData()
+        customMarshallerRegistrar.register()
     }
     def destroy = {
     }
@@ -26,28 +29,30 @@ class BootStrap {
         def turbodi = new Person(nickname: 'turbo_di').save(flush: true)
         def potapovdd = new Person(nickname: 'potapovdd').save(flush: true)
 
+        def hostedImgLink = "https://googledrive.com/host/0B9Cfh7FJdsBUMWRob1hQVnUwZGc/"
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy")
 
         new Buy(name: 'iPad air 32 gb WI-FI', brand: apple, category: electronics, owner: turbodi,
                 price: new Price(value: new BigDecimal(499.99), currency: Currency.getInstance('USD')),
-                image: new Image(filename: 'ipad.jpg', path: 'w:/img/ipad.jpg'),
+                image: new Image(filename: 'ipad.jpg', path: hostedImgLink + 'ipad.jpg'),
                 created: sdf.parse("12.12.2013")).save(failOnError: true)
         def iphone = new Buy(name: 'iPhone 5', brand: apple, category: electronics, owner: turbodi,
                 price: new Price(value: new BigDecimal(799.99), currency: Currency.getInstance('USD')),
-                image: new Image(filename: 'iphone.jpg', path: 'w:/img/iphone.jpg'),
+                image: new Image(filename: 'iphone.jpg', path: hostedImgLink + 'iphone.jpg'),
                 created: sdf.parse("12.01.2014")).save(failOnError: true)
         def cookie = new Buy(name: 'Lime cookie', brand: smak, category: food, owner: turbodi,
                 price: new Price(value: new BigDecimal(56.99), currency: Currency.getInstance('RUB')),
-                image: new Image(filename: 'Limonnaya_big.jpg', path: 'w:/img/Limonnaya_big.jpg'),
+                image: new Image(filename: 'Limonnaya_big.jpg', path: hostedImgLink + 'Limonnaya_big.jpg'),
                 created: sdf.parse("12.12.2013"), description: 'Eat more of these soft French rolls, but drink tea.')
                 .save(failOnError: true)
         new Buy(name: 'iPod', brand: apple, category: electronics, owner: potapovdd,
                 price: new Price(value: new BigDecimal(49.99), currency: Currency.getInstance('USD')),
-                image: new Image(filename: 'ipod.jpg', path: 'w:/img/ipod.jpg'),
+                image: new Image(filename: 'ipod.jpg', path: hostedImgLink + 'ipod.jpg'),
                 created: new Date()).save(failOnError: true)
         new Buy(name: 'light idea bread', brand: smak, category: food, owner: potapovdd,
                 price: new Price(value: new BigDecimal(29.70), currency: Currency.getInstance('RUB')),
-                image: new Image(filename: 'Idea_light1.jpg', path: 'w:/img/Idea_light1.jpg'),
+                image: new Image(filename: 'Idea_light1.jpg', path: hostedImgLink + 'Idea_light1.jpg'),
                 created: new Date()).save(failOnError: true)
 
         cookie.addToComments(new Comment(created: sdf.parse("13.12.2013"), author: potapovdd,

@@ -1,13 +1,15 @@
 class UrlMappings {
 
 	static mappings = {
-        "/$controller/$action?/$id?(.$format)?"{
-            constraints {
-                // apply constraints here
+        "/persons"(resources: "person") {
+            "/buys"(resources: "buy") {
+                "/comments"(resources: "comment")
             }
         }
-
-        "/"(view:"/index")
-        "500"(view:'/error')
+        "/buys"(resources: "buy") {
+            "/comments"(resources: "comment")
+        }
+        "/brands"(resources: "brand")
+        "/categories"(resources: "category")
 	}
 }
