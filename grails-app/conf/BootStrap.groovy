@@ -3,8 +3,10 @@ import ru.jconsulting.igetit.Buy
 import ru.jconsulting.igetit.Category as Category
 import ru.jconsulting.igetit.Comment
 import ru.jconsulting.igetit.Image
-import ru.jconsulting.igetit.Person
 import ru.jconsulting.igetit.Price
+import ru.jconsulting.igetit.auth.Role
+import ru.jconsulting.igetit.auth.User
+import ru.jconsulting.igetit.auth.UserRole
 
 import java.text.SimpleDateFormat
 
@@ -26,8 +28,12 @@ class BootStrap {
         def electronics = new Category(name: 'Electronics').save(flush: true)
         def food = new Category(name: 'Food').save(flush: true)
 
-        def turbodi = new Person(nickname: 'turbo_di').save(flush: true)
-        def potapovdd = new Person(nickname: 'potapovdd').save(flush: true)
+        def admin = new Role(authority: 'ROLE_USER').save(flush: true)
+        def turbodi = new User(username: 'turbo_di', password: '1qazxsw2').save(flush: true)
+        def potapovdd = new User(username: 'potapovdd', password: '1qazxsw2').save(flush: true)
+
+        UserRole.create turbodi, admin, true
+        UserRole.create potapovdd, admin, true
 
         def hostedImgLink = "https://googledrive.com/host/0B9Cfh7FJdsBUMWRob1hQVnUwZGc/"
 

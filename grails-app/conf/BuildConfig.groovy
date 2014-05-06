@@ -40,6 +40,8 @@ grails.project.dependency.resolution = {
         mavenLocal()
         grailsCentral()
         mavenCentral()
+
+        mavenRepo 'http://repo.spring.io/milestone'
         // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
@@ -59,6 +61,10 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ':cache:1.1.1'
         compile ":rateable:0.7.1"
+        compile ":spring-security-core:2.0-RC2"
+        compile ":spring-security-rest:1.3.4", {
+            excludes: 'spring-security-core'
+        }
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate:3.6.10.9" // or ":hibernate4:4.3.4"

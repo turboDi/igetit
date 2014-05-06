@@ -12,7 +12,7 @@ class CommentMarshaller implements MarshallerRegistrar {
                     id: comment.id,
                     created: comment.created,
                     text: comment.text,
-                    authorNickname: comment.author.nickname,
+                    authorName: comment.author.username,
                     authorId: comment.author.id,
                     rating: (comment.getAverageRating())
             ]

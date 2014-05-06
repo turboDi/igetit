@@ -119,3 +119,12 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+// Added by the Spring Security Core plugin:
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'ru.jconsulting.igetit.auth.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'ru.jconsulting.igetit.auth.UserRole'
+grails.plugin.springsecurity.authority.className = 'ru.jconsulting.igetit.auth.Role'
+
+grails.plugin.springsecurity.rest.login.useJsonCredentials = true
+grails.plugin.springsecurity.rest.token.storage.useGorm = true
+grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = 'ru.jconsulting.igetit.auth.AuthenticationToken'
