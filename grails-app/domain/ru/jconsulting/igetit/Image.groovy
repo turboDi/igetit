@@ -4,7 +4,9 @@ class Image {
 
     String filename
 
-    String path
+    String fileId
+
+    String folderId
 
     static belongsTo = Buy
 

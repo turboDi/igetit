@@ -92,10 +92,13 @@ grails.hibernate.osiv.readonly = false
 environments {
     development {
         grails.logging.jul.usebridge = true
+        // google drive credentials
+        google.drive.accountId = "change me"
+        google.drive.rootFolderId = "change me"
+        google.drive.p12File = "change me"
     }
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
 
