@@ -16,8 +16,6 @@ class GoogleDriveService {
 
     final static FOLDER_MIME_TYPE = "application/vnd.google-apps.folder"
 
-    def grailsApplication
-
     Drive driveService
 
     File uploadFile(MultipartFile multipartFile, String parentFolder) {
@@ -34,7 +32,7 @@ class GoogleDriveService {
     }
 
     File createFolder(String name) {
-        createFolder(name, grailsApplication.config.google.drive.rootFolderId as String)
+        createFolder(name, System.getenv("DRIVE_ROOT_ID"))
     }
 
     File createFolder(String name, String parentFolder) {

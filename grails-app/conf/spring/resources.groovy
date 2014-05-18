@@ -17,8 +17,6 @@ beans = {
         ]
     }
 
-    def config = application.config.google.drive
-
     httpTransport(NetHttpTransport)
     jsonFactory(JacksonFactory)
     driveServiceFactory(GoogleDriveServiceFactory)
@@ -27,8 +25,8 @@ beans = {
             driveServiceFactory: "createDrive",
             httpTransport,
             jsonFactory,
-            config.accountId as String,
+            System.getenv("DRIVE_ACCOUNT_ID"),
             DriveScopes.DRIVE,
-            config.p12File as String
+            System.getenv("DRIVE_PRIVATE_KEY")
     )
 }
