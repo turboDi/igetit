@@ -52,6 +52,7 @@ grails.project.dependency.resolution = {
         runtime 'com.google.http-client:google-http-client-jackson:1.18.0-rc'
         runtime 'com.google.api-client:google-api-client:1.18.0-rc'
         runtime 'com.google.apis:google-api-services-drive:v2-rev123-1.18.0-rc'
+        runtime 'postgresql:postgresql:8.4-702.jdbc3'
     }
 
     plugins {
