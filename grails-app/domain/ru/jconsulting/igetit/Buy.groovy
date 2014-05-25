@@ -1,7 +1,6 @@
 package ru.jconsulting.igetit
 
 import org.grails.rateable.Rateable
-import ru.jconsulting.igetit.auth.User
 
 class Buy implements Rateable {
 
@@ -11,7 +10,7 @@ class Buy implements Rateable {
 
     Category category
 
-    User owner
+    Person owner
 
     Price price
 

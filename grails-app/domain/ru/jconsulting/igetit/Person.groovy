@@ -1,6 +1,9 @@
-package ru.jconsulting.igetit.auth
+package ru.jconsulting.igetit
 
-class User {
+import ru.jconsulting.igetit.auth.PersonRole
+import ru.jconsulting.igetit.auth.Role
+
+class Person {
 
     transient springSecurityService
 
@@ -11,7 +14,7 @@ class User {
     boolean accountLocked
     boolean passwordExpired
 
-    static hasMany = [followed : User]
+    static hasMany = [followed : Person]
     static transients = ['springSecurityService']
 
     static constraints = {
@@ -24,7 +27,7 @@ class User {
     }
 
     Set<Role> getAuthorities() {
-        UserRole.findAllByUser(this).collect { it.role } as Set
+        PersonRole.findAllByPerson(this).collect { it.role } as Set
     }
 
     def beforeInsert() {

@@ -2,7 +2,6 @@ package ru.jconsulting.igetit
 
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
-import ru.jconsulting.igetit.auth.User
 
 @Secured(['ROLE_USER'])
 class BuyController extends RestfulController<Buy> {
@@ -17,9 +16,9 @@ class BuyController extends RestfulController<Buy> {
 
     @Override
     protected List<Buy> listAllResources(Map params) {
-        if (params.userId) {
-            def uid = params.userId
-            Buy.where {owner.id == uid}.list(params)
+        if (params.personId) {
+            def pid = params.personId
+            Buy.where {owner.id == pid}.list(params)
         } else {
             super.listAllResources(params)
         }
@@ -28,7 +27,7 @@ class BuyController extends RestfulController<Buy> {
     @Override
     protected Buy createResource(Map params) {
         Buy buy = super.createResource(params) as Buy
-        User currentUser = springSecurityService.getCurrentUser() as User
+        Person currentUser = springSecurityService.getCurrentUser() as Person
         buy.owner = currentUser
         buy.created = new Date()
         buy

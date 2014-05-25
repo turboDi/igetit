@@ -1,14 +1,13 @@
 package ru.jconsulting.igetit
 
 import grails.test.mixin.TestFor
-import ru.jconsulting.igetit.auth.User
 import spock.lang.Specification
 
 /**
- * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
+ * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
-@TestFor(User)
-class UserSpec extends Specification {
+@TestFor(PersonController)
+class PersonControllerSpec extends Specification {
 
     def setup() {
     }

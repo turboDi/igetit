@@ -1,9 +1,10 @@
+import ru.jconsulting.igetit.postgres.TableNameSequencePostgresDialect
+
 dataSource {
     pooled = true
     jmxExport = true
-    driverClassName = "org.h2.Driver"
-    username = "sa"
-    password = ""
+    driverClassName = "org.postgresql.Driver"
+    dialect = TableNameSequencePostgresDialect
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -17,21 +18,24 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:file:~/devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            dbCreate = "update"
+            url = "jdbc:postgresql://localhost:5432/igetit"
+            username = "igetit"
+            password = "1qazxsw2"
         }
     }
     test {
         dataSource {
             dbCreate = "update"
+            driverClassName = "org.h2.Driver"
+            username = "sa"
+            password = ""
             url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            driverClassName = "org.postgresql.Driver"
-            dialect = org.hibernate.dialect.PostgreSQLDialect
 
             uri = new URI(System.env.DATABASE_URL?:"postgres://test:test@localhost/test")
 

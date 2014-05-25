@@ -3,7 +3,7 @@ class UrlMappings {
 	static mappings = {
         "/image/$action"(controller: "image")
 
-        "/users"(resources: "user") {
+        "/persons"(resources: "person") {
             "/buys"(resources: "buy") {
                 "/comments"(resources: "comment")
             }

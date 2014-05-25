@@ -12,7 +12,7 @@ beans = {
                 new CategoryMarshaller(),
                 new CommentMarshaller(),
                 new ImageMarshaller(),
-                new UserMarshaller(),
+                new PersonMarshaller(),
                 new PriceMarshaller()
         ]
     }

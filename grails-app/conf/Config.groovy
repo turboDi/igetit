@@ -120,8 +120,8 @@ log4j = {
 }
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'ru.jconsulting.igetit.auth.User'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'ru.jconsulting.igetit.auth.UserRole'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'ru.jconsulting.igetit.Person'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'ru.jconsulting.igetit.auth.PersonRole'
 grails.plugin.springsecurity.authority.className = 'ru.jconsulting.igetit.auth.Role'
 
 grails.plugin.springsecurity.rest.login.useJsonCredentials = true

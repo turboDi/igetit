@@ -4,9 +4,9 @@ import ru.jconsulting.igetit.Category as Category
 import ru.jconsulting.igetit.Comment
 import ru.jconsulting.igetit.Image
 import ru.jconsulting.igetit.Price
+import ru.jconsulting.igetit.Person
 import ru.jconsulting.igetit.auth.Role
-import ru.jconsulting.igetit.auth.User
-import ru.jconsulting.igetit.auth.UserRole
+import ru.jconsulting.igetit.auth.PersonRole
 
 import java.text.SimpleDateFormat
 
@@ -29,11 +29,11 @@ class BootStrap {
         def food = new Category(name: 'Food').save(flush: true)
 
         def admin = new Role(authority: 'ROLE_USER').save(flush: true)
-        def turbodi = new User(username: 'turbo_di', password: '1qazxsw2').save(flush: true)
-        def potapovdd = new User(username: 'potapovdd', password: '1qazxsw2').save(flush: true)
+        def turbodi = new Person(username: 'turbo_di', password: '1qazxsw2').save(flush: true)
+        def potapovdd = new Person(username: 'potapovdd', password: '1qazxsw2').save(flush: true)
 
-        UserRole.create turbodi, admin, true
-        UserRole.create potapovdd, admin, true
+        PersonRole.create turbodi, admin, true
+        PersonRole.create potapovdd, admin, true
 
         def bootstrapFolderId = "0B1lcabZIpE_KY2JEaThKeXRpZUE"
         def bootstrapFileId = "undeletable"

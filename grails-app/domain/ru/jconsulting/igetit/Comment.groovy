@@ -1,7 +1,6 @@
 package ru.jconsulting.igetit
 
 import org.grails.rateable.Rateable
-import ru.jconsulting.igetit.auth.User
 
 class Comment implements Rateable {
 
@@ -9,7 +8,7 @@ class Comment implements Rateable {
 
     String text
 
-    User author
+    Person author
 
     static belongsTo = [buy : Buy]
 

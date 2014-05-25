@@ -2,7 +2,6 @@ package ru.jconsulting.igetit
 
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
-import ru.jconsulting.igetit.auth.User
 
 @Secured(['ROLE_USER'])
 class CommentController extends RestfulController<Comment> {
@@ -30,7 +29,7 @@ class CommentController extends RestfulController<Comment> {
         Comment comment = super.createResource(params) as Comment
         if (params.buyId) {
             comment.created = new Date()
-            comment.author = springSecurityService.getCurrentUser() as User
+            comment.author = springSecurityService.getCurrentUser() as Person
             comment.buy = Buy.get(params.buyId as Serializable)
         }
         comment
