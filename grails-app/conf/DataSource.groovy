@@ -4,7 +4,6 @@ dataSource {
     pooled = true
     jmxExport = true
     driverClassName = "org.postgresql.Driver"
-    dialect = TableNameSequencePostgresDialect
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -22,6 +21,7 @@ environments {
             url = "jdbc:postgresql://localhost:5432/igetit"
             username = "igetit"
             password = "1qazxsw2"
+            dialect = TableNameSequencePostgresDialect
         }
     }
     test {
@@ -61,6 +61,7 @@ environments {
                jdbcInterceptors = "ConnectionState"
                defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
             }
+            dialect = TableNameSequencePostgresDialect
         }
     }
 }

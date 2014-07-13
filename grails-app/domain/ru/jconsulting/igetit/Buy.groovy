@@ -26,5 +26,6 @@ class Buy implements Rateable {
         brand nullable: true
         category nullable: true
         description nullable: true
+        image nullable: true
     }
 }

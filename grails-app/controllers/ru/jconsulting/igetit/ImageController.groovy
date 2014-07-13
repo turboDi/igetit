@@ -6,11 +6,11 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured(['ROLE_USER'])
 class ImageController {
 
-    def googleDriveService
+    def storage
 
     def upload() {
-        def folder = googleDriveService.createFolder(UUID.randomUUID().toString())
-        def file = googleDriveService.uploadFile(params.file, folder.getId())
+        def folder = storage.createFolder(UUID.randomUUID().toString())
+        def file = storage.uploadFile(params.file, folder.getId())
         Image image = new Image(fileId : file.getId(), folderId : folder.getId(), filename : file.getOriginalFilename())
         render image as JSON
     }

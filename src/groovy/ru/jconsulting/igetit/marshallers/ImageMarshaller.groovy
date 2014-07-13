@@ -3,6 +3,8 @@ package ru.jconsulting.igetit.marshallers
 import grails.converters.JSON
 import ru.jconsulting.igetit.Image
 
+import javax.annotation.Resource
+
 /**
  *
  *
@@ -11,7 +13,8 @@ import ru.jconsulting.igetit.Image
  */
 class ImageMarshaller implements MarshallerRegistrar {
 
-    final static HOST_URL = "https://googledrive.com/host/"
+    @Resource(name="storage")
+    def storage
 
     @Override
     void register() {
@@ -20,13 +23,8 @@ class ImageMarshaller implements MarshallerRegistrar {
                     filename: image.filename,
                     fileId: image.fileId,
                     folderId: image.folderId,
-                    url: getFileURL(image)
+                    url: storage.getURL(image)
             ]
         }
-    }
-
-    //TODO move to google drive service
-    String getFileURL(Image image) {
-        HOST_URL + "$image.folderId/$image.filename"
     }
 }

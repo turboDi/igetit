@@ -16,6 +16,8 @@ class GoogleDriveService {
 
     final static FOLDER_MIME_TYPE = "application/vnd.google-apps.folder"
 
+    final static HOST_URL = "https://googledrive.com/host/"
+
     Drive driveService
 
     File uploadFile(MultipartFile multipartFile, String parentFolder) {
@@ -43,5 +45,9 @@ class GoogleDriveService {
                 .setParents([new ParentReference().setId(parentFolder)])
 
         driveService.files().insert(info).execute()
+    }
+
+    String getURL(Image image) {
+        HOST_URL + "$image.folderId/$image.filename"
     }
 }

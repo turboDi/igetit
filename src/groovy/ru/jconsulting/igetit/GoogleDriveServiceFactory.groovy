@@ -17,6 +17,8 @@ import java.security.spec.PKCS8EncodedKeySpec
  */
 class GoogleDriveServiceFactory {
 
+    String appName
+
     Drive createDrive(HttpTransport httpTransport, JsonFactory jsonFactory, String accountId, Collection<String> scopes, String privateKey) {
 
         byte[] bytes = Base64.decodeBase64(privateKey)
@@ -30,6 +32,8 @@ class GoogleDriveServiceFactory {
 
         credential.refreshToken();
 
-        return new Drive.Builder(httpTransport, jsonFactory, credential).build()
+        new Drive.Builder(httpTransport, jsonFactory, credential)
+                .setApplicationName(appName)
+                .build()
     }
 }
