@@ -32,6 +32,7 @@ class CommentController extends RestfulController<Comment> {
             comment.author = springSecurityService.getCurrentUser() as Person
             comment.buy = Buy.get(params.buyId as Serializable)
         }
+        log.debug("User '$comment.author' is about to post comment: $comment.text")
         comment
     }
 }

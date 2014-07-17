@@ -30,6 +30,7 @@ class BuyController extends RestfulController<Buy> {
         Person currentUser = springSecurityService.getCurrentUser() as Person
         buy.owner = currentUser
         buy.created = new Date()
+        log.debug("User '$currentUser.username' is about to create new buy: $buy.name")
         buy
     }
 }
