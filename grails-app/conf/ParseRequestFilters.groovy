@@ -2,7 +2,7 @@ class ParseRequestFilters {
 
     def filters = {
 
-        saveAction(action: 'save|update') {
+        saveOrUpdateAction(action: 'save|update') {
             before = {
                 if (request.JSON) {
                     params << request.JSON
