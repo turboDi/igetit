@@ -33,9 +33,4 @@ class BuyController extends RestfulController<Buy> {
         log.debug("User '$currentUser.username' is about to create new buy: $buy.name")
         buy
     }
-
-    @Override
-    protected Map getParametersToBind() {
-        request.JSON as Map
-    }
 }

@@ -35,9 +35,4 @@ class CommentController extends RestfulController<Comment> {
         log.debug("User '$comment.author' is about to post comment: $comment.text")
         comment
     }
-
-    @Override
-    protected Map getParametersToBind() {
-        request.JSON as Map
-    }
 }

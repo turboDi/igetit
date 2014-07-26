@@ -49,7 +49,7 @@ class BuyControllerSpec extends Specification {
     void "test current user buy something"() {
         given:
         params.name = 'buy3'
-        params.price = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
+        params.price = [value: 1, currency: 'USD']
         when:
         controller.save()
         then:
