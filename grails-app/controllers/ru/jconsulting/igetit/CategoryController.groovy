@@ -11,4 +11,9 @@ class CategoryController extends RestfulController<Category> {
     CategoryController() {
         super(Category)
     }
+
+    @Override
+    protected Map getParametersToBind() {
+        request.JSON as Map
+    }
 }

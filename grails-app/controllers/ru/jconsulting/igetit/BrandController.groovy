@@ -11,4 +11,9 @@ class BrandController extends RestfulController<Brand> {
     BrandController() {
         super(Brand)
     }
+
+    @Override
+    protected Map getParametersToBind() {
+        request.JSON as Map
+    }
 }

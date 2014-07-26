@@ -11,4 +11,9 @@ class PersonController extends RestfulController<Person> {
     PersonController() {
         super(Person)
     }
+
+    @Override
+    protected Map getParametersToBind() {
+        request.JSON as Map
+    }
 }
