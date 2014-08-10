@@ -3,6 +3,7 @@ import com.google.api.client.json.jackson.JacksonFactory
 import com.google.api.services.drive.DriveScopes
 import grails.util.Environment
 import org.codehaus.groovy.grails.orm.hibernate.HibernateEventListeners
+import org.flywaydb.core.Flyway
 import ru.jconsulting.igetit.EventProducer
 import ru.jconsulting.igetit.IGetItExceptionResolver
 import ru.jconsulting.igetit.PersonEmailListener
@@ -64,5 +65,16 @@ beans = {
 
     exceptionHandler(IGetItExceptionResolver) {
         exceptionMappings = ['java.lang.Exception': '/error']
+    }
+
+    flyway(Flyway) { bean ->
+        bean.initMethod = 'migrate'
+        dataSource = ref('dataSource')
+        locations = 'migrations'
+    }
+
+    def sessionFactoryBeanDef = getBeanDefinition('sessionFactory')
+    if (sessionFactoryBeanDef) {
+        sessionFactoryBeanDef.dependsOn = ['flyway']
     }
 }

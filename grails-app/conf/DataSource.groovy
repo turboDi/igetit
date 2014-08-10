@@ -17,7 +17,6 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "update"
             url = "jdbc:postgresql://localhost:5432/igetit"
             username = "igetit"
             password = "1qazxsw2"
@@ -35,9 +34,7 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "update"
-
-            uri = new URI(System.env.DATABASE_URL?:"postgres://test:test@localhost/test")
+            uri = new URI(System.env.DATABASE_URL)
 
             url = "jdbc:postgresql://"+uri.host+uri.path
             username = uri.userInfo.split(":")[0]

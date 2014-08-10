@@ -49,6 +49,7 @@ grails.project.dependency.resolution = {
         compile 'com.google.api-client:google-api-client:1.18.0-rc'
         compile 'com.google.apis:google-api-services-drive:v2-rev123-1.18.0-rc'
         compile 'org.imgscalr:imgscalr-lib:4.2'
+        compile 'org.flywaydb:flyway-core:3.2.1'
 
         runtime 'org.postgresql:postgresql:9.3-1103-jdbc41'
     }

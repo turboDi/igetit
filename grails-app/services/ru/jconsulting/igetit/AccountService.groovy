@@ -16,8 +16,7 @@ class AccountService {
 
     def register(Person p) {
         assert p.save()
-        def authority = Role.findByAuthority('ROLE_USER')
-        PersonRole.create p, authority
+        PersonRole.create p, getUserRole()
         tryReAuthenticate(p.username)
     }
 
@@ -33,5 +32,9 @@ class AccountService {
                 throw e
             }
         }
+    }
+
+    def getUserRole() {
+        Role.findByAuthority('ROLE_USER')
     }
 }

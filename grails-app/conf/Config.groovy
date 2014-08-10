@@ -138,6 +138,7 @@ log4j = {
            'grails.app.services.ru.jconsulting',
            'ru.jconsulting'
     //debug  'org.hibernate.SQL'
+    info 'org.flywaydb'
 }
 
 // Added by the Spring Security Core plugin:
