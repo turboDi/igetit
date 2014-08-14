@@ -37,7 +37,9 @@ beans = {
                     System.getenv("DRIVE_PRIVATE_KEY")
             )
 
-            storage(GoogleDriveService)
+            storage(GoogleDriveService) { bean ->
+                bean.autowire = true
+            }
         }
     }
 }
