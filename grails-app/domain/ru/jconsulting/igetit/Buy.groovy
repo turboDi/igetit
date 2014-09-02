@@ -1,8 +1,8 @@
 package ru.jconsulting.igetit
 
-import org.grails.rateable.Rateable
+import ru.jconsulting.likeable.Likeable
 
-class Buy implements Rateable {
+class Buy implements Likeable {
 
     String name
 

@@ -113,14 +113,20 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 
-    debug  'grails.app.controllers.ru.jconsulting.igetit'
+    debug  'grails.app.controllers.ru.jconsulting'
 }
 
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'ru.jconsulting.igetit.Person'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'ru.jconsulting.igetit.auth.PersonRole'
 grails.plugin.springsecurity.authority.className = 'ru.jconsulting.igetit.auth.Role'
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+        '/likeable/like':               ['ROLE_USER']
+]
 
 grails.plugin.springsecurity.rest.login.useJsonCredentials = true
 grails.plugin.springsecurity.rest.token.storage.useGorm = true
 grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = 'ru.jconsulting.igetit.auth.AuthenticationToken'
+
+grails.plugin.likeable.liker.className = 'ru.jconsulting.igetit.Person'
+grails.plugin.likeable.liker.evaluator = { delegate.getAuthenticatedUser() }

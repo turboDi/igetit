@@ -1,11 +1,14 @@
 package ru.jconsulting.igetit.marshallers
 
 import grails.converters.JSON
-import grails.util.GrailsNameUtils
-import org.grails.rateable.RatingLink
+import grails.plugin.springsecurity.SpringSecurityService
+import org.springframework.beans.factory.annotation.Autowired
 import ru.jconsulting.igetit.Buy
 
 class BuyMarshaller implements MarshallerRegistrar {
+
+    @Autowired
+    private SpringSecurityService springSecurityService
 
     @Override
     void register() {
@@ -19,21 +22,9 @@ class BuyMarshaller implements MarshallerRegistrar {
                     created: buy.created,
                     description: buy.description,
                     image: buy.image,
-                    ownerRating: buy.userRating(buy.owner)[0]?.stars,
-                    avgRating: getAvgBuyRating(buy)
+                    likes: buy.getTotalLikes(),
+                    iLiked: buy.userLiked(springSecurityService.getCurrentUser())
             ]
-        }
-    }
-
-    def getAvgBuyRating(Buy buy) {
-        RatingLink.createCriteria().get {
-            rating {
-                projections { avg 'stars' }
-                ne "raterId", buy.ownerId
-            }
-            eq "ratingRef", buy.id
-            eq "type", GrailsNameUtils.getPropertyName(buy.class)
-            cache true
         }
     }
 }

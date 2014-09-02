@@ -1,8 +1,8 @@
 package ru.jconsulting.igetit
 
-import org.grails.rateable.Rateable
+import ru.jconsulting.likeable.Likeable
 
-class Comment implements Rateable {
+class Comment implements Likeable {
 
     Date created
 

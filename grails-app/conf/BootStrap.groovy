@@ -18,8 +18,6 @@ class BootStrap {
         if (Brand.count() == 0) createData()
         customMarshallerRegistrar.register()
     }
-    def destroy = {
-    }
 
     private static void createData() {
         def apple = new Brand(name: 'Apple').save(flush: true)
@@ -67,9 +65,7 @@ class BootStrap {
         cookie.addToComments(new Comment(created: sdf.parse("14.12.2013"), author: turbodi,
         text: "Eat more of these soft French rolls, but drink tea."))
 
-        cookie.rate(potapovdd, -1)
-        cookie.rate(turbodi, 5)
-        iphone.rate(potapovdd, 1)
+        iphone.like(potapovdd)
 
         potapovdd.addToFollowed(turbodi)
     }
