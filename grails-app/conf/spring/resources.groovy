@@ -5,8 +5,11 @@ import grails.util.Environment
 import ru.jconsulting.igetit.FileSystemService
 import ru.jconsulting.igetit.GoogleDriveService
 import ru.jconsulting.igetit.GoogleDriveServiceFactory
+import ru.jconsulting.igetit.auth.IGetItRestAuthenticationTokenJsonRenderer
+import ru.jconsulting.igetit.auth.IGetItUserDetailsService
 import ru.jconsulting.igetit.marshallers.*
 
+//noinspection GroovyUnusedAssignment
 beans = {
 
     brandMarshaller(BrandMarshaller)
@@ -19,6 +22,9 @@ beans = {
     customMarshallerRegistrar(MarshallerListRegistrar)
 
     storage(FileSystemService)
+
+    userDetailsService(IGetItUserDetailsService)
+    restAuthenticationTokenJsonRenderer(IGetItRestAuthenticationTokenJsonRenderer)
 
     Environment.executeForCurrentEnvironment {
         production {

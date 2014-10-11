@@ -4,7 +4,7 @@ import ru.jconsulting.likeable.Likeable
 
 class Comment implements Likeable {
 
-    Date created
+    Date dateCreated
 
     String text
 

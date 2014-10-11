@@ -16,12 +16,12 @@ class BuyControllerSpec extends Specification {
     def setup() {
         mockDomains(Person, Price)
         Person.metaClass.encodePassword { -> }
-        user1 = new Person(username: 'user1', password: 'pwd').save(flush: true)
-        user2 = new Person(username: 'user2', password: 'pwd').save(flush: true)
+        user1 = new Person(username: 'user1', email: 'ww@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
+        user2 = new Person(username: 'user2', email: 'ww1@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
         Price p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
         mockDomain(Buy, [
-                [name: 'buy1', owner: user1, price: p, created: new Date()],
-                [name: 'buy2', owner: user2, price: p, created: new Date()]
+                [name: 'buy1', owner: user1, price: p],
+                [name: 'buy2', owner: user2, price: p]
         ])
         assert Buy.count() == 2
         def springSecurityServiceMock = mockFor(SpringSecurityService)

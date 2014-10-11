@@ -8,18 +8,24 @@ class Person {
     transient springSecurityService
 
     String username
+    String email
     String password
+    String status
+    Date dateCreated
+    Date lastActivity
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
 
-    static hasMany = [followed : Person]
     static transients = ['springSecurityService']
 
     static constraints = {
         username blank: false, unique: true
+        email email: true, blank: false, unique: true
         password blank: false
+        lastActivity nullable: true
+        status nullable: true
     }
 
     static mapping = {

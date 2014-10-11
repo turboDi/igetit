@@ -3,6 +3,7 @@ package ru.jconsulting.igetit.marshallers
 import grails.converters.JSON
 import ru.jconsulting.igetit.Buy
 import ru.jconsulting.igetit.Person
+import ru.jconsulting.igetit.PersonFollower
 
 class PersonMarshaller implements MarshallerRegistrar {
 
@@ -13,7 +14,9 @@ class PersonMarshaller implements MarshallerRegistrar {
                     id: person.id,
                     username: person.username,
                     buysCount: Buy.countByOwner(person),
-                    followedCount: person.followed.size()
+                    followersCount: PersonFollower.countByPerson(person),
+                    status: person.status,
+                    lastActivity: person.lastActivity
             ]
         }
     }

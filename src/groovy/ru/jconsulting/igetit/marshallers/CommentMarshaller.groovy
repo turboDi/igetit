@@ -15,7 +15,7 @@ class CommentMarshaller implements MarshallerRegistrar {
         JSON.registerObjectMarshaller(Comment) { Comment comment ->
             return [
                     id: comment.id,
-                    created: comment.created,
+                    created: comment.dateCreated,
                     text: comment.text,
                     authorName: comment.author.username,
                     authorId: comment.author.id,

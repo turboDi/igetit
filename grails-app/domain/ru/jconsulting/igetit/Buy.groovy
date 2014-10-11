@@ -16,16 +16,15 @@ class Buy implements Likeable {
 
     Image image
 
-    Date created
-
-    String description
+    Date dateCreated
 
     static hasMany = [comments : Comment]
 
     static constraints = {
+        name nullable: true
         brand nullable: true
         category nullable: true
-        description nullable: true
+        price nullable: true
         image nullable: true
     }
 }
