@@ -11,6 +11,7 @@ class Person {
     String email
     String password
     String status
+    Image avatar
     Date dateCreated
     Date lastActivity
     boolean enabled = true
@@ -24,12 +25,14 @@ class Person {
         username blank: false, unique: true
         email email: true, blank: false, unique: true
         password blank: false
-        lastActivity nullable: true
         status nullable: true
+        avatar nullable: true
+        lastActivity nullable: true
     }
 
     static mapping = {
         password column: '`password`'
+        avatar cascade: 'save-update, delete'
     }
 
     Set<Role> getAuthorities() {

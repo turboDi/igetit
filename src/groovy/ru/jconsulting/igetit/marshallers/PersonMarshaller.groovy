@@ -13,6 +13,7 @@ class PersonMarshaller implements MarshallerRegistrar {
             return [
                     id: person.id,
                     username: person.username,
+                    avatar: person.avatar,
                     buysCount: Buy.countByOwner(person),
                     followersCount: PersonFollower.countByPerson(person),
                     status: person.status,
