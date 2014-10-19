@@ -14,17 +14,20 @@ class Buy implements Likeable {
 
     Price price
 
-    Image image
-
     Date dateCreated
 
-    static hasMany = [comments : Comment]
+    List images
+
+    static hasMany = [comments : Comment, images : Image]
 
     static constraints = {
         name nullable: true
         brand nullable: true
         category nullable: true
         price nullable: true
-        image nullable: true
+    }
+
+    static mapping = {
+        images cascade: "all-delete-orphan"
     }
 }

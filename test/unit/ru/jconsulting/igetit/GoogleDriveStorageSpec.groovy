@@ -5,12 +5,15 @@ import com.google.api.client.testing.http.MockHttpTransport
 import com.google.api.client.testing.json.MockJsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
-import grails.test.mixin.TestFor
-import org.codehaus.groovy.grails.plugins.testing.GrailsMockMultipartFile
+import grails.test.mixin.TestMixin
+import grails.test.mixin.support.GrailsUnitTestMixin
+import ru.jconsulting.igetit.storage.GoogleDriveStorage
 import spock.lang.Specification
 
-@TestFor(GoogleDriveService)
-class GoogleDriveServiceSpec extends Specification {
+@TestMixin(GrailsUnitTestMixin)
+class GoogleDriveStorageSpec extends Specification {
+
+    GoogleDriveStorage tested
 
     def setup() {
         def driveMock = new Drive.Builder(new MockHttpTransport(), new MockJsonFactory(), null)
@@ -25,35 +28,37 @@ class GoogleDriveServiceSpec extends Specification {
         }
         def driveFiles = driveFilesMock.createMock()
         driveMock.metaClass.files {driveFiles}
-        service.driveService = driveMock
+        tested = new GoogleDriveStorage(driveService: driveMock)
     }
 
     void "test create folder"() {
         when:
-        def file = service.createFolder('folder', 'parent')
+        def file = tested.createFolder('folder', 'parent')
         then:
         file.getId() == '1'
         file.getOriginalFilename() == 'folder'
-        file.getMimeType() == service.FOLDER_MIME_TYPE
-        file.getParents()[0].getId() == 'parent'
+        file.getMimeType() == tested.FOLDER_MIME_TYPE
+        file.getParents()*.getId() == ['parent']
     }
 
     void "test create file"() {
         when:
-        def file = service.uploadFile(new GrailsMockMultipartFile('testFile', 'testFile.txt', 'type', 'content'.bytes), 'parent')
+        def file = tested.uploadFile('testFile.txt', 'type', new ByteArrayInputStream('content'.bytes), 'parent')
         then:
         file.getId() == '1'
         file.getOriginalFilename() == 'testFile.txt'
         file.getMimeType() == 'type'
-        file.getParents()[0].getId() == 'parent'
+        file.getParents()*.getId() == ['parent']
     }
 
     void "test get url"() {
         given:
         def image = new Image(filename: 'test.gif', folderId: '123')
         when:
-        def url = service.getURL(image)
+        def url = tested.getURL(image)
         then:
-        url == 'https://googledrive.com/host/123/test.gif'
+        url.l == 'https://googledrive.com/host/123/l.gif'
+        url.m == 'https://googledrive.com/host/123/m.gif'
+        url.s == 'https://googledrive.com/host/123/s.gif'
     }
 }

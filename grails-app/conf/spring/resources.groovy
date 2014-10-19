@@ -2,12 +2,12 @@ import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.jackson.JacksonFactory
 import com.google.api.services.drive.DriveScopes
 import grails.util.Environment
-import ru.jconsulting.igetit.FileSystemService
-import ru.jconsulting.igetit.GoogleDriveService
-import ru.jconsulting.igetit.GoogleDriveServiceFactory
+import ru.jconsulting.igetit.storage.FileSystemStorage
+import ru.jconsulting.igetit.storage.GoogleDriveServiceFactory
 import ru.jconsulting.igetit.auth.IGetItRestAuthenticationTokenJsonRenderer
 import ru.jconsulting.igetit.auth.IGetItUserDetailsService
 import ru.jconsulting.igetit.marshallers.*
+import ru.jconsulting.igetit.storage.GoogleDriveStorage
 
 //noinspection GroovyUnusedAssignment
 beans = {
@@ -21,7 +21,7 @@ beans = {
     priceMarshaller(PriceMarshaller)
     customMarshallerRegistrar(MarshallerListRegistrar)
 
-    storage(FileSystemService)
+    storage(FileSystemStorage)
 
     userDetailsService(IGetItUserDetailsService)
     restAuthenticationTokenJsonRenderer(IGetItRestAuthenticationTokenJsonRenderer)
@@ -43,7 +43,7 @@ beans = {
                     System.getenv("DRIVE_PRIVATE_KEY")
             )
 
-            storage(GoogleDriveService) { bean ->
+            storage(GoogleDriveStorage) { bean ->
                 bean.autowire = true
             }
         }

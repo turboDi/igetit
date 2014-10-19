@@ -32,25 +32,22 @@ class BootStrap {
         PersonRole.create turbodi, admin, true
         PersonRole.create potapovdd, admin, true
 
-        def bootstrapFolderId = "0B1lcabZIpE_KY2JEaThKeXRpZUE"
-        def bootstrapFileId = "undeletable"
-
         new Buy(name: 'iPad air 32 gb WI-FI', brand: apple, category: electronics, owner: turbodi,
                 price: new Price(value: new BigDecimal(499.99), currency: Currency.getInstance('USD')),
-                image: new Image(filename: 'ipad.jpg', folderId: bootstrapFolderId, fileId: bootstrapFileId)).save(failOnError: true)
+                images: [new Image(filename: 'ipad.jpg', folderId: '0B1lcabZIpE_KLXA3VTZEelRUcEE')]).save(failOnError: true)
         def iphone = new Buy(name: 'iPhone 5', brand: apple, category: electronics, owner: turbodi,
                 price: new Price(value: new BigDecimal(799.99), currency: Currency.getInstance('USD')),
-                image: new Image(filename: 'iphone.jpg', folderId: bootstrapFolderId, fileId: bootstrapFileId)).save(failOnError: true)
+                images: [new Image(filename: 'iphone.jpg', folderId: '0B1lcabZIpE_KeHhwekpUVFNSeW8')]).save(failOnError: true)
         def cookie = new Buy(name: 'Lime cookie', brand: smak, category: food, owner: turbodi,
                 price: new Price(value: new BigDecimal(56.99), currency: Currency.getInstance('RUB')),
-                image: new Image(filename: 'Limonnaya_big.jpg', folderId: bootstrapFolderId, fileId: bootstrapFileId))
+                images: [new Image(filename: 'Limonnaya_big.jpg', folderId: '0B1lcabZIpE_Kb2VPYUVQcHRxd2s')])
                 .save(failOnError: true)
         new Buy(name: 'iPod', brand: apple, category: electronics, owner: potapovdd,
                 price: new Price(value: new BigDecimal(49.99), currency: Currency.getInstance('USD')),
-                image: new Image(filename: 'ipod.jpg', folderId: bootstrapFolderId, fileId: bootstrapFileId)).save(failOnError: true)
+                images: [new Image(filename: 'ipod.jpg', folderId: '0B1lcabZIpE_Kc29VckJ6bGU1WmM')]).save(failOnError: true)
         new Buy(name: 'light idea bread', brand: smak, category: food, owner: potapovdd,
                 price: new Price(value: new BigDecimal(29.70), currency: Currency.getInstance('RUB')),
-                image: new Image(filename: 'Idea_light1.jpg', folderId: bootstrapFolderId, fileId: bootstrapFileId)).save(failOnError: true)
+                images: [new Image(filename: 'Idea_light1.jpg', folderId: '0B1lcabZIpE_KTDlhaFhZVkpaV0E')]).save(failOnError: true)
 
         cookie.addToComments(new Comment(author: potapovdd,
         text: "As for me i don't like such harmful for my health things.\nI like more healthy food, how do you keep such a great shape while eating this junk?"))

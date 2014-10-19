@@ -1,4 +1,4 @@
-package ru.jconsulting.igetit
+package ru.jconsulting.igetit.storage
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.http.HttpTransport

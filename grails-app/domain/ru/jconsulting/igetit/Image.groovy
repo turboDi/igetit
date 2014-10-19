@@ -4,12 +4,9 @@ class Image {
 
     String filename
 
-    String fileId
-
     String folderId
 
-    static belongsTo = Buy
-
     static constraints = {
+        folderId unique: true
     }
 }

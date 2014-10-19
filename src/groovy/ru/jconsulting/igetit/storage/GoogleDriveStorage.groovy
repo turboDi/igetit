@@ -1,10 +1,11 @@
-package ru.jconsulting.igetit
+package ru.jconsulting.igetit.storage
 
-import com.google.api.client.http.ByteArrayContent
+import com.google.api.client.http.InputStreamContent
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
 import com.google.api.services.drive.model.ParentReference
-import org.springframework.web.multipart.MultipartFile
+import ru.jconsulting.igetit.Image
+import ru.jconsulting.igetit.ImageUtils
 
 /**
  *
@@ -12,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile
  * @author Дмитрий Борисов
  * @created 11.05.14 18:51
  */
-class GoogleDriveService {
+class GoogleDriveStorage implements Storage {
 
     final static FOLDER_MIME_TYPE = "application/vnd.google-apps.folder"
 
@@ -20,21 +21,25 @@ class GoogleDriveService {
 
     Drive driveService
 
-    File uploadFile(MultipartFile multipartFile, String parentFolder) {
+    File uploadFile(def fileName, String contentType, InputStream is, String parentFolder) {
 
         def info = new File()
-                .setTitle(multipartFile.originalFilename)
-                .setDescription(multipartFile.originalFilename)
-                .setMimeType(multipartFile.contentType)
+                .setTitle(fileName)
+                .setDescription(fileName)
+                .setMimeType(contentType)
                 .setParents([new ParentReference().setId(parentFolder)])
 
-        def content = new ByteArrayContent(multipartFile.contentType, multipartFile.bytes)
+        def content = new InputStreamContent(contentType, is)
 
         driveService.files().insert(info, content).execute()
     }
 
     File createFolder(String name) {
         createFolder(name, System.getenv("DRIVE_ROOT_ID"))
+    }
+
+    def deleteFolder(String folderId) {
+        driveService.files().delete(folderId).execute()
     }
 
     File createFolder(String name, String parentFolder) {
@@ -47,7 +52,7 @@ class GoogleDriveService {
         driveService.files().insert(info).execute()
     }
 
-    String getURL(Image image) {
-        HOST_URL + "$image.folderId/$image.filename"
+    Map getURL(Image image) {
+        ImageUtils.thumbnailUrls(HOST_URL + image.folderId + "/", image.filename)
     }
 }
