@@ -1,8 +1,8 @@
 package ru.jconsulting.igetit
 
-import org.grails.rateable.Rateable
+import ru.jconsulting.likeable.Likeable
 
-class Buy implements Rateable {
+class Buy implements Likeable {
 
     String name
 
@@ -14,18 +14,20 @@ class Buy implements Rateable {
 
     Price price
 
-    Image image
+    Date dateCreated
 
-    Date created
+    List images
 
-    String description
-
-    static hasMany = [comments : Comment]
+    static hasMany = [comments : Comment, images : Image]
 
     static constraints = {
+        name nullable: true
         brand nullable: true
         category nullable: true
-        description nullable: true
-        image nullable: true
+        price nullable: true
+    }
+
+    static mapping = {
+        images cascade: "all-delete-orphan"
     }
 }

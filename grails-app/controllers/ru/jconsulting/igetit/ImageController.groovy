@@ -1,19 +1,65 @@
 package ru.jconsulting.igetit
 
-import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import grails.rest.RestfulController
+import grails.transaction.Transactional
+
+import static org.springframework.http.HttpStatus.*
 
 @Secured(['ROLE_USER'])
-class ImageController {
+class ImageController extends RestfulController<Image> {
 
-    def storage
+    static responseFormats = ['json']
 
-    def upload() {
-        log.debug("File '$params.file.originalFilename' of $params.file.size bytes received")
-        def folder = storage.createFolder(UUID.randomUUID().toString())
-        def file = storage.uploadFile(params.file, folder.getId())
-        Image image = new Image(fileId : file.getId(), folderId : folder.getId(), filename : file.getOriginalFilename())
-        log.debug("New image uploaded to ${storage.getURL(image)}")
-        render image as JSON
+    ImageController() {
+        super(Image)
+    }
+
+    @Transactional(readOnly = true)
+    def index(Integer max) {
+        def buy = Buy.get(params.buyId)
+        if (buy == null) {
+            render status: NOT_FOUND
+            return
+        }
+
+        respond buy.images
+    }
+
+    @Transactional
+    def save() {
+        def image = new Image(params)
+
+        image.validate()
+        if (image.hasErrors()) {
+            respond image.errors
+            return
+        }
+
+        def buy = Buy.get(params.buyId)
+        if (buy == null) {
+            render status: NOT_FOUND
+            return
+        }
+
+        buy.addToImages(image)
+
+        buy.save(flush: true)
+
+        respond image, [status: CREATED]
+    }
+
+    @Transactional
+    def delete() {
+        def buy = Buy.get(params.buyId)
+        def image = buy?.images?.find {it.id == params.id}
+        if (buy == null || image == null) {
+            render status: NOT_FOUND
+            return
+        }
+
+        buy.removeFromImages(image as Image)
+
+        render status: NO_CONTENT
     }
 }

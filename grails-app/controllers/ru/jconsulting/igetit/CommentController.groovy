@@ -28,7 +28,6 @@ class CommentController extends RestfulController<Comment> {
     protected Comment createResource(Map params) {
         Comment comment = super.createResource(params) as Comment
         if (params.buyId) {
-            comment.created = new Date()
             comment.author = springSecurityService.getCurrentUser() as Person
             comment.buy = Buy.get(params.buyId as Serializable)
         }

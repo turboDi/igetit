@@ -27,10 +27,8 @@ class BuyController extends RestfulController<Buy> {
     @Override
     protected Buy createResource(Map params) {
         Buy buy = super.createResource(params) as Buy
-        Person currentUser = springSecurityService.getCurrentUser() as Person
-        buy.owner = currentUser
-        buy.created = new Date()
-        log.debug("User '$currentUser.username' is about to create new buy: $buy.name")
+        buy.owner = springSecurityService.getCurrentUser() as Person
+        log.debug("User '$buy.owner' is about to create new buy: $buy.name")
         buy
     }
 }

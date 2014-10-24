@@ -6,7 +6,7 @@ class ErrorController {
 
     def handleForbidden() {
         if (!isKaffeine() || request.forwardURI != '/') {
-            log.error("Forbidden url $request.forwardURI")
+            log.error("Forbidden action $request.method $request.forwardURI")
             render(status: FORBIDDEN, contentType: "application/json") {
                 status = FORBIDDEN.value()
                 message = 'You are not allowed to see this page'

@@ -1,9 +1,9 @@
 package ru.jconsulting.igetit
 
 import org.grails.databinding.BindUsing
-import org.grails.rateable.Rateable
+import ru.jconsulting.likeable.Likeable
 
-class Price implements Rateable {
+class Price implements Likeable {
 
     BigDecimal value
 

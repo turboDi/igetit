@@ -14,13 +14,13 @@ class CommentControllerSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
-        user = new Person(username: 'user', password: 'pwd').save(flush: true)
+        user = new Person(username: 'user', email: 'ww@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
         def p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
-        buy = new Buy(name: 'buy', owner: user, price: p, created: new Date()).save(flush: true)
-        def buy2 = new Buy(name: 'buy2', owner: user, price: p, created: new Date()).save(flush: true)
+        buy = new Buy(name: 'buy', owner: user, price: p).save(flush: true, failOnError: true)
+        def buy2 = new Buy(name: 'buy2', owner: user, price: p).save(flush: true, failOnError: true)
         assert Buy.count() == 2
-        new Comment(created: new Date(), text: 'comment1', author: user, buy: buy).save(flush: true)
-        new Comment(created: new Date(), text: 'comment2', author: user, buy: buy2).save(flush: true)
+        new Comment(text: 'comment1', author: user, buy: buy).save(flush: true, failOnError: true)
+        new Comment(text: 'comment2', author: user, buy: buy2).save(flush: true, failOnError: true)
         assert Comment.count() == 2
         def springSecurityServiceMock = mockFor(SpringSecurityService)
         springSecurityServiceMock.demand.getCurrentUser { -> user }
@@ -64,7 +64,7 @@ class CommentControllerSpec extends Specification {
         controller.save()
         then:
         response.status == 422
-        response.json.errors.size() == 3
+        response.json.errors.size() == 2
         Comment.count() == 2
     }
 }

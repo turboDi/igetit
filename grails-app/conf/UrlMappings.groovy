@@ -1,18 +1,26 @@
 class UrlMappings {
 
 	static mappings = {
-        "/image/$action"(controller: "image")
-
         "/persons"(resources: "person") {
             "/buys"(resources: "buy") {
                 "/comments"(resources: "comment")
+                "/images"(resources: "image")
             }
         }
         "/buys"(resources: "buy") {
             "/comments"(resources: "comment")
+            "/images"(resources: "image")
         }
         "/brands"(resources: "brand")
         "/categories"(resources: "category")
+
+        "/storage/$folderId?"(controller: "storage") {
+            action = [POST: "upload", DELETE: "delete"]
+        }
+
+        "/like"(controller: "likeable"){
+            action = [POST: "like"]
+        }
 
         "403"(controller: "error", action: "handleForbidden")
         "404"(controller: "error", action: "handleNotFound")
