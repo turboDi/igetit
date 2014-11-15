@@ -121,7 +121,8 @@ grails.plugin.springsecurity.userLookup.userDomainClassName = 'ru.jconsulting.ig
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'ru.jconsulting.igetit.auth.PersonRole'
 grails.plugin.springsecurity.authority.className = 'ru.jconsulting.igetit.auth.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-        '/likeable/like':               ['ROLE_USER']
+        '/likeable/like':               ['ROLE_USER'],
+        '/person/save':                 ['permitAll']
 ]
 
 grails.plugin.springsecurity.rest.login.useJsonCredentials = true
