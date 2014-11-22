@@ -22,6 +22,8 @@ class UrlMappings {
             action = [POST: "like"]
         }
 
+        "/account/verify"(controller: "account", action: "verify")
+
         "403"(controller: "error", action: "handleForbidden")
         "404"(controller: "error", action: "handleNotFound")
         "500"(controller: "error", action: "handleError")

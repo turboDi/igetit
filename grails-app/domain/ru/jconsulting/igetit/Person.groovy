@@ -12,12 +12,16 @@ class Person {
     String password
     String status
     Image avatar
+    String fullName
+
     Date dateCreated
-    Date lastActivity
+    Date lastActivity = new Date()
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
+    boolean emailConfirmed
+    String confirmToken = ''
 
     static transients = ['springSecurityService']
 
@@ -27,7 +31,7 @@ class Person {
         password blank: false
         status nullable: true
         avatar nullable: true
-        lastActivity nullable: true
+        fullName nullable: true
     }
 
     static mapping = {

@@ -10,7 +10,7 @@ class ActivityTrackingFilters {
             afterView = { Exception e ->
                 use (TimeCategory) {
                     Person p = springSecurityService.getCurrentUser() as Person
-                    if (p && (!p.lastActivity || p.lastActivity < new Date() - 5.minutes)) {
+                    if (p && p.lastActivity < new Date() - 5.minutes) {
                         Person.withTransaction {
                             p.lastActivity = new Date()
                             p.save()
