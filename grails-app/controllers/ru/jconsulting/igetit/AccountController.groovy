@@ -5,7 +5,10 @@ import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*
 
+@Secured(['ROLE_USER'])
 class AccountController {
+
+    def springSecurityService
 
     @Secured(['permitAll'])
     @Transactional
@@ -18,5 +21,10 @@ class AccountController {
         p.emailConfirmed = true
         p.save()
         [person: p]
+    }
+
+    def profile() {
+        params.id = springSecurityService.principal.id
+        forward controller: 'person', action: 'show'
     }
 }

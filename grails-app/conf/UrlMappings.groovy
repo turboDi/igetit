@@ -22,7 +22,8 @@ class UrlMappings {
             action = [POST: "like"]
         }
 
-        "/account/verify"(controller: "account", action: "verify")
+        "/account/$action"(controller: "account")
+        "/persons/$id/follow"(controller: "person", action: "follow")
 
         "403"(controller: "error", action: "handleForbidden")
         "404"(controller: "error", action: "handleNotFound")
