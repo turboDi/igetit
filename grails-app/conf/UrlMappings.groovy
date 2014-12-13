@@ -23,7 +23,7 @@ class UrlMappings {
         }
 
         "/account/$action"(controller: "account")
-        "/persons/$id/follow"(controller: "person", action: "follow")
+        "/subscription/$action"(controller: "subscription")
 
         "403"(controller: "error", action: "handleForbidden")
         "404"(controller: "error", action: "handleNotFound")

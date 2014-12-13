@@ -22,7 +22,9 @@ class BuyMarshaller implements MarshallerRegistrar {
                     created: buy.dateCreated,
                     images: buy.images,
                     likes: buy.getTotalLikes(),
-                    iLiked: buy.userLiked(springSecurityService.getCurrentUser())
+                    iLiked: buy.userLiked(springSecurityService.getCurrentUser()),
+                    ownerName: buy.owner.username,
+                    ownerId: buy.owner.id
             ]
         }
     }

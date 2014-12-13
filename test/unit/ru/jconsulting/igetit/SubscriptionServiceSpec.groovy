@@ -1,13 +1,12 @@
 package ru.jconsulting.igetit
 
-import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
-@TestFor(PersonController)
-@Mock([Person, PersonFollower])
-class PersonControllerSpec extends Specification {
+@TestFor(SubscriptionService)
+@Mock([Person, PersonFollower, Price, Buy])
+class SubscriptionServiceSpec extends Specification {
 
     Person user1, user2
 
@@ -15,51 +14,44 @@ class PersonControllerSpec extends Specification {
         Person.metaClass.encodePassword { -> }
         user1 = new Person(username: 'user1', email: 'ww@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
         user2 = new Person(username: 'user2', email: 'ww1@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
-
-        def springSecurityServiceMock = mockFor(SpringSecurityService)
-        springSecurityServiceMock.demand.getCurrentUser { -> user1 }
-        controller.springSecurityService = springSecurityServiceMock.createMock()
-    }
-
-    void "test follow nonexistent user"() {
-        given:
-        params.id = 10
-        when:
-        controller.follow()
-        then:
-        response.status == 404
-        PersonFollower.count() == 0
+        Price p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
+        new Buy(name: 'buy1', owner: user1, price: p).save(flush: true, failOnError: true)
+        new Buy(name: 'buy2', owner: user2, price: p).save(flush: true, failOnError: true)
     }
 
     void "test self follow"() {
-        given:
-        params.id = user1.id
         when:
-        controller.follow()
+        service.follow(user1, user1)
         then:
         thrown(IllegalArgumentException)
     }
 
     void "test follow"() {
-        given:
-        params.id = user2.id
         when:
-        controller.follow()
+        service.follow(user2, user1)
         then:
-        response.contentAsString == '1'
         PersonFollower.countByPerson(user2) == 1
         PersonFollower.countByFollower(user1) == 1
     }
 
     void "test stop following"() {
         given:
-        params.id = user2.id
         PersonFollower.create(user2, user1, true)
         when:
-        controller.follow()
+        service.follow(user2, user1)
         then:
-        response.contentAsString == '0'
         PersonFollower.countByPerson(user2) == 0
         PersonFollower.countByFollower(user1) == 0
+    }
+
+    void "test tape"() {
+        given:
+        PersonFollower.create(user2, user1, true)
+        when:
+        def user1Tape = service.tape(user1, [:])
+        def user2Tape = service.tape(user2, [:])
+        then:
+        user1Tape.size() == 2
+        user2Tape.size() == 1
     }
 }
