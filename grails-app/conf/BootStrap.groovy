@@ -1,7 +1,9 @@
+import org.grails.datastore.mapping.core.Datastore
 import ru.jconsulting.igetit.Brand
 import ru.jconsulting.igetit.Buy
 import ru.jconsulting.igetit.Category as Category
 import ru.jconsulting.igetit.Comment
+import ru.jconsulting.igetit.IGetItPersistenceEventListener
 import ru.jconsulting.igetit.Image
 import ru.jconsulting.igetit.PersonFollower
 import ru.jconsulting.igetit.Price
@@ -11,11 +13,18 @@ import ru.jconsulting.igetit.auth.PersonRole
 
 class BootStrap {
 
+    def grailsApplication
     def customMarshallerRegistrar
 
     def init = { servletContext ->
         if (Brand.count() == 0) createData()
         customMarshallerRegistrar.register()
+
+        def ctx = grailsApplication.mainContext
+
+        ctx.getBeansOfType(Datastore).values().each { Datastore d ->
+            ctx.addApplicationListener new IGetItPersistenceEventListener(d)
+        }
     }
 
     private static void createData() {

@@ -22,4 +22,9 @@ class SubscriptionService {
         List<Person> owners = PersonFollower.findAllByFollower(person)*.person
         Buy.findAllByOwnerInList(owners << person as List, params)
     }
+
+    @Transactional(readOnly = true)
+    def events(Person person, Map params) {
+        Event.findByEffector(person, params)
+    }
 }

@@ -1,14 +1,9 @@
 package ru.jconsulting.igetit.marshallers
 
 import grails.converters.JSON
-import grails.plugin.springsecurity.SpringSecurityService
-import org.springframework.beans.factory.annotation.Autowired
 import ru.jconsulting.igetit.Comment
 
-class CommentMarshaller implements MarshallerRegistrar {
-
-    @Autowired
-    private SpringSecurityService springSecurityService
+class CommentMarshaller extends BaseMarshaller implements MarshallerRegistrar {
 
     @Override
     void register() {
@@ -17,10 +12,9 @@ class CommentMarshaller implements MarshallerRegistrar {
                     id: comment.id,
                     created: comment.dateCreated,
                     text: comment.text,
-                    authorName: comment.author.username,
-                    authorId: comment.author.id,
+                    author: marshallPerson(comment.author),
                     likes: comment.getTotalLikes(),
-                    iLiked: comment.userLiked(springSecurityService.getCurrentUser())
+                    iLiked: comment.userLiked(currentPerson())
             ]
         }
     }

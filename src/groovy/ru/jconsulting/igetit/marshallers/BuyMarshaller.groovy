@@ -1,14 +1,9 @@
 package ru.jconsulting.igetit.marshallers
 
 import grails.converters.JSON
-import grails.plugin.springsecurity.SpringSecurityService
-import org.springframework.beans.factory.annotation.Autowired
 import ru.jconsulting.igetit.Buy
 
-class BuyMarshaller implements MarshallerRegistrar {
-
-    @Autowired
-    private SpringSecurityService springSecurityService
+class BuyMarshaller extends BaseMarshaller implements MarshallerRegistrar {
 
     @Override
     void register() {
@@ -22,9 +17,8 @@ class BuyMarshaller implements MarshallerRegistrar {
                     created: buy.dateCreated,
                     images: buy.images,
                     likes: buy.getTotalLikes(),
-                    iLiked: buy.userLiked(springSecurityService.getCurrentUser()),
-                    ownerName: buy.owner.username,
-                    ownerId: buy.owner.id
+                    iLiked: buy.userLiked(currentPerson()),
+                    ownerName: marshallPerson(buy.owner)
             ]
         }
     }

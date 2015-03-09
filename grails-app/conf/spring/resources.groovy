@@ -19,6 +19,7 @@ beans = {
     imageMarshaller(ImageMarshaller)
     personMarshaller(PersonMarshaller)
     priceMarshaller(PriceMarshaller)
+    eventMarshaller(EventMarshaller)
     customMarshallerRegistrar(MarshallerListRegistrar)
 
     storage(FileSystemStorage)

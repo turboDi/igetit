@@ -6,13 +6,14 @@ class PersonFollower implements Serializable {
 
     Person person
     Person follower
+    Date dateCreated
 
     static PersonFollower create(Person person, Person follower, boolean flush = false) {
         new PersonFollower(person: person, follower: follower).save(flush: flush, insert: true)
     }
 
     static mapping = {
-        id composite: ['person', 'follower']
+        person unique: 'follower'
         version false
     }
 

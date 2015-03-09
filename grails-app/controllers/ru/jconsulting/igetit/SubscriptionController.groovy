@@ -23,4 +23,8 @@ class SubscriptionController {
     def tape() {
         render subscriptionService.tape(getAuthenticatedUser(), params) as JSON
     }
+
+    def events() {
+        render subscriptionService.events(getAuthenticatedUser(), params) as JSON
+    }
 }
