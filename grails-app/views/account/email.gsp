@@ -5,7 +5,7 @@
 
 <body style="background-color: red">
     <div style="text-align: center; padding-top: 20px">
-        <h1>Welcome to IGetIt, ${p.username},
+        <h1>Welcome to IGetIt, ${p.fullName},
         <g:link absolute="true"
                 controller="account"
                 action="verify"

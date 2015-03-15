@@ -6,7 +6,7 @@
 
 <body style="background-color: red">
     <div style="text-align: center; padding-top: 20px">
-        <h1>Hello, ${person.username}, your email verified</h1>
+        <h1>Hello, ${person.fullName}, your email verified</h1>
     </div>
 </body>
 </html>

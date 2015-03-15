@@ -16,8 +16,8 @@ class BuyControllerSpec extends Specification {
     def setup() {
         mockDomains(Person, Price)
         Person.metaClass.encodePassword { -> }
-        user1 = new Person(username: 'user1', email: 'ww@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
-        user2 = new Person(username: 'user2', email: 'ww1@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
+        user1 = new Person(username: 'user1@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
+        user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         Price p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
         mockDomain(Buy, [
                 [name: 'buy1', owner: user1, price: p],

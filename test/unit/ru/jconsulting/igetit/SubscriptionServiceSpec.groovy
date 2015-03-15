@@ -12,8 +12,8 @@ class SubscriptionServiceSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
-        user1 = new Person(username: 'user1', email: 'ww@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
-        user2 = new Person(username: 'user2', email: 'ww1@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
+        user1 = new Person(username: 'user1@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
+        user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         Price p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
         new Buy(name: 'buy1', owner: user1, price: p).save(flush: true, failOnError: true)
         new Buy(name: 'buy2', owner: user2, price: p).save(flush: true, failOnError: true)

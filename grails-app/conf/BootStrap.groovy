@@ -35,8 +35,8 @@ class BootStrap {
         def food = new Category(name: 'Food').save(flush: true)
 
         def admin = new Role(authority: 'ROLE_USER').save(flush: true)
-        def turbodi = new Person(username: 'turbo_di', email: 'ww@ww.ww', password: '1qazxsw2').save(flush: true, failOnError: true)
-        def potapovdd = new Person(username: 'potapovdd', email: 'ww@ww1.ww', password: '1qazxsw2').save(flush: true, failOnError: true)
+        def turbodi = new Person(username: 'turbo_di@ww.ww', password: '1qazxsw2', fullName: 'Dmitriy Borisov').save(flush: true, failOnError: true)
+        def potapovdd = new Person(username: 'potapovdd@ww.ww', password: '1qazxsw2', fullName: 'Potapov Denis').save(flush: true, failOnError: true)
 
         PersonRole.create turbodi, admin, true
         PersonRole.create potapovdd, admin, true

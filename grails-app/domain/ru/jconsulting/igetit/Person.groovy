@@ -8,11 +8,11 @@ class Person {
     transient springSecurityService
 
     String username
-    String email
     String password
-    String status
+    String email
     Image avatar
     String fullName
+    City city
 
     Date dateCreated
     Date lastActivity = new Date()
@@ -24,14 +24,15 @@ class Person {
     String confirmToken = ''
 
     static transients = ['springSecurityService']
+    static embedded = ['city']
 
     static constraints = {
         username blank: false, unique: true
-        email email: true, blank: false, unique: true
+        email nullable: true, email: true, unique: true
         password blank: false
-        status nullable: true
+        fullName blank: false
         avatar nullable: true
-        fullName nullable: true
+        city nullable: true
     }
 
     static mapping = {

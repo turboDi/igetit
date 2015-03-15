@@ -17,6 +17,7 @@ class PersonController extends RestfulController<Person> {
 
     private generateConfirmToken() {
         params.confirmToken = UUID.randomUUID()
+        params.email = params.username
     }
 
     private sendConfirm(model) {

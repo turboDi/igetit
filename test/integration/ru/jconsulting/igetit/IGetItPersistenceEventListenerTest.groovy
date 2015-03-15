@@ -63,8 +63,8 @@ class IGetItPersistenceEventListenerTest extends GroovyTestCase {
     }
 
     private void prepareCommonData() {
-        p1 = new Person(username: 'p1', email: 'w2@ww.ww', password: '123').save(flush: true, failOnError: true)
-        p2 = new Person(username: 'p2', email: 'w1@ww.ww', password: '123').save(flush: true, failOnError: true)
+        p1 = new Person(username: 'p1@ww.ww', fullName: 'FIO', password: '123').save(flush: true, failOnError: true)
+        p2 = new Person(username: 'p2@ww.ww', fullName: 'FIO', password: '123').save(flush: true, failOnError: true)
         buy = new Buy(name: 'myBuy', owner: p1).save(flush: true, failOnError: true)
     }
 }

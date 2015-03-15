@@ -14,7 +14,6 @@ class PersonFollower implements Serializable {
 
     static mapping = {
         person unique: 'follower'
-        version false
     }
 
     boolean equals(other) {

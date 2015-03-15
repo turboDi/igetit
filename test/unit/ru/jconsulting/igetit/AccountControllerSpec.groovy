@@ -12,13 +12,13 @@ class AccountControllerSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
-        user = new Person(username: 'user', email: 'ww@ww.ww', password: 'pwd', confirmToken: '1').save(flush: true, failOnError: true)
+        user = new Person(username: 'user@ww.ww', email: 'user@ww.ww', fullName: 'FIO', password: 'pwd', confirmToken: '1').save(flush: true, failOnError: true)
     }
 
     void "test verify invalid confirm token"() {
         given:
         params.key = '2'
-        params.email = 'ww@ww.ww'
+        params.email = 'user@ww.ww'
         when:
         controller.verify()
         then:
@@ -29,7 +29,7 @@ class AccountControllerSpec extends Specification {
     void "test verify invalid email"() {
         given:
         params.key = '1'
-        params.email = 'ww@ww1.ww'
+        params.email = 'user@ww1.ww'
         when:
         controller.verify()
         then:
@@ -48,7 +48,7 @@ class AccountControllerSpec extends Specification {
     void "test verify"() {
         given:
         params.key = '1'
-        params.email = 'ww@ww.ww'
+        params.email = 'user@ww.ww'
         when:
         controller.verify()
         then:
