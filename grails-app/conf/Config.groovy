@@ -111,6 +111,9 @@ environments {
         }
         grails.mail.default.from = "IGetIt <no-reply@mail.igetit.com>"
     }
+    test {
+        grails.mail.disabled = true
+    }
 }
 
 // log4j configuration
@@ -138,7 +141,7 @@ grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'ru.jconsulting
 grails.plugin.springsecurity.authority.className = 'ru.jconsulting.igetit.auth.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/likeable/like':               ['ROLE_USER'],
-        '/person/save':                 ['permitAll']
+        '/person/save':                 ['denyAll']  // all registrations should pass through account controller
 ]
 
 grails.plugin.springsecurity.rest.login.useJsonCredentials = true

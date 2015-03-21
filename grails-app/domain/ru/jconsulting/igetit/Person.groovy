@@ -22,6 +22,7 @@ class Person {
     boolean passwordExpired
     boolean emailConfirmed
     String confirmToken = ''
+    String oAuthProvider
 
     static transients = ['springSecurityService']
     static embedded = ['city']
@@ -33,6 +34,7 @@ class Person {
         fullName blank: false
         avatar nullable: true
         city nullable: true
+        oAuthProvider nullable: true
     }
 
     static mapping = {

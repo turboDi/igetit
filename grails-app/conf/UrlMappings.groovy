@@ -22,7 +22,7 @@ class UrlMappings {
             action = [POST: "like"]
         }
 
-        "/account/$action"(controller: "account")
+        "/account/$action/$oAuthProvider?"(controller: "account")
         "/subscription/$action"(controller: "subscription")
 
         "403"(controller: "error", action: "handleForbidden")

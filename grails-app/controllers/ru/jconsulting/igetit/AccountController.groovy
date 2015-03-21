@@ -1,30 +1,48 @@
 package ru.jconsulting.igetit
 
+import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*
 
-@Secured(['ROLE_USER'])
+@Secured(['permitAll'])
 class AccountController {
 
-    def springSecurityService
+    static allowedMethods = [register: "POST", verify: "GET"]
 
-    @Secured(['permitAll'])
-    @Transactional
-    def verify() {
-        Person p = Person.findByConfirmTokenAndEmail(params.key, params.email)
-        if (!p) {
-            render status: NOT_FOUND
-            return
+    def accountService
+    def restAuthenticationTokenJsonRenderer
+
+    def register(String oAuthProvider) {
+        def token = null
+        params << request.JSON
+        params.oAuthProvider = oAuthProvider
+        if (!oAuthProvider) {
+            params.confirmToken = UUID.randomUUID()
+            params.email = params.username
+        } else {
+            params.password = 'N/A'
+            token = accountService.tryReAuthenticate(params.username as String, oAuthProvider)
         }
-        p.emailConfirmed = true
-        p.save()
-        [person: p]
+        if (!token) {
+            def p = new Person(params)
+            p.validate()
+            if (p.hasErrors()) {
+                response.status = UNPROCESSABLE_ENTITY.value()
+                render p.errors as JSON
+                return
+            }
+            token = accountService.register(p)
+        }
+        render JSON.parse(restAuthenticationTokenJsonRenderer.generateJson(token)) as JSON
     }
 
-    def profile() {
-        params.id = springSecurityService.principal.id
-        forward controller: 'person', action: 'show'
+    def verify(String key, String email) {
+        Person p = accountService.verify(key, email)
+        if (p) {
+            [person: p]
+        } else {
+            render status: NOT_FOUND
+        }
     }
 }
