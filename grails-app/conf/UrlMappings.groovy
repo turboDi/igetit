@@ -6,6 +6,7 @@ class UrlMappings {
                 "/comments"(resources: "comment")
                 "/images"(resources: "image")
             }
+            "/followers"(resources: "personFollower")
         }
         "/buys"(resources: "buy") {
             "/comments"(resources: "comment")

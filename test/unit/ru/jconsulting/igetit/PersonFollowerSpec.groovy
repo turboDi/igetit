@@ -25,4 +25,11 @@ class PersonFollowerSpec extends Specification {
         PersonFollower.countByFollower(user1) == 1
         PersonFollower.findByFollower(user1).person == user2
     }
+
+    void "test self following"() {
+        when:
+        def pf = new PersonFollower(person: user1, follower: user1)
+        then:
+        !pf.validate()
+    }
 }

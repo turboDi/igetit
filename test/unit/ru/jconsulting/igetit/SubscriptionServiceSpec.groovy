@@ -19,31 +19,6 @@ class SubscriptionServiceSpec extends Specification {
         new Buy(name: 'buy2', owner: user2, price: p).save(flush: true, failOnError: true)
     }
 
-    void "test self follow"() {
-        when:
-        service.follow(user1, user1)
-        then:
-        thrown(IllegalArgumentException)
-    }
-
-    void "test follow"() {
-        when:
-        service.follow(user2, user1)
-        then:
-        PersonFollower.countByPerson(user2) == 1
-        PersonFollower.countByFollower(user1) == 1
-    }
-
-    void "test stop following"() {
-        given:
-        PersonFollower.create(user2, user1, true)
-        when:
-        service.follow(user2, user1)
-        then:
-        PersonFollower.countByPerson(user2) == 0
-        PersonFollower.countByFollower(user1) == 0
-    }
-
     void "test tape"() {
         given:
         PersonFollower.create(user2, user1, true)

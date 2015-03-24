@@ -12,6 +12,12 @@ class PersonFollower implements Serializable {
         new PersonFollower(person: person, follower: follower).save(flush: flush, insert: true)
     }
 
+    static constraints = {
+        person validator: { person, personFollower ->
+            person != personFollower.follower
+        }
+    }
+
     static mapping = {
         person unique: 'follower'
     }

@@ -20,6 +20,7 @@ beans = {
     priceMarshaller(PriceMarshaller)
     eventMarshaller(EventMarshaller)
     cityMarshaller(CityMarshaller)
+    personFollowerMarshaller(PersonFollowerMarshaller)
     customMarshallerRegistrar(MarshallerListRegistrar)
 
     storage(FileSystemStorage)
