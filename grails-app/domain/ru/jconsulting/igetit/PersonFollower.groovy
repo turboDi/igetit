@@ -13,13 +13,9 @@ class PersonFollower implements Serializable {
     }
 
     static constraints = {
-        person validator: { person, personFollower ->
+        person unique: 'follower', validator: { person, personFollower ->
             person != personFollower.follower
         }
-    }
-
-    static mapping = {
-        person unique: 'follower'
     }
 
     boolean equals(other) {
