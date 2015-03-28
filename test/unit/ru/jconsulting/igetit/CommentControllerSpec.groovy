@@ -25,6 +25,7 @@ class CommentControllerSpec extends Specification {
         def springSecurityServiceMock = mockFor(SpringSecurityService)
         springSecurityServiceMock.demand.getCurrentUser { -> user }
         controller.springSecurityService = springSecurityServiceMock.createMock()
+        controller.params.format = 'json'
     }
 
     void "test list all buys' comments"() {

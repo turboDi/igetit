@@ -23,6 +23,7 @@ class ImageControllerSpec extends Specification {
         def p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
         buy = new Buy(name: 'buy', owner: user, price: p, images: [new Image(filename: '1', folderId: '1'), new Image(filename: '2', folderId: '2')])
                 .save(flush: true, failOnError: true)
+        controller.params.format = 'json'
     }
 
     void "test undefined folder save" () {

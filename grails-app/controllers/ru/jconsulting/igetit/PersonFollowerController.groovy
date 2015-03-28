@@ -7,7 +7,6 @@ import grails.rest.RestfulController
 class PersonFollowerController extends RestfulController<PersonFollower> {
 
     static allowedMethods = [save: "POST", delete: "DELETE"]
-    static responseFormats = ['json']
 
     PersonFollowerController() {
         super(PersonFollower)

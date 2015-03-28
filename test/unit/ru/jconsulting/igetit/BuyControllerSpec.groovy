@@ -27,6 +27,7 @@ class BuyControllerSpec extends Specification {
         def springSecurityServiceMock = mockFor(SpringSecurityService)
         springSecurityServiceMock.demand.getCurrentUser { -> user2 }
         controller.springSecurityService = springSecurityServiceMock.createMock()
+        controller.params.format = 'json'
     }
 
     void "test list all buys"() {

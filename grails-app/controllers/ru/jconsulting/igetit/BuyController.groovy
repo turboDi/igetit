@@ -6,8 +6,6 @@ import grails.rest.RestfulController
 @Secured(['ROLE_USER'])
 class BuyController extends RestfulController<Buy> {
 
-    static responseFormats = ['json']
-
     def springSecurityService
 
     BuyController() {

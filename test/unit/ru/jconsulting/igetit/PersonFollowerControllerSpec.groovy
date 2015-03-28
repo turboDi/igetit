@@ -18,6 +18,7 @@ class PersonFollowerControllerSpec extends Specification {
         PersonFollower.create user1, user2, true
         PersonFollower.create user1, user3, true
         controller.metaClass.getAuthenticatedUser = { -> user3 }
+        controller.params.format = 'json'
     }
 
     void "test get all followers"() {

@@ -9,8 +9,6 @@ import static org.springframework.http.HttpStatus.*
 @Secured(['ROLE_USER'])
 class ImageController extends RestfulController<Image> {
 
-    static responseFormats = ['json']
-
     ImageController() {
         super(Image)
     }
