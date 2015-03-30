@@ -21,6 +21,7 @@ beans = {
     eventMarshaller(EventMarshaller)
     cityMarshaller(CityMarshaller)
     personFollowerMarshaller(PersonFollowerMarshaller)
+    likeMarshaller(LikeMarshaller)
     customMarshallerRegistrar(MarshallerListRegistrar)
 
     storage(FileSystemStorage)

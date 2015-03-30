@@ -3,24 +3,44 @@ class UrlMappings {
 	static mappings = {
         "/persons"(resources: "person") {
             "/buys"(resources: "buy") {
-                "/comments"(resources: "comment")
+                "/comments"(resources: "comment") {
+                    "/likes"(resources: "like", includes: ['index', 'save', 'delete']) {
+                        likeableId = { params.commentId }
+                        type = 'comment'
+                    }
+                }
+                "/likes"(resources: "like", includes: ['index', 'save', 'delete']) {
+                    likeableId = { params.buyId }
+                    type = 'buy'
+                }
                 "/images"(resources: "image")
             }
-            "/followers"(resources: "personFollower")
+            "/followers"(resources: "personFollower", includes: ['index', 'save', 'delete'])
         }
         "/buys"(resources: "buy") {
-            "/comments"(resources: "comment")
+            "/comments"(resources: "comment") {
+                "/likes"(resources: "like", includes: ['index', 'save', 'delete']) {
+                    likeableId = { params.commentId }
+                    type = 'comment'
+                }
+            }
+            "/likes"(resources: "like", includes: ['index', 'save', 'delete']) {
+                likeableId = { params.buyId }
+                type = 'buy'
+            }
             "/images"(resources: "image")
+        }
+        "/comments"(resources: "comment") {
+            "/likes"(resources: "like", includes: ['index', 'save', 'delete']) {
+                likeableId = { params.commentId }
+                type = 'comment'
+            }
         }
         "/brands"(resources: "brand")
         "/categories"(resources: "category")
 
         "/storage/$folderId?"(controller: "storage") {
             action = [POST: "upload", DELETE: "delete"]
-        }
-
-        "/like"(controller: "likeable"){
-            action = [POST: "like"]
         }
 
         "/account/$action/$oAuthProvider?"(controller: "account")

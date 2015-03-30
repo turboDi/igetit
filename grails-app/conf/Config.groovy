@@ -16,6 +16,7 @@ grails.project.groupId = appName // change this to alter the default package nam
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
 grails.mime.types = [ // the first one is the default format
+    json:          ['application/json', 'text/json'],
     all:           '*/*', // 'all' maps to '*' or the first available format in withFormat
     atom:          'application/atom+xml',
     css:           'text/css',
@@ -23,7 +24,6 @@ grails.mime.types = [ // the first one is the default format
     form:          'application/x-www-form-urlencoded',
     html:          ['text/html','application/xhtml+xml'],
     js:            'text/javascript',
-    json:          ['application/json', 'text/json'],
     multipartForm: 'multipart/form-data',
     rss:           'application/rss+xml',
     text:          'text/plain',
@@ -140,7 +140,9 @@ grails.plugin.springsecurity.userLookup.userDomainClassName = 'ru.jconsulting.ig
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'ru.jconsulting.igetit.auth.PersonRole'
 grails.plugin.springsecurity.authority.className = 'ru.jconsulting.igetit.auth.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-        '/likeable/like':               ['ROLE_USER'],
+        '/like/save':                   ['ROLE_USER'],
+        '/like/delete':                 ['ROLE_USER'],
+        '/like/index':                  ['ROLE_USER'],
         '/person/save':                 ['denyAll']  // all registrations should pass through account controller
 ]
 

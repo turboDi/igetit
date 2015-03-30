@@ -11,4 +11,6 @@ class Event {
     Long refId
 
     String type
+
+    Date dateCreated
 }
