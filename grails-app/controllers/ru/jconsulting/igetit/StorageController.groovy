@@ -16,7 +16,7 @@ class StorageController {
             return
         }
         log.debug("File '$params.file.originalFilename' of $params.file.size bytes received")
-        Image image = storageService.upload params.file
+        Image image = storageService.upload params.file, thumbnails()
         render image as JSON
     }
 
@@ -35,5 +35,13 @@ class StorageController {
             status = UNPROCESSABLE_ENTITY.value()
             message = "'$param' parameter expected"
         }
+    }
+
+    private Map thumbnails() {
+        [
+                s: params.int('s') ?: 128,
+                m: params.int('m') ?: 256,
+                l: params.int('l') ?: 512
+        ]
     }
 }
