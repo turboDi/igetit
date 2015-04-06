@@ -15,9 +15,16 @@ class PersonFollowerMarshaller extends BaseMarshaller implements MarshallerRegis
     @Override
     void register() {
         JSON.registerObjectMarshaller(PersonFollower) { PersonFollower personFollower ->
-            Person follower = personFollower.follower
-            return marshallPerson(follower) <<
-                    [iFollow: PersonFollower.countByPersonAndFollower(follower, currentPerson()) > 0]
+            marshall(personFollower.follower)
         }
+        JSON.createNamedConfig('personFollowed') {
+            it.registerObjectMarshaller(PersonFollower) { PersonFollower personFollower ->
+                marshall(personFollower.person)
+            }
+        }
+    }
+
+    private marshall(Person person) {
+        marshallPerson(person) << [iFollow: PersonFollower.countByPersonAndFollower(person, currentPerson()) > 0]
     }
 }

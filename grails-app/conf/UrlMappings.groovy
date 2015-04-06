@@ -16,6 +16,7 @@ class UrlMappings {
                 "/images"(resources: "image")
             }
             "/followers"(resources: "personFollower", includes: ['index', 'save', 'delete'])
+            "/followed(.json)?"(controller: "personFollowed")
         }
         "/buys"(resources: "buy") {
             "/comments"(resources: "comment") {
