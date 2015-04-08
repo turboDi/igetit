@@ -50,7 +50,7 @@ grails.project.dependency.resolution = {
         compile 'com.google.apis:google-api-services-drive:v2-rev123-1.18.0-rc'
         compile 'org.imgscalr:imgscalr-lib:4.2'
 
-        runtime 'postgresql:postgresql:8.4-702.jdbc3'
+        runtime 'org.postgresql:postgresql:9.3-1103-jdbc41'
     }
 
     plugins {
