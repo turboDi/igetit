@@ -5,7 +5,6 @@ import grails.util.Environment
 import ru.jconsulting.igetit.storage.FileSystemStorage
 import ru.jconsulting.igetit.storage.GoogleDriveServiceFactory
 import ru.jconsulting.igetit.auth.IGetItRestAuthenticationTokenJsonRenderer
-import ru.jconsulting.igetit.auth.IGetItUserDetailsService
 import ru.jconsulting.igetit.marshallers.*
 import ru.jconsulting.igetit.storage.GoogleDriveStorage
 
@@ -19,11 +18,14 @@ beans = {
     imageMarshaller(ImageMarshaller)
     personMarshaller(PersonMarshaller)
     priceMarshaller(PriceMarshaller)
+    eventMarshaller(EventMarshaller)
+    cityMarshaller(CityMarshaller)
+    personFollowerMarshaller(PersonFollowerMarshaller)
+    likeMarshaller(LikeMarshaller)
     customMarshallerRegistrar(MarshallerListRegistrar)
 
     storage(FileSystemStorage)
 
-    userDetailsService(IGetItUserDetailsService)
     restAuthenticationTokenJsonRenderer(IGetItRestAuthenticationTokenJsonRenderer)
 
     Environment.executeForCurrentEnvironment {

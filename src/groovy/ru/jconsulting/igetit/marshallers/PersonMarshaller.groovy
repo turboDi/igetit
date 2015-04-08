@@ -5,18 +5,20 @@ import ru.jconsulting.igetit.Buy
 import ru.jconsulting.igetit.Person
 import ru.jconsulting.igetit.PersonFollower
 
-class PersonMarshaller implements MarshallerRegistrar {
+class PersonMarshaller extends BaseMarshaller implements MarshallerRegistrar {
 
     @Override
     void register() {
         JSON.registerObjectMarshaller(Person) { Person person ->
             return [
                     id: person.id,
-                    username: person.username,
+                    fullName: person.fullName,
                     avatar: person.avatar,
+                    city: person.city,
                     buysCount: Buy.countByOwner(person),
                     followersCount: PersonFollower.countByPerson(person),
-                    status: person.status,
+                    followedCount: PersonFollower.countByFollower(person),
+                    iFollow: PersonFollower.countByPersonAndFollower(person, currentPerson()) > 0,
                     lastActivity: person.lastActivity
             ]
         }

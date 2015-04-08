@@ -50,7 +50,7 @@ grails.project.dependency.resolution = {
         compile 'com.google.apis:google-api-services-drive:v2-rev123-1.18.0-rc'
         compile 'org.imgscalr:imgscalr-lib:4.2'
 
-        runtime 'postgresql:postgresql:8.4-702.jdbc3'
+        runtime 'org.postgresql:postgresql:9.3-1103-jdbc41'
     }
 
     plugins {
@@ -61,7 +61,8 @@ grails.project.dependency.resolution = {
         compile ':cache:1.1.1'
         compile ":spring-security-core:2.0-RC2"
         compile (":spring-security-rest:1.3.4") { excludes 'spring-security-core' }
-        compile ':likeable:0.1.2'
+        compile ':likeable:0.3.0'
+        compile ':mail:1.0.7'
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate:3.6.10.9" // or ":hibernate4:4.3.4"

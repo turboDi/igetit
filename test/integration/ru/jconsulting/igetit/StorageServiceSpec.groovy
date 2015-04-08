@@ -26,12 +26,13 @@ class StorageServiceSpec extends Specification {
     void "test upload" () {
         given:
         def file = new File('test/integration/resources/1024x1024.jpg')
+        def t = [l: 1024, m: 256, s: 128]
         when:
-        Image image = storageService.upload(new MockMultipartFile(file.name, file.name, 'image/jpeg', file.bytes))
+        Image image = storageService.upload(new MockMultipartFile(file.name, file.name, 'image/jpeg', file.bytes), t)
         then:
         image.filename == file.name
         def original = new File(image.folderId + File.separator + 'l.jpg')
-        original.exists() && original.bytes == file.bytes
+        original.exists() && original.bytes.size() > 0
         new File(image.folderId + File.separator + 'm.jpg').exists()
         new File(image.folderId + File.separator + 's.jpg').exists()
     }
@@ -39,8 +40,9 @@ class StorageServiceSpec extends Specification {
     void "test delete" () {
         given:
         def file = new File('test/integration/resources/1024x1024.jpg')
+        def t = [l: 512, m: 256, s: 128]
         when:
-        Image image = storageService.upload(new MockMultipartFile(file.name, file.name, 'image/jpeg', file.bytes))
+        Image image = storageService.upload(new MockMultipartFile(file.name, file.name, 'image/jpeg', file.bytes), t)
         storageService.delete(image.folderId)
         then:
         !new File(image.folderId).exists()

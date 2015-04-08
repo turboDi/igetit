@@ -14,7 +14,7 @@ class CommentControllerSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
-        user = new Person(username: 'user', email: 'ww@ww.ww', password: 'pwd').save(flush: true, failOnError: true)
+        user = new Person(username: 'user@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         def p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
         buy = new Buy(name: 'buy', owner: user, price: p).save(flush: true, failOnError: true)
         def buy2 = new Buy(name: 'buy2', owner: user, price: p).save(flush: true, failOnError: true)
@@ -25,6 +25,7 @@ class CommentControllerSpec extends Specification {
         def springSecurityServiceMock = mockFor(SpringSecurityService)
         springSecurityServiceMock.demand.getCurrentUser { -> user }
         controller.springSecurityService = springSecurityServiceMock.createMock()
+        controller.params.format = 'json'
     }
 
     void "test list all buys' comments"() {

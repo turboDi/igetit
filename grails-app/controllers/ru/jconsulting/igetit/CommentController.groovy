@@ -6,8 +6,6 @@ import grails.rest.RestfulController
 @Secured(['ROLE_USER'])
 class CommentController extends RestfulController<Comment> {
 
-    static responseFormats = ['json']
-
     def springSecurityService
 
     CommentController() {

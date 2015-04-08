@@ -6,14 +6,16 @@ class PersonFollower implements Serializable {
 
     Person person
     Person follower
+    Date dateCreated
 
     static PersonFollower create(Person person, Person follower, boolean flush = false) {
         new PersonFollower(person: person, follower: follower).save(flush: flush, insert: true)
     }
 
-    static mapping = {
-        id composite: ['person', 'follower']
-        version false
+    static constraints = {
+        person unique: 'follower', validator: { person, personFollower ->
+            person != personFollower.follower
+        }
     }
 
     boolean equals(other) {

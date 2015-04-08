@@ -1,7 +1,9 @@
+import org.grails.datastore.mapping.core.Datastore
 import ru.jconsulting.igetit.Brand
 import ru.jconsulting.igetit.Buy
 import ru.jconsulting.igetit.Category as Category
 import ru.jconsulting.igetit.Comment
+import ru.jconsulting.igetit.IGetItPersistenceEventListener
 import ru.jconsulting.igetit.Image
 import ru.jconsulting.igetit.PersonFollower
 import ru.jconsulting.igetit.Price
@@ -11,11 +13,18 @@ import ru.jconsulting.igetit.auth.PersonRole
 
 class BootStrap {
 
+    def grailsApplication
     def customMarshallerRegistrar
 
     def init = { servletContext ->
         if (Brand.count() == 0) createData()
         customMarshallerRegistrar.register()
+
+        def ctx = grailsApplication.mainContext
+
+        ctx.getBeansOfType(Datastore).values().each { Datastore d ->
+            ctx.addApplicationListener new IGetItPersistenceEventListener(d)
+        }
     }
 
     private static void createData() {
@@ -26,8 +35,8 @@ class BootStrap {
         def food = new Category(name: 'Food').save(flush: true)
 
         def admin = new Role(authority: 'ROLE_USER').save(flush: true)
-        def turbodi = new Person(username: 'turbo_di', email: 'ww@ww.ww', password: '1qazxsw2').save(flush: true, failOnError: true)
-        def potapovdd = new Person(username: 'potapovdd', email: 'ww@ww1.ww', password: '1qazxsw2').save(flush: true, failOnError: true)
+        def turbodi = new Person(username: 'turbo_di@ww.ww', password: '1qazxsw2', fullName: 'Dmitriy Borisov').save(flush: true, failOnError: true)
+        def potapovdd = new Person(username: 'potapovdd@ww.ww', password: '1qazxsw2', fullName: 'Potapov Denis').save(flush: true, failOnError: true)
 
         PersonRole.create turbodi, admin, true
         PersonRole.create potapovdd, admin, true

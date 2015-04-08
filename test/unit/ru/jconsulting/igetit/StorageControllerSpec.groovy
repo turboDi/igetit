@@ -9,7 +9,7 @@ class StorageControllerSpec extends Specification {
 
     def setup() {
         def storageServiceMock = mockFor(StorageService)
-        storageServiceMock.demand.upload(0..1) { def file ->
+        storageServiceMock.demand.upload(0..1) { def file, map ->
             new Image(filename: file.originalFilename, folderId: '1')
         }
         storageServiceMock.demand.delete(0..1) { -> }
