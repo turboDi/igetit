@@ -17,9 +17,7 @@ class PriceMarshaller extends BaseMarshaller implements MarshallerRegistrar {
             return [
                     id: price.id,
                     value: price.value,
-                    currency: price.currency,
-                    likes: price.getTotalLikes(),
-                    iLiked: price.userLiked(currentPerson())
+                    currency: price.currency
             ]
         }
     }
