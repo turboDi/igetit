@@ -12,15 +12,14 @@ class BuyMarshaller extends BaseMarshaller implements MarshallerRegistrar {
             return [
                     id: buy.id,
                     name: buy.name,
-                    brand: buy.brand?.id,
-                    category: buy.category?.id,
+                    category: buy.category,
+                    owner: marshallPerson(buy.owner),
                     price: buy.price,
-                    created: buy.dateCreated,
+                    dateCreated: buy.dateCreated,
                     images: buy.images,
-                    likes: buy.getTotalLikes(),
-                    iLiked: buy.userLiked(currentPerson()),
                     commentsCount: Comment.countByBuy(buy),
-                    ownerName: marshallPerson(buy.owner)
+                    likesCount: buy.getTotalLikes(),
+                    iLiked: buy.userLiked(currentPerson())
             ]
         }
     }
