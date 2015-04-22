@@ -23,7 +23,9 @@ class Person {
     boolean emailConfirmed
     String confirmToken = ''
     String oAuthProvider
+    int followersCount
 
+    static hasMany = [buys: Buy]
     static transients = ['springSecurityService']
     static embedded = ['city']
 
@@ -40,6 +42,7 @@ class Person {
     static mapping = {
         password column: '`password`'
         avatar cascade: 'save-update, delete'
+        followersCount formula: "(select count(*) from person_follower pf where pf.person_id = id)"
     }
 
     Set<Role> getAuthorities() {

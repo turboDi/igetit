@@ -10,15 +10,16 @@ class Buy implements Likeable {
 
     Category category
 
-    Person owner
-
     Price price
 
     Date dateCreated
 
     List images
 
-    static hasMany = [comments : Comment, images : Image]
+    int likesCount
+
+    static hasMany = [comments: Comment, images: Image]
+    static belongsTo = [owner: Person]
 
     static constraints = {
         name nullable: true
@@ -29,5 +30,6 @@ class Buy implements Likeable {
 
     static mapping = {
         images cascade: "all-delete-orphan"
+        likesCount formula: "(select count(*) from l_like l where l.like_ref = id and l.type = 'buy')"
     }
 }

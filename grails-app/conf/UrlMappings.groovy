@@ -46,6 +46,7 @@ class UrlMappings {
 
         "/account/$action/$oAuthProvider?"(controller: "account")
         "/subscription/$action"(controller: "subscription")
+        "/search/$action"(controller: "search")
 
         "403"(controller: "error", action: "handleForbidden")
         "404"(controller: "error", action: "handleNotFound")
