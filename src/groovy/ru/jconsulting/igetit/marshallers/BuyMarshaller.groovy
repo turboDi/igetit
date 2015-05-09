@@ -3,6 +3,7 @@ package ru.jconsulting.igetit.marshallers
 import grails.converters.JSON
 import ru.jconsulting.igetit.Buy
 import ru.jconsulting.igetit.Comment
+import ru.jconsulting.igetit.PersonFavorite
 
 class BuyMarshaller extends BaseMarshaller implements MarshallerRegistrar {
 
@@ -19,7 +20,8 @@ class BuyMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     images: buy.images,
                     commentsCount: Comment.countByBuy(buy),
                     likesCount: buy.likesCount,
-                    iLiked: buy.userLiked(currentPerson())
+                    iLiked: buy.userLiked(currentPerson()),
+                    isFavorite: PersonFavorite.countByPersonAndBuy(currentPerson(), buy) > 0
             ]
         }
     }

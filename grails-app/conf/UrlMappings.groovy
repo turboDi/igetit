@@ -31,6 +31,7 @@ class UrlMappings {
             }
             "/images"(resources: "image")
         }
+        "/favorites"(resources: "personFavorite", includes: ['index', 'save', 'delete'])
         "/comments"(resources: "comment") {
             "/likes"(resources: "like", includes: ['index', 'save', 'delete']) {
                 likeableId = { params.commentId }

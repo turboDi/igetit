@@ -6,8 +6,6 @@ import grails.rest.RestfulController
 @Secured(['ROLE_USER'])
 class PersonFollowerController extends RestfulController<PersonFollower> {
 
-    static allowedMethods = [save: "POST", delete: "DELETE"]
-
     PersonFollowerController() {
         super(PersonFollower)
     }
