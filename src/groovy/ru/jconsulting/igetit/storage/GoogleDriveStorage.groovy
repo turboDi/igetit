@@ -5,7 +5,7 @@ import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
 import com.google.api.services.drive.model.ParentReference
 import ru.jconsulting.igetit.Image
-import ru.jconsulting.igetit.ImageUtils
+import ru.jconsulting.igetit.image.ImageUtils
 
 /**
  *

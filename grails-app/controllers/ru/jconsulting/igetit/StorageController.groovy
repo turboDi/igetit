@@ -2,6 +2,7 @@ package ru.jconsulting.igetit
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import ru.jconsulting.igetit.image.Thumbnail
 
 import static org.springframework.http.HttpStatus.*
 
@@ -39,9 +40,9 @@ class StorageController {
 
     private Map thumbnails() {
         [
-                s: params.int('s') ?: 128,
-                m: params.int('m') ?: 256,
-                l: params.int('l') ?: 512
+                s: new Thumbnail(size: params.int('s') ?: 128, x: params.int('x'), y: params.int('y'), width: params.int('width')),
+                m: new Thumbnail(size: params.int('m') ?: 256, x: params.int('x'), y: params.int('y'), width: params.int('width')),
+                l: new Thumbnail(size: params.int('l'))
         ]
     }
 }

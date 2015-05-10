@@ -2,9 +2,10 @@ package ru.jconsulting.igetit
 
 import org.apache.commons.io.FilenameUtils
 import org.springframework.web.multipart.MultipartFile
+import ru.jconsulting.igetit.image.Thumbnail
 
 import static grails.async.Promises.tasks
-import static ImageUtils.*
+import static ru.jconsulting.igetit.image.ImageUtils.*
 
 class StorageService {
 
@@ -20,7 +21,7 @@ class StorageService {
         storage.deleteFolder(folder)
     }
 
-    private uploadAsync(MultipartFile multipartFile, String parentFolder, Map<String, Integer> thumbnails) {
+    private uploadAsync(MultipartFile multipartFile, String parentFolder, Map<String, Thumbnail> thumbnails) {
         String fileName = multipartFile.originalFilename
         String ext = FilenameUtils.getExtension(fileName)
         File original = File.createTempFile("img", ".$ext")

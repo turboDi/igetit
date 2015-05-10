@@ -1,11 +1,13 @@
-package ru.jconsulting.igetit
+package ru.jconsulting.igetit.image
 
 import org.apache.commons.io.FilenameUtils
+import org.imgscalr.Scalr
 
 import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
 
-import static org.imgscalr.Scalr.*
+import static org.imgscalr.Scalr.Method
+import static org.imgscalr.Scalr.OP_ANTIALIAS
 
 /**
  *
@@ -24,12 +26,11 @@ class ImageUtils {
         thumbnailNames(filename).collectEntries { k, v -> [k, folder + v]}
     }
 
-    static InputStream createThumbnail(File image, String ext, int targetSize) {
+    static InputStream createThumbnail(File imageFile, String ext, Thumbnail thumbnail) {
         File tmp = File.createTempFile("thumb", ".$ext")
+        thumbnail.image = ImageIO.read(imageFile)
 
-        BufferedImage original = ImageIO.read(image)
-        BufferedImage thumbnail = resize(original, Method.QUALITY, targetSize, OP_ANTIALIAS)
-        if (ImageIO.write(thumbnail, ext, tmp)) {
+        if (ImageIO.write(thumbnail.crop().resize().image, ext, tmp)) {
             return new FileInputStream(tmp)
         }
         throw new IllegalStateException("Unable to create thumbnail")
