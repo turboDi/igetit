@@ -6,8 +6,6 @@ class Buy implements Likeable {
 
     String name
 
-    Brand brand
-
     Category category
 
     Price price
@@ -23,7 +21,6 @@ class Buy implements Likeable {
 
     static constraints = {
         name nullable: true
-        brand nullable: true
         category nullable: true
         price nullable: true
     }

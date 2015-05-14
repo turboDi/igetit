@@ -1,5 +1,4 @@
 import org.grails.datastore.mapping.core.Datastore
-import ru.jconsulting.igetit.Brand
 import ru.jconsulting.igetit.Buy
 import ru.jconsulting.igetit.Category as Category
 import ru.jconsulting.igetit.Comment
@@ -17,7 +16,7 @@ class BootStrap {
     def customMarshallerRegistrar
 
     def init = { servletContext ->
-        if (Brand.count() == 0) createData()
+        if (Category.count() == 0) createData()
         customMarshallerRegistrar.register()
 
         def ctx = grailsApplication.mainContext
@@ -28,8 +27,6 @@ class BootStrap {
     }
 
     private static void createData() {
-        def apple = new Brand(name: 'Apple').save(flush: true)
-        def smak = new Brand(name: 'Smakhleb').save(flush: true)
 
         def electronics = new Category(name: 'Electronics').save(flush: true)
         def food = new Category(name: 'Food').save(flush: true)
@@ -41,20 +38,20 @@ class BootStrap {
         PersonRole.create turbodi, admin, true
         PersonRole.create potapovdd, admin, true
 
-        new Buy(name: 'iPad air 32 gb WI-FI', brand: apple, category: electronics, owner: turbodi,
+        new Buy(name: 'iPad air 32 gb WI-FI', category: electronics, owner: turbodi,
                 price: new Price(value: new BigDecimal(499.99), currency: Currency.getInstance('USD')),
                 images: [new Image(filename: 'ipad.jpg', folderId: '0B1lcabZIpE_KLXA3VTZEelRUcEE')]).save(failOnError: true)
-        def iphone = new Buy(name: 'iPhone 5', brand: apple, category: electronics, owner: turbodi,
+        def iphone = new Buy(name: 'iPhone 5', category: electronics, owner: turbodi,
                 price: new Price(value: new BigDecimal(799.99), currency: Currency.getInstance('USD')),
                 images: [new Image(filename: 'iphone.jpg', folderId: '0B1lcabZIpE_KeHhwekpUVFNSeW8')]).save(failOnError: true)
-        def cookie = new Buy(name: 'Lime cookie', brand: smak, category: food, owner: turbodi,
+        def cookie = new Buy(name: 'Lime cookie', category: food, owner: turbodi,
                 price: new Price(value: new BigDecimal(56.99), currency: Currency.getInstance('RUB')),
                 images: [new Image(filename: 'Limonnaya_big.jpg', folderId: '0B1lcabZIpE_Kb2VPYUVQcHRxd2s')])
                 .save(failOnError: true)
-        new Buy(name: 'iPod', brand: apple, category: electronics, owner: potapovdd,
+        new Buy(name: 'iPod', category: electronics, owner: potapovdd,
                 price: new Price(value: new BigDecimal(49.99), currency: Currency.getInstance('USD')),
                 images: [new Image(filename: 'ipod.jpg', folderId: '0B1lcabZIpE_Kc29VckJ6bGU1WmM')]).save(failOnError: true)
-        new Buy(name: 'light idea bread', brand: smak, category: food, owner: potapovdd,
+        new Buy(name: 'light idea bread', category: food, owner: potapovdd,
                 price: new Price(value: new BigDecimal(29.70), currency: Currency.getInstance('RUB')),
                 images: [new Image(filename: 'Idea_light1.jpg', folderId: '0B1lcabZIpE_KTDlhaFhZVkpaV0E')]).save(failOnError: true)
 

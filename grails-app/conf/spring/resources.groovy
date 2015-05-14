@@ -11,7 +11,6 @@ import ru.jconsulting.igetit.storage.GoogleDriveStorage
 //noinspection GroovyUnusedAssignment
 beans = {
 
-    brandMarshaller(BrandMarshaller)
     buyMarshaller(BuyMarshaller)
     categoryMarshaller(CategoryMarshaller)
     commentMarshaller(CommentMarshaller)
