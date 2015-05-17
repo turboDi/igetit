@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 05.05.14 21:03
  */
 class MarshallerListRegistrar {

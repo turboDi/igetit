@@ -21,7 +21,7 @@ class AccountService {
         assert p.save()
         def authority = Role.findByAuthority('ROLE_USER')
         PersonRole.create p, authority
-        if (!p.oAuthProvider) {
+        if (p.email) {
             mailService.sendMail {
                 async true
                 to p.email

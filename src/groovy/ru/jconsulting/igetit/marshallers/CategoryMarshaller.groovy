@@ -6,7 +6,7 @@ import ru.jconsulting.igetit.Category
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 05.05.14 21:39
  */
 class CategoryMarshaller implements MarshallerRegistrar {

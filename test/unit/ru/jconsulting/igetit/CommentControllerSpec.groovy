@@ -1,30 +1,31 @@
 package ru.jconsulting.igetit
 
-import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
+import org.springframework.security.access.AccessDeniedException
 import spock.lang.Specification
 
 @TestFor(CommentController)
 @Mock([Buy, Person, Price, Comment])
 class CommentControllerSpec extends Specification {
 
+    Comment comment
     Person user
     Buy buy
 
     def setup() {
         Person.metaClass.encodePassword { -> }
         user = new Person(username: 'user@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
+        Person user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         def p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
         buy = new Buy(name: 'buy', owner: user, price: p).save(flush: true, failOnError: true)
         def buy2 = new Buy(name: 'buy2', owner: user, price: p).save(flush: true, failOnError: true)
         assert Buy.count() == 2
         new Comment(text: 'comment1', author: user, buy: buy).save(flush: true, failOnError: true)
         new Comment(text: 'comment2', author: user, buy: buy2).save(flush: true, failOnError: true)
-        assert Comment.count() == 2
-        def springSecurityServiceMock = mockFor(SpringSecurityService)
-        springSecurityServiceMock.demand.getCurrentUser { -> user }
-        controller.springSecurityService = springSecurityServiceMock.createMock()
+        comment = new Comment(text: 'comment3', author: user2, buy: buy2).save(flush: true, failOnError: true)
+        assert Comment.count() == 3
+        controller.metaClass.getAuthenticatedUser = { -> user }
         controller.params.format = 'json'
     }
 
@@ -32,7 +33,7 @@ class CommentControllerSpec extends Specification {
         when:
         controller.index()
         then:
-        response.json.size() == 2
+        thrown(IllegalStateException)
     }
 
     void "test list current buy's comments"() {
@@ -55,7 +56,7 @@ class CommentControllerSpec extends Specification {
         response.json.text == 'new comment'
         response.json.author.id == user.id
         response.json.buy.id == buy.id
-        Comment.count() == 3
+        Comment.count() == 4
     }
 
     void "test add comment to an undefined buy"() {
@@ -66,6 +67,25 @@ class CommentControllerSpec extends Specification {
         then:
         response.status == 422
         response.json.errors.size() == 2
-        Comment.count() == 2
+        Comment.count() == 3
+    }
+
+    void "test delete another's comment"() {
+        given:
+        params.id = comment.id
+        when:
+        controller.delete()
+        then:
+        thrown(AccessDeniedException)
+    }
+
+    void "test update another's comment"() {
+        given:
+        params.id = comment.id
+        params.text = 'comment3 changed'
+        when:
+        controller.update()
+        then:
+        thrown(AccessDeniedException)
     }
 }

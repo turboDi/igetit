@@ -8,7 +8,7 @@ import javax.annotation.Resource
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 05.05.14 21:46
  */
 class ImageMarshaller implements MarshallerRegistrar {

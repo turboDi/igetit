@@ -1,13 +1,17 @@
 package ru.jconsulting.igetit
 
+import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import org.springframework.mock.web.MockMultipartFile
+import org.springframework.security.access.AccessDeniedException
 import spock.lang.Specification
 
 @TestFor(StorageController)
+@Mock(Image)
 class StorageControllerSpec extends Specification {
 
     def setup() {
+        new Image(folderId: 'existing', filename: '123').save(flush: true, failOnError: true)
         def storageServiceMock = mockFor(StorageService)
         storageServiceMock.demand.upload(0..1) { def file, map ->
             new Image(filename: file.originalFilename, folderId: '1')
@@ -48,5 +52,14 @@ class StorageControllerSpec extends Specification {
         controller.delete()
         then:
         response.status == 204
+    }
+
+    void "test referenced delete"() {
+        given:
+        params.folderId = 'existing'
+        when:
+        controller.delete()
+        then:
+        thrown(AccessDeniedException)
     }
 }

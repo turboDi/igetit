@@ -9,7 +9,7 @@ import spock.lang.Specification
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 18.10.14 19:59
  */
 class StorageServiceSpec extends Specification {

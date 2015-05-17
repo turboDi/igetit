@@ -18,7 +18,7 @@ class EventMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     id: event.id,
                     person: marshallPerson(event.initiator),
                     text: event.text,
-                    date: event.dateCreated
+                    dateCreated: event.dateCreated
             ]
         }
     }

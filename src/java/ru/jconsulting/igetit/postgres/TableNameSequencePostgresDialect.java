@@ -9,7 +9,7 @@ import org.hibernate.type.Type;
 import java.util.Properties;
 
 /**
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 25.05.14 11:16
  */
 public class TableNameSequencePostgresDialect extends PostgreSQLDialect {

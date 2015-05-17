@@ -12,7 +12,7 @@ import static org.imgscalr.Scalr.OP_ANTIALIAS
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 12.10.14 19:47
  */
 class ImageUtils {

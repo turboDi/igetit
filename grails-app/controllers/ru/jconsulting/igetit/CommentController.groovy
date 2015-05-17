@@ -1,12 +1,10 @@
 package ru.jconsulting.igetit
 
 import grails.plugin.springsecurity.annotation.Secured
-import grails.rest.RestfulController
+import org.springframework.security.access.AccessDeniedException
 
 @Secured(['ROLE_USER'])
-class CommentController extends RestfulController<Comment> {
-
-    def springSecurityService
+class CommentController extends IGetItRestfulController<Comment> {
 
     CommentController() {
         super(Comment)
@@ -18,7 +16,7 @@ class CommentController extends RestfulController<Comment> {
             def bid = params.buyId
             Comment.where {buy.id == bid}.list(params)
         } else {
-            return super.listAllResources(params)
+            throw new IllegalStateException("Comments list requested without required 'buyId' parameter")
         }
     }
 
@@ -26,10 +24,21 @@ class CommentController extends RestfulController<Comment> {
     protected Comment createResource(Map params) {
         Comment comment = super.createResource(params) as Comment
         if (params.buyId) {
-            comment.author = springSecurityService.getCurrentUser() as Person
+            comment.author = getAuthenticatedUser() as Person
             comment.buy = Buy.get(params.buyId as Serializable)
         }
         log.debug("User '$comment.author' is about to post comment: $comment.text")
+        comment
+    }
+
+    @Override
+    protected Comment queryForResource(Serializable id) {
+        Comment comment = super.queryForResource(id) as Comment
+        def currentUser = getAuthenticatedUser()
+        if (request.method != 'GET' && !comment.author.equals(currentUser)) {
+            log.error("Invalid $request.method attempt by '$currentUser' of '$comment'")
+            throw new AccessDeniedException('This comment belongs to another user')
+        }
         comment
     }
 }

@@ -31,12 +31,16 @@ class BootStrap {
         def electronics = new Category(name: 'Electronics').save(flush: true)
         def food = new Category(name: 'Food').save(flush: true)
 
-        def admin = new Role(authority: 'ROLE_USER').save(flush: true)
         def turbodi = new Person(username: 'turbo_di@ww.ww', password: '1qazxsw2', fullName: 'Dmitriy Borisov').save(flush: true, failOnError: true)
         def potapovdd = new Person(username: 'potapovdd@ww.ww', password: '1qazxsw2', fullName: 'Potapov Denis').save(flush: true, failOnError: true)
+        def admin = new Person(username: 'admin@mychoiceapp.ru', password: '1qazxsw2', fullName: 'Admin').save(flush: true, failOnError: true)
 
-        PersonRole.create turbodi, admin, true
-        PersonRole.create potapovdd, admin, true
+        def userRole = new Role(authority: 'ROLE_USER').save(flush: true)
+        def adminRole = new Role(authority: 'ROLE_ADMIN').save(flush: true)
+
+        PersonRole.create turbodi, userRole, true
+        PersonRole.create potapovdd, userRole, true
+        PersonRole.create admin, adminRole, true
 
         new Buy(name: 'iPad air 32 gb WI-FI', category: electronics, owner: turbodi,
                 price: new Price(value: new BigDecimal(499.99), currency: Currency.getInstance('USD')),

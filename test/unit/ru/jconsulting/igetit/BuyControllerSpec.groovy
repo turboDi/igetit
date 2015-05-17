@@ -4,6 +4,7 @@ import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.TestFor
 import grails.test.mixin.TestMixin
 import grails.test.mixin.domain.DomainClassUnitTestMixin
+import org.springframework.security.access.AccessDeniedException
 import spock.lang.Specification
 
 @TestFor(BuyController)
@@ -24,9 +25,7 @@ class BuyControllerSpec extends Specification {
                 [name: 'buy2', owner: user2, price: p]
         ])
         assert Buy.count() == 2
-        def springSecurityServiceMock = mockFor(SpringSecurityService)
-        springSecurityServiceMock.demand.getCurrentUser { -> user2 }
-        controller.springSecurityService = springSecurityServiceMock.createMock()
+        controller.metaClass.getAuthenticatedUser = { -> user2 }
         controller.params.format = 'json'
     }
 
@@ -57,5 +56,26 @@ class BuyControllerSpec extends Specification {
         response.json.name == 'buy3'
         response.json.owner.id == user2.id
         Buy.count() == 3
+    }
+
+    void "test delete another's buy"() {
+        given:
+        Buy buy = Buy.findByOwner(user1)
+        params.id = buy.id
+        when:
+        controller.delete()
+        then:
+        thrown(AccessDeniedException)
+    }
+
+    void "test update another's buy"() {
+        given:
+        Buy buy = Buy.findByOwner(user1)
+        params.id = buy.id
+        params.name = 'new buy name'
+        when:
+        controller.update()
+        then:
+        thrown(AccessDeniedException)
     }
 }

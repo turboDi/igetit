@@ -10,7 +10,7 @@ import ru.jconsulting.igetit.image.ImageUtils
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 11.05.14 18:51
  */
 class GoogleDriveStorage implements Storage {

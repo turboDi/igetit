@@ -1,3 +1,5 @@
+import org.springframework.security.access.AccessDeniedException
+
 class UrlMappings {
 
 	static mappings = {
@@ -13,7 +15,7 @@ class UrlMappings {
                     likeableId = { params.buyId }
                     type = 'buy'
                 }
-                "/images"(resources: "image")
+                "/images"(resources: "image", includes: ['index', 'save', 'delete'])
             }
             "/followers"(resources: "personFollower", includes: ['index', 'save', 'delete'])
             "/followed"(controller: "personFollowed")
@@ -29,21 +31,13 @@ class UrlMappings {
                 likeableId = { params.buyId }
                 type = 'buy'
             }
-            "/images"(resources: "image")
+            "/images"(resources: "image", includes: ['index', 'save', 'delete'])
         }
         "/favorites"(resources: "personFavorite", includes: ['index', 'save', 'delete'])
-        "/comments"(resources: "comment") {
-            "/likes"(resources: "like", includes: ['index', 'save', 'delete']) {
-                likeableId = { params.commentId }
-                type = 'comment'
-            }
-        }
-        "/brands"(resources: "brand")
+
         "/categories"(resources: "category")
 
-        "/storage/$folderId?"(controller: "storage") {
-            action = [POST: "upload", DELETE: "delete"]
-        }
+        "/storage/$folderId?"(controller: "storage")
 
         "/account/$action/$oAuthProvider?"(controller: "account")
         "/subscription/$action"(controller: "subscription")
@@ -51,6 +45,7 @@ class UrlMappings {
 
         "403"(controller: "error", action: "handleForbidden")
         "404"(controller: "error", action: "handleNotFound")
+        "500"(controller: "error", action: "handleAccessDeniedException", exception: AccessDeniedException)
         "500"(controller: "error", action: "handleError")
 	}
 }

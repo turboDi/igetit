@@ -12,7 +12,7 @@ import java.security.spec.PKCS8EncodedKeySpec
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 11.05.14 18:02
  */
 class GoogleDriveServiceFactory {

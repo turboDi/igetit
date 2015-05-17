@@ -1,10 +1,9 @@
 package ru.jconsulting.igetit
 
 import grails.plugin.springsecurity.annotation.Secured
-import grails.rest.RestfulController
 
 @Secured(['ROLE_USER'])
-class PersonFollowerController extends RestfulController<PersonFollower> {
+class PersonFollowerController extends IGetItRestfulController<PersonFollower> {
 
     PersonFollowerController() {
         super(PersonFollower)

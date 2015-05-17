@@ -6,7 +6,7 @@ import ru.jconsulting.igetit.Price
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 05.05.14 21:45
  */
 class PriceMarshaller extends BaseMarshaller implements MarshallerRegistrar {

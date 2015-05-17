@@ -2,12 +2,15 @@ package ru.jconsulting.igetit
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.access.AccessDeniedException
 import ru.jconsulting.igetit.image.Thumbnail
 
 import static org.springframework.http.HttpStatus.*
 
-@Secured(['ROLE_USER'])
+@Secured(['permitAll'])
 class StorageController {
+
+    static allowedMethods = [upload: "POST", delete: "DELETE"]
 
     def storageService
 
@@ -25,6 +28,9 @@ class StorageController {
         if (!params.folderId) {
             missingParameter 'folderId'
             return
+        }
+        if (Image.countByFolderId(params.folderId)) {
+            throw new AccessDeniedException('This image is still referenced by another entity')
         }
         log.debug("Deleting images with folder '$params.folderId'")
         storageService.delete params.folderId

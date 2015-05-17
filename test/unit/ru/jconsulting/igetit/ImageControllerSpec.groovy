@@ -2,12 +2,13 @@ package ru.jconsulting.igetit
 
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
+import org.springframework.security.access.AccessDeniedException
 import spock.lang.Specification
 
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 18.10.14 21:33
  */
 @TestFor(ImageController)
@@ -15,14 +16,18 @@ import spock.lang.Specification
 class ImageControllerSpec extends Specification {
 
     Person user
-    Buy buy
+    Buy buy, buy2
 
     def setup() {
         Person.metaClass.encodePassword { -> }
         user = new Person(username: 'user@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
+        Person user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         def p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
         buy = new Buy(name: 'buy', owner: user, price: p, images: [new Image(filename: '1', folderId: '1'), new Image(filename: '2', folderId: '2')])
                 .save(flush: true, failOnError: true)
+        buy2 = new Buy(name: 'buy2', owner: user2, price: p, images: [new Image(filename: 'a', folderId: 'a'), new Image(filename: 'b', folderId: 'b')])
+                .save(flush: true, failOnError: true)
+        controller.metaClass.getAuthenticatedUser = { -> user }
         controller.params.format = 'json'
     }
 
@@ -43,7 +48,7 @@ class ImageControllerSpec extends Specification {
         when:
         controller.save()
         then:
-        Image.count() == 3
+        Image.count() == 5
         buy.images.size() == 3
         buy.images[2].filename == '3'
         buy.images[2].folderId == '3'
@@ -70,5 +75,26 @@ class ImageControllerSpec extends Specification {
         buy.images.size() == 1
         buy.images[0].filename == '2'
         buy.images[0].folderId == '2'
+    }
+
+    void "test add image to another's buy"() {
+        given:
+        params.buyId = buy2.id
+        params.filename = '5'
+        params.folderId = '5'
+        when:
+        controller.save()
+        then:
+        thrown(AccessDeniedException)
+    }
+
+    void "test delete another's image"() {
+        given:
+        params.buyId = buy2.id
+        params.id = buy2.images[0].id
+        when:
+        controller.delete()
+        then:
+        thrown(AccessDeniedException)
     }
 }

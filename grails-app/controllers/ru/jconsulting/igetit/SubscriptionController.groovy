@@ -6,6 +6,8 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured(['ROLE_USER'])
 class SubscriptionController {
 
+    static allowedMethods = [tape: "GET", events: "GET"]
+
     def subscriptionService
 
     def tape() {
