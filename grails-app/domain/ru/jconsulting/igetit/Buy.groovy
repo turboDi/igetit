@@ -18,6 +18,7 @@ class Buy implements Likeable {
 
     static hasMany = [comments: Comment, images: Image]
     static belongsTo = [owner: Person]
+    static embedded = ['price']
 
     static constraints = {
         name nullable: true

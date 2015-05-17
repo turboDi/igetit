@@ -15,7 +15,6 @@ class PriceMarshaller extends BaseMarshaller implements MarshallerRegistrar {
     void register() {
         JSON.registerObjectMarshaller(Price) {Price price ->
             return [
-                    id: price.id,
                     value: price.value,
                     currency: price.currency
             ]
