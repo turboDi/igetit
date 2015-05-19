@@ -11,6 +11,6 @@ class SubscriptionService {
     }
 
     def events(Person person, Map params) {
-        Event.findByEffector(person, params)
+        Event.findAllByEffector(person, params)
     }
 }

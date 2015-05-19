@@ -1,3 +1,4 @@
+import grails.util.Environment
 import org.grails.datastore.mapping.core.Datastore
 import ru.jconsulting.igetit.Buy
 import ru.jconsulting.igetit.Category as Category
@@ -16,7 +17,6 @@ class BootStrap {
     def customMarshallerRegistrar
 
     def init = { servletContext ->
-        if (Category.count() == 0) createData()
         customMarshallerRegistrar.register()
 
         def ctx = grailsApplication.mainContext
@@ -24,6 +24,8 @@ class BootStrap {
         ctx.getBeansOfType(Datastore).values().each { Datastore d ->
             ctx.addApplicationListener new IGetItPersistenceEventListener(d)
         }
+
+        if (Environment.current != Environment.TEST && Category.count() == 0) createData()
     }
 
     private static void createData() {

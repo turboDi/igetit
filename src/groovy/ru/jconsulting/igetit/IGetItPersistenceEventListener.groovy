@@ -32,7 +32,7 @@ class IGetItPersistenceEventListener extends AbstractPersistenceEventListener {
     @Override
     protected void onPersistenceEvent(AbstractPersistenceEvent event) {
         def newEvent = initEvent(event.entityObject)
-        if (newEvent) {
+        if (newEvent && newEvent.effector != newEvent.initiator) {
             saveNewEvent(newEvent)
         }
     }
@@ -52,7 +52,8 @@ class IGetItPersistenceEventListener extends AbstractPersistenceEventListener {
                 return new Event(
                         effector: obj.buy.owner,
                         initiator: obj.author,
-                        text: "$obj.author.fullName left comment on your buy",
+                        text: 'event.new.comment.text',
+                        args: obj.author.fullName,
                         refId: obj.id,
                         type: 'comment'
                 );
@@ -62,7 +63,8 @@ class IGetItPersistenceEventListener extends AbstractPersistenceEventListener {
                 return new Event(
                         effector: (Person) target.hasProperty('owner')?.getProperty(target) ?: target.author,
                         initiator: initiator,
-                        text: "$initiator.fullName liked your $obj.type",
+                        text: "event.new.like.${obj.type}.text",
+                        args: initiator.fullName,
                         refId: obj.likeRef,
                         type: obj.type
                 )
@@ -70,7 +72,8 @@ class IGetItPersistenceEventListener extends AbstractPersistenceEventListener {
                 return new Event(
                         effector: obj.person,
                         initiator: obj.follower,
-                        text: "$obj.follower.fullName begun to follow you",
+                        text: 'event.new.follower.text',
+                        args: obj.follower.fullName,
                         refId: obj.follower.id,
                         type: 'person'
                 )

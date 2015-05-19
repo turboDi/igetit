@@ -12,5 +12,7 @@ class Event {
 
     String type
 
+    String args
+
     Date dateCreated
 }
