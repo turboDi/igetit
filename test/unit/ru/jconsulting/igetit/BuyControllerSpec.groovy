@@ -1,6 +1,5 @@
 package ru.jconsulting.igetit
 
-import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.TestFor
 import grails.test.mixin.TestMixin
 import grails.test.mixin.domain.DomainClassUnitTestMixin

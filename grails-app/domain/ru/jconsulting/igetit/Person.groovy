@@ -37,6 +37,12 @@ class Person {
         avatar nullable: true
         city nullable: true
         oAuthProvider nullable: true
+        lastActivity bindable: false
+        enabled bindable: false
+        accountExpired bindable: false
+        accountLocked bindable: false
+        passwordExpired bindable: false
+        emailConfirmed bindable: false
     }
 
     static mapping = {

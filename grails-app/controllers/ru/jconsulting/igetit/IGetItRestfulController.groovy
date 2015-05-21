@@ -15,7 +15,7 @@ abstract class IGetItRestfulController<T> extends RestfulController<T> {
     }
 
     protected List getExcludedBindParams() {
-        ['dateCreated']
+        []
     }
 
     @Override

@@ -23,9 +23,6 @@ class PersonController extends IGetItRestfulController<Person> {
 
     @Override
     protected List getExcludedBindParams() {
-        List excluded = super.getExcludedBindParams()
-        excluded += ['username', 'lastActivity', 'enabled', 'accountExpired', 'accountLocked',
-                     'passwordExpired', 'emailConfirmed', 'confirmToken', 'oAuthProvider']
-        excluded
+        ['username', 'confirmToken', 'oAuthProvider']
     }
 }
