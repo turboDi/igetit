@@ -8,6 +8,8 @@ class PersonFollower implements Serializable {
     Person follower
     Date dateCreated
 
+    boolean deleted
+
     static PersonFollower create(Person person, Person follower, boolean flush = false) {
         new PersonFollower(person: person, follower: follower).save(flush: flush, insert: true)
     }
@@ -16,6 +18,7 @@ class PersonFollower implements Serializable {
         person unique: 'follower', validator: { person, personFollower ->
             person != personFollower.follower
         }
+        deleted bindable: false
     }
 
     boolean equals(other) {

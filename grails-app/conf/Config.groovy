@@ -133,6 +133,7 @@ log4j = {
            'net.sf.ehcache.hibernate'
 
     debug  'grails.app.controllers.ru.jconsulting'
+    //debug  'org.hibernate.SQL'
 }
 
 // Added by the Spring Security Core plugin:

@@ -35,7 +35,7 @@ class CommentController extends IGetItRestfulController<Comment> {
     protected Comment queryForResource(Serializable id) {
         Comment comment = super.queryForResource(id) as Comment
         def currentUser = getAuthenticatedUser()
-        if (request.method != 'GET' && !comment.author.equals(currentUser)) {
+        if (request.method != 'GET' && comment && !comment.author.equals(currentUser)) {
             log.error("Invalid $request.method attempt by '$currentUser' of '$comment'")
             throw new AccessDeniedException('This comment belongs to another user')
         }

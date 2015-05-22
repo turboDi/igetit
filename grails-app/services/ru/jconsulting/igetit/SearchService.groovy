@@ -7,6 +7,7 @@ class SearchService {
 
     def searchBuys(Map params) {
         Buy.createCriteria().list(params) {
+            eq 'deleted', false
             if (params.term) {
                 ilike 'name', "%$params.term%"
             }
@@ -25,6 +26,7 @@ class SearchService {
 
     def searchPersons(Map params) {
         Person.createCriteria().list(params) {
+            eq 'deleted', false
             if (params.term) {
                 ilike 'fullName', "%$params.term%"
             }

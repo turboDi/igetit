@@ -23,7 +23,8 @@ abstract class BaseMarshaller {
         [
                 id : person.id,
                 name : person.fullName,
-                avatar : person.avatar
+                avatar : person.avatar,
+                deleted : person.deleted
         ]
     }
 }

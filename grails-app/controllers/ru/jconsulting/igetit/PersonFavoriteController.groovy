@@ -30,4 +30,9 @@ class PersonFavoriteController extends IGetItRestfulController<PersonFavorite> {
             buy.id == id
         }.get()
     }
+
+    @Override
+    protected void doDelete(PersonFavorite instance) {
+        instance.delete flush:true
+    }
 }

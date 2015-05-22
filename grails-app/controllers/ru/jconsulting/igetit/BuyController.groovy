@@ -14,7 +14,7 @@ class BuyController extends IGetItRestfulController<Buy> {
     protected List<Buy> listAllResources(Map params) {
         if (params.personId) {
             def pid = params.personId
-            Buy.where {owner.id == pid}.list(params)
+            Buy.where { owner.id == pid && deleted == false }.list(params)
         } else {
             super.listAllResources(params)
         }
@@ -32,7 +32,7 @@ class BuyController extends IGetItRestfulController<Buy> {
     protected Buy queryForResource(Serializable id) {
         Buy buy = super.queryForResource(id) as Buy
         def currentUser = getAuthenticatedUser()
-        if (request.method != 'GET' && !buy.owner.equals(currentUser)) {
+        if (request.method != 'GET' && buy && !buy.owner.equals(currentUser)) {
             log.error("Invalid $request.method attempt by '$currentUser' of '$buy'")
             throw new AccessDeniedException('This buy belongs to another user')
         }

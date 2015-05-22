@@ -21,7 +21,8 @@ class BuyMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     commentsCount: Comment.countByBuy(buy),
                     likesCount: buy.likesCount,
                     iLiked: buy.userLiked(currentPerson()),
-                    isFavorite: PersonFavorite.countByPersonAndBuy(currentPerson(), buy) > 0
+                    isFavorite: PersonFavorite.countByPersonAndBuy(currentPerson(), buy) > 0,
+                    deleted: buy.deleted
             ]
         }
     }

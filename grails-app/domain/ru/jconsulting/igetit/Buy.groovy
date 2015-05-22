@@ -16,6 +16,8 @@ class Buy implements Likeable {
 
     int likesCount
 
+    boolean deleted
+
     static hasMany = [comments: Comment, images: Image]
     static belongsTo = [owner: Person]
     static embedded = ['price']
@@ -24,6 +26,7 @@ class Buy implements Likeable {
         name nullable: true
         category nullable: true
         price nullable: true
+        deleted bindable: false
     }
 
     static mapping = {

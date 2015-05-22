@@ -25,6 +25,8 @@ class Person {
     String oAuthProvider
     int followersCount
 
+    boolean deleted
+
     static hasMany = [buys: Buy]
     static transients = ['springSecurityService']
     static embedded = ['city']
@@ -43,6 +45,7 @@ class Person {
         accountLocked bindable: false
         passwordExpired bindable: false
         emailConfirmed bindable: false
+        deleted bindable: false
     }
 
     static mapping = {

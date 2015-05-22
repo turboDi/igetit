@@ -7,14 +7,14 @@ import org.springframework.security.access.AccessDeniedException
 class PersonController extends IGetItRestfulController<Person> {
 
     PersonController() {
-        super(Person)
+        super(Person, ['username', 'confirmToken', 'oAuthProvider'])
     }
 
     @Override
     protected Person queryForResource(Serializable id) {
         Person person = super.queryForResource(id) as Person
         def currentUser = getAuthenticatedUser()
-        if (request.method != 'GET' && !person.equals(currentUser)) {
+        if (request.method != 'GET' && person && !person.equals(currentUser)) {
             log.error("Invalid $request.method attempt by '$currentUser' of '$person'")
             throw new AccessDeniedException('You can\'t modify another user\'s info')
         }
@@ -22,7 +22,8 @@ class PersonController extends IGetItRestfulController<Person> {
     }
 
     @Override
-    protected List getExcludedBindParams() {
-        ['username', 'confirmToken', 'oAuthProvider']
+    protected void doDelete(Person instance) {
+        instance.enabled = false
+        super.doDelete(instance)
     }
 }

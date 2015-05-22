@@ -30,9 +30,9 @@ class PersonFollowedControllerSpec extends Specification {
         when:
         controller.index(10)
         then:
-        response.json*.id == [user1.id]
-        response.json*.iFollow == [true]
-        response.json*.name == [user1.fullName]
+        response.json*.followed.id == [user1.id]
+        response.json*.followed.iFollow == [true]
+        response.json*.followed.name == [user1.fullName]
     }
 
     void "test get undefined followed"() {
