@@ -14,7 +14,6 @@ import ru.jconsulting.igetit.auth.Role
 class AccountService {
 
     def userDetailsService
-    def mailService
     TokenGenerator tokenGenerator
     TokenStorageService tokenStorageService
 
@@ -22,23 +21,7 @@ class AccountService {
         assert p.save()
         def authority = Role.findByAuthority('ROLE_USER')
         PersonRole.create p, authority
-        if (p.email) {
-            mailService.sendMail {
-                async true
-                to p.email
-                subject "Welcome to IGetIt"
-                html view: '/account/email', model: [p: p]
-            }
-        }
         tryReAuthenticate(p.username)
-    }
-
-    def verify(String token, String email) {
-        Person p = Person.findNotDeletedByConfirmTokenAndEmail(token, email)
-        if (p) {
-            p.emailConfirmed = true
-            p.save()
-        }
     }
 
     def tryReAuthenticate(String username, String oAuthProvider = null) {

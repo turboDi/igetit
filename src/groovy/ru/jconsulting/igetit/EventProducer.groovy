@@ -1,10 +1,12 @@
 package ru.jconsulting.igetit
 
+import groovy.util.logging.Slf4j
 import groovyx.gpars.dataflow.DataflowQueue
 import org.grails.datastore.mapping.core.Datastore
 import org.grails.datastore.mapping.engine.event.AbstractPersistenceEvent
 import org.grails.datastore.mapping.engine.event.AbstractPersistenceEventListener
 import org.grails.datastore.mapping.engine.event.PostInsertEvent
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationEvent
 import ru.jconsulting.likeable.Like
 
@@ -16,14 +18,17 @@ import static groovyx.gpars.dataflow.Dataflow.operator
  * @author Dmitriy Borisov
  * @created 23.02.15 19:47
  */
-class IGetItPersistenceEventListener extends AbstractPersistenceEventListener {
+@Slf4j
+class EventProducer extends AbstractPersistenceEventListener {
 
     final def eventQueue = new DataflowQueue()
 
-    public IGetItPersistenceEventListener(Datastore ds) {
+    @Autowired
+    public EventProducer(Datastore ds) {
         super(ds)
         operator(inputs: [eventQueue], maxForks: 10) { event ->
             Event.withTransaction {
+                log.debug("Saving event $event")
                 event.save()
             }
         }
@@ -33,6 +38,7 @@ class IGetItPersistenceEventListener extends AbstractPersistenceEventListener {
     protected void onPersistenceEvent(AbstractPersistenceEvent event) {
         def newEvent = initEvent(event.entityObject)
         if (newEvent && newEvent.effector != newEvent.initiator) {
+            log.debug("Sending new event $newEvent($newEvent.type) for $newEvent.effector to event queue")
             saveNewEvent(newEvent)
         }
     }

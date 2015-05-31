@@ -6,14 +6,14 @@ package ru.jconsulting.igetit
  * @author Dmitriy Borisov
  * @created 09.03.2015
  */
-class IGetItPersistenceEventListenerTest extends GroovyTestCase {
+class EventProducerTest extends GroovyTestCase {
 
     Person p1, p2
     Buy buy
 
     @Override
     protected void setUp() throws Exception {
-        IGetItPersistenceEventListener.metaClass.saveNewEvent = { Event e -> e.save() }
+        EventProducer.metaClass.saveNewEvent = { Event e -> e.save() }
     }
 
     void testAddComment() {

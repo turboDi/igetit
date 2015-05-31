@@ -11,6 +11,7 @@ class AccountControllerSpec extends Specification {
 
     Person user
     AccountService accountService = Mock(AccountService)
+    EmailService emailService = Mock(EmailService)
 
     def setup() {
         Person.metaClass.encodePassword { -> }
@@ -19,6 +20,9 @@ class AccountControllerSpec extends Specification {
         accountService.register(_ as Person) >> {Person u -> [username: u.username] }
         accountService.tryReAuthenticate(_ as String) >> { u -> [username: u] }
         controller.accountService = accountService
+
+        emailService.verify(_ as String) >> {String key -> if (key == '123') user}
+        controller.emailService = emailService
 
         controller.restAuthenticationTokenJsonRenderer = [generateJson : {t ->
             (t as JSON).toString()
@@ -33,7 +37,6 @@ class AccountControllerSpec extends Specification {
         when:
         controller.register(null)
         then:
-        params.confirmToken != null
         params.email == 'qwe@ww.ww'
         response.status == 200
         response.json.username == 'qwe@ww.ww'
@@ -63,5 +66,26 @@ class AccountControllerSpec extends Specification {
         response.status == 200
         response.json.username == 'qqq'
         1 * accountService.tryReAuthenticate(_,_)
+    }
+
+    void "test verify existing"() {
+        when:
+        controller.verify('123')
+        then:
+        response.redirectedUrl == 'http://mychoiceapp.ru?name=FIO'
+    }
+
+    void "test verify nonexistent"() {
+        when:
+        controller.verify('1')
+        then:
+        response.status == 404
+    }
+
+    void "test verify without key"() {
+        when:
+        controller.verify(null)
+        then:
+        response.status == 404
     }
 }

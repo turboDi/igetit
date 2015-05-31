@@ -1,9 +1,7 @@
 import grails.util.Environment
-import org.grails.datastore.mapping.core.Datastore
 import ru.jconsulting.igetit.Buy
 import ru.jconsulting.igetit.Category as Category
 import ru.jconsulting.igetit.Comment
-import ru.jconsulting.igetit.IGetItPersistenceEventListener
 import ru.jconsulting.igetit.Image
 import ru.jconsulting.igetit.PersonFollower
 import ru.jconsulting.igetit.Price
@@ -15,15 +13,15 @@ class BootStrap {
 
     def grailsApplication
     def customMarshallerRegistrar
+    def eventProducer
+    def personEmailListener
+    def emailService
 
     def init = { servletContext ->
         customMarshallerRegistrar.register()
 
-        def ctx = grailsApplication.mainContext
-
-        ctx.getBeansOfType(Datastore).values().each { Datastore d ->
-            ctx.addApplicationListener new IGetItPersistenceEventListener(d)
-        }
+        grailsApplication.mainContext.addApplicationListener eventProducer
+        personEmailListener.emailService = emailService
 
         if (Environment.current != Environment.TEST && Category.count() == 0) createData()
     }

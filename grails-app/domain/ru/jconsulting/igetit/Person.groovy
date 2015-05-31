@@ -21,7 +21,7 @@ class Person {
     boolean accountLocked
     boolean passwordExpired
     boolean emailConfirmed
-    String confirmToken = ''
+    String confirmToken = UUID.randomUUID()
     String oAuthProvider
     int followersCount
 
@@ -65,6 +65,9 @@ class Person {
     def beforeUpdate() {
         if (isDirty('password')) {
             encodePassword()
+        }
+        if (isDirty('email')) {
+            emailConfirmed = false
         }
     }
 

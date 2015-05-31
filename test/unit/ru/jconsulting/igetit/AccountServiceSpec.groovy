@@ -2,7 +2,6 @@ package ru.jconsulting.igetit
 
 import com.odobo.grails.plugin.springsecurity.rest.token.generation.TokenGenerator
 import com.odobo.grails.plugin.springsecurity.rest.token.storage.TokenStorageService
-import grails.plugin.mail.MailService
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import org.springframework.security.core.userdetails.User
@@ -13,7 +12,7 @@ import ru.jconsulting.igetit.auth.Role
 import spock.lang.Specification
 
 @TestFor(AccountService)
-@Mock([Person, PersonRole, Role, MailService])
+@Mock([Person, PersonRole, Role])
 class AccountServiceSpec extends Specification {
 
     Person user
@@ -63,26 +62,5 @@ class AccountServiceSpec extends Specification {
         then:
         token.principal.username == 'user2@ww.ww'
         p.authorities.size() == 1 && p.authorities[0] == role
-    }
-
-    void "test verify invalid confirm token"() {
-        when:
-        Person p = service.verify('2','user@ww.ww')
-        then:
-        !p && !user.emailConfirmed
-    }
-
-    void "test verify invalid email"() {
-        when:
-        Person p = service.verify('1', 'user@ww1.ww')
-        then:
-        !p && !user.emailConfirmed
-    }
-
-    void "test verify"() {
-        when:
-        Person p = service.verify('1', 'user@ww.ww')
-        then:
-        p && user.emailConfirmed
     }
 }
