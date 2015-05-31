@@ -1,9 +1,10 @@
 package ru.jconsulting.igetit.marshallers
 
 import grails.converters.JSON
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.MessageSource
-import org.springframework.context.i18n.LocaleContextHolder
+import ru.jconsulting.igetit.Buy
+import ru.jconsulting.igetit.Comment
 import ru.jconsulting.igetit.Event
 
 /**
@@ -15,7 +16,7 @@ import ru.jconsulting.igetit.Event
 class EventMarshaller extends BaseMarshaller implements MarshallerRegistrar {
 
     @Autowired
-    MessageSource messageSource
+    LinkGenerator grailsLinkGenerator
 
     @Override
     void register() {
@@ -23,9 +24,25 @@ class EventMarshaller extends BaseMarshaller implements MarshallerRegistrar {
             return [
                     id: event.id,
                     person: marshallPerson(event.initiator),
-                    text: messageSource.getMessage(event.text, [event.args] as Object[], LocaleContextHolder.getLocale()),
+                    buy: event.buy ? marshallBuy(event.buy) : null,
+                    comment: event.comment ? marshallComment(event.comment) : null,
+                    type: event.type,
                     dateCreated: event.dateCreated
             ]
         }
+    }
+
+    private marshallBuy(Buy buy) {
+        [
+                image: buy.images?.iterator()?.next(),
+                link: grailsLinkGenerator.link(absolute: true, controller: 'buy', action: 'show', params: [id: buy.id])
+        ]
+    }
+
+    private marshallComment(Comment comment) {
+        [
+                text: comment.text,
+                link: grailsLinkGenerator.link(absolute: true, controller: 'comment', action: 'show', params: [id: comment.id])
+        ]
     }
 }

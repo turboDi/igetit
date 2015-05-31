@@ -6,13 +6,16 @@ class Event {
 
     Person initiator
 
-    String text
+    Buy buy
 
-    Long refId
+    Comment comment
 
     String type
 
-    String args
-
     Date dateCreated
+
+    static constraints = {
+        buy nullable: true
+        comment nullable: true
+    }
 }

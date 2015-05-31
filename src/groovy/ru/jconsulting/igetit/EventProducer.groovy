@@ -58,30 +58,26 @@ class EventProducer extends AbstractPersistenceEventListener {
                 return new Event(
                         effector: obj.buy.owner,
                         initiator: obj.author,
-                        text: 'event.new.comment.text',
-                        args: obj.author.fullName,
-                        refId: obj.id,
+                        comment: obj,
+                        buy: obj.buy,
                         type: 'comment'
                 );
             case Like:
                 Person initiator = obj.liker
                 def target = obj.target
+                boolean isBuy = target instanceof Buy
                 return new Event(
-                        effector: (Person) target.hasProperty('owner')?.getProperty(target) ?: target.author,
+                        effector: target.owner,
                         initiator: initiator,
-                        text: "event.new.like.${obj.type}.text",
-                        args: initiator.fullName,
-                        refId: obj.likeRef,
-                        type: obj.type
+                        buy: isBuy ? target : target.buy,
+                        comment: isBuy ? null : target,
+                        type: 'like'
                 )
             case PersonFollower:
                 return new Event(
                         effector: obj.person,
                         initiator: obj.follower,
-                        text: 'event.new.follower.text',
-                        args: obj.follower.fullName,
-                        refId: obj.follower.id,
-                        type: 'person'
+                        type: 'personFollower'
                 )
             default: return null
         }

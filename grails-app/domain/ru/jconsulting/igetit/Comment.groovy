@@ -18,4 +18,8 @@ class Comment implements Likeable {
         text maxSize: 1000
         deleted bindable: false
     }
+
+    def getOwner() {
+        author
+    }
 }
