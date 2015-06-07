@@ -6,6 +6,7 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured(['ROLE_USER'])
 class SearchController {
 
+    static namespace = "v1"
     static allowedMethods = [buys: "GET", persons: "GET"]
 
     def searchService

@@ -149,8 +149,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/like/index':                  ['ROLE_USER'],
         '/category/save':               ['ROLE_ADMIN'],
         '/category/delete':             ['ROLE_ADMIN'],
-        '/category/update':             ['ROLE_ADMIN'],
-        '/person/save':                 ['denyAll']  // all registrations should pass through account controller
+        '/category/update':             ['ROLE_ADMIN']
 ]
 
 grails.plugin.springsecurity.rest.login.useJsonCredentials = true

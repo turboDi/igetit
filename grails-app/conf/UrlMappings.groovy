@@ -3,9 +3,9 @@ import org.springframework.security.access.AccessDeniedException
 class UrlMappings {
 
 	static mappings = {
-        "/persons"(resources: "person") {
-            "/buys"(resources: "buy") {
-                "/comments"(resources: "comment") {
+        "/api/persons"(resources: "person", version: "1.0", namespace: "v1") {
+            "/buys"(resources: "buy", version: "1.0", namespace: "v1") {
+                "/comments"(resources: "comment", version: "1.0", namespace: "v1") {
                     "/likes"(resources: "like", includes: ['index', 'save', 'delete']) {
                         likeableId = { params.commentId }
                         type = 'comment'
@@ -15,13 +15,13 @@ class UrlMappings {
                     likeableId = { params.buyId }
                     type = 'buy'
                 }
-                "/images"(resources: "image", includes: ['index', 'save', 'delete'])
+                "/images"(resources: "image", includes: ['index', 'save', 'delete'], version: "1.0", namespace: "v1")
             }
-            "/followers"(resources: "personFollower", includes: ['index', 'save', 'delete'])
-            "/followed"(controller: "personFollowed")
+            "/followers"(resources: "personFollower", includes: ['index', 'save', 'delete'], version: "1.0", namespace: "v1")
+            "/followed"(controller: "personFollowed", version: "1.0", namespace: "v1")
         }
-        "/buys"(resources: "buy") {
-            "/comments"(resources: "comment") {
+        "/api/buys"(resources: "buy", version: "1.0", namespace: "v1") {
+            "/comments"(resources: "comment", version: "1.0", namespace: "v1") {
                 "/likes"(resources: "like", includes: ['index', 'save', 'delete']) {
                     likeableId = { params.commentId }
                     type = 'comment'
@@ -31,17 +31,17 @@ class UrlMappings {
                 likeableId = { params.buyId }
                 type = 'buy'
             }
-            "/images"(resources: "image", includes: ['index', 'save', 'delete'])
+            "/images"(resources: "image", includes: ['index', 'save', 'delete'], version: "1.0", namespace: "v1")
         }
-        "/favorites"(resources: "personFavorite", includes: ['index', 'save', 'delete'])
+        "/api/favorites"(resources: "personFavorite", includes: ['index', 'save', 'delete'], version: "1.0", namespace: "v1")
 
-        "/categories"(resources: "category")
+        "/api/categories"(resources: "category", version: "1.0", namespace: "v1")
 
-        "/storage/$folderId?"(controller: "storage")
+        "/api/storage/$folderId?"(controller: "storage", version: "1.0", namespace: "v1")
 
-        "/account/$action/$oAuthProvider?"(controller: "account")
-        "/subscription/$action"(controller: "subscription")
-        "/search/$action"(controller: "search")
+        "/api/subscription/$action"(controller: "subscription", version: "1.0", namespace: "v1")
+        "/api/search/$action"(controller: "search", version: "1.0", namespace: "v1")
+        "/api/verification"(controller: "verification", version: "1.0", namespace: "v1")
 
         "403"(controller: "error", action: "handleForbidden")
         "404"(controller: "error", action: "handleNotFound")

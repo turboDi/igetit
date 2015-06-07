@@ -16,7 +16,7 @@ class EmailService {
                 async true
                 to p.email
                 subject messageSource.getMessage('email.welcome.subject.text', null, locale)
-                html view: '/account/email', model: [p: p, locale: locale, key: encodeKey(p), siteCfg: grailsApplication.config.site]
+                html view: '/verification/email', model: [p: p, locale: locale, key: encodeKey(p), siteCfg: grailsApplication.config.site]
             }
         } catch (Exception e) {
             log.error('Exception during confirmation mail send', e)

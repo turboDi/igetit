@@ -12,6 +12,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT
  */
 abstract class IGetItRestfulController<T> extends RestfulController<T> {
 
+    static namespace = "v1"
     final List excludedBindParams
 
     IGetItRestfulController(Class<T> resource) {

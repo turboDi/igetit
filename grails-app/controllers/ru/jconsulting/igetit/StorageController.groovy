@@ -10,6 +10,7 @@ import static org.springframework.http.HttpStatus.*
 @Secured(['permitAll'])
 class StorageController {
 
+    static namespace = "v1"
     static allowedMethods = [upload: "POST", delete: "DELETE"]
 
     def storageService
