@@ -31,6 +31,9 @@ class PersonFollowerMarshaller extends BaseMarshaller implements MarshallerRegis
     }
 
     private marshall(Person person) {
-        marshallPerson(person) << [iFollow: PersonFollower.countByPersonAndFollower(person, currentPerson()) > 0]
+        marshallPerson(person) << [
+                city: person.city,
+                iFollow: PersonFollower.countByPersonAndFollower(person, currentPerson()) > 0
+        ]
     }
 }
