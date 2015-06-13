@@ -2,6 +2,9 @@ import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.jackson.JacksonFactory
 import com.google.api.services.drive.DriveScopes
 import grails.util.Environment
+import org.codehaus.groovy.grails.orm.hibernate.HibernateEventListeners
+import ru.jconsulting.igetit.EventProducer
+import ru.jconsulting.igetit.PersonEmailListener
 import ru.jconsulting.igetit.storage.FileSystemStorage
 import ru.jconsulting.igetit.storage.GoogleDriveServiceFactory
 import ru.jconsulting.igetit.auth.IGetItRestAuthenticationTokenJsonRenderer
@@ -11,7 +14,6 @@ import ru.jconsulting.igetit.storage.GoogleDriveStorage
 //noinspection GroovyUnusedAssignment
 beans = {
 
-    brandMarshaller(BrandMarshaller)
     buyMarshaller(BuyMarshaller)
     categoryMarshaller(CategoryMarshaller)
     commentMarshaller(CommentMarshaller)
@@ -20,6 +22,7 @@ beans = {
     priceMarshaller(PriceMarshaller)
     eventMarshaller(EventMarshaller)
     cityMarshaller(CityMarshaller)
+    personFavoriteMarshaller(PersonFavoriteMarshaller)
     personFollowerMarshaller(PersonFollowerMarshaller)
     likeMarshaller(LikeMarshaller)
     customMarshallerRegistrar(MarshallerListRegistrar)
@@ -27,6 +30,16 @@ beans = {
     storage(FileSystemStorage)
 
     restAuthenticationTokenJsonRenderer(IGetItRestAuthenticationTokenJsonRenderer)
+
+    eventProducer(EventProducer)
+    personEmailListener(PersonEmailListener)
+
+    hibernateEventListeners(HibernateEventListeners) {
+        listenerMap = [
+                'post-commit-update': personEmailListener,
+                'post-commit-insert': personEmailListener
+        ]
+    }
 
     Environment.executeForCurrentEnvironment {
         production {

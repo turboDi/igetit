@@ -1,9 +1,9 @@
 package ru.jconsulting.igetit
 
-import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.TestFor
 import grails.test.mixin.TestMixin
 import grails.test.mixin.domain.DomainClassUnitTestMixin
+import org.springframework.security.access.AccessDeniedException
 import spock.lang.Specification
 
 @TestFor(BuyController)
@@ -21,12 +21,14 @@ class BuyControllerSpec extends Specification {
         Price p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
         mockDomain(Buy, [
                 [name: 'buy1', owner: user1, price: p],
-                [name: 'buy2', owner: user2, price: p]
+                [name: 'buy2', owner: user2, price: p],
+                [name: 'buy3', owner: user1, price: p]
         ])
-        assert Buy.count() == 2
-        def springSecurityServiceMock = mockFor(SpringSecurityService)
-        springSecurityServiceMock.demand.getCurrentUser { -> user2 }
-        controller.springSecurityService = springSecurityServiceMock.createMock()
+        def deleted = Buy.findByName('buy3')
+        deleted.deleted = true
+        deleted.save flush: true
+        assert Buy.count() == 3
+        controller.metaClass.getAuthenticatedUser = { -> user2 }
         controller.params.format = 'json'
     }
 
@@ -56,6 +58,38 @@ class BuyControllerSpec extends Specification {
         then:
         response.json.name == 'buy3'
         response.json.owner.id == user2.id
-        Buy.count() == 3
+        Buy.count() == 4
+    }
+
+    void "test delete another's buy"() {
+        given:
+        Buy buy = Buy.findByName('buy1')
+        params.id = buy.id
+        when:
+        controller.delete()
+        then:
+        thrown(AccessDeniedException)
+    }
+
+    void "test update another's buy"() {
+        given:
+        Buy buy = Buy.findByName('buy1')
+        params.id = buy.id
+        params.name = 'new buy name'
+        when:
+        controller.update()
+        then:
+        thrown(AccessDeniedException)
+    }
+
+    void "test query deleted buy"() {
+        given:
+        Buy buy = Buy.findByName('buy3')
+        controller.metaClass.getAuthenticatedUser = { -> user1 }
+        params.id = buy.id
+        when:
+        controller.delete()
+        then:
+        response.status == 404
     }
 }

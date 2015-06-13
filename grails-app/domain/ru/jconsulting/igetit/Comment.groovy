@@ -10,9 +10,16 @@ class Comment implements Likeable {
 
     Person author
 
+    boolean deleted
+
     static belongsTo = [buy : Buy]
 
     static constraints = {
         text maxSize: 1000
+        deleted bindable: false
+    }
+
+    def getOwner() {
+        author
     }
 }

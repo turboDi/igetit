@@ -6,7 +6,7 @@ import ru.jconsulting.igetit.Price
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 05.05.14 21:45
  */
 class PriceMarshaller extends BaseMarshaller implements MarshallerRegistrar {
@@ -15,7 +15,6 @@ class PriceMarshaller extends BaseMarshaller implements MarshallerRegistrar {
     void register() {
         JSON.registerObjectMarshaller(Price) {Price price ->
             return [
-                    id: price.id,
                     value: price.value,
                     currency: price.currency
             ]

@@ -20,7 +20,7 @@ class PersonFollowedController {
         }
         if (Person.get(pid)) {
             JSON.use('personFollowed') {
-                render PersonFollower.where {follower.id == pid}.list(params) as JSON
+                render PersonFollower.where { follower.id == pid && deleted == false }.list(params) as JSON
             }
         } else {
             render status: NOT_FOUND

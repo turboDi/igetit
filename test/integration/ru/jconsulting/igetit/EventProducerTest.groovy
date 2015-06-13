@@ -6,14 +6,14 @@ package ru.jconsulting.igetit
  * @author Dmitriy Borisov
  * @created 09.03.2015
  */
-class IGetItPersistenceEventListenerTest extends GroovyTestCase {
+class EventProducerTest extends GroovyTestCase {
 
     Person p1, p2
     Buy buy
 
     @Override
     protected void setUp() throws Exception {
-        IGetItPersistenceEventListener.metaClass.saveNewEvent = { Event e -> e.save() }
+        EventProducer.metaClass.saveNewEvent = { Event e -> e.save() }
     }
 
     void testAddComment() {
@@ -23,7 +23,8 @@ class IGetItPersistenceEventListenerTest extends GroovyTestCase {
         Event event = Event.findByEffector(p1);
 
         assertEquals 'comment', event.type
-        assertEquals c.id, event.refId
+        assertEquals c, event.comment
+        assertEquals buy, event.buy
         assertEquals p2, event.initiator
     }
 
@@ -34,8 +35,9 @@ class IGetItPersistenceEventListenerTest extends GroovyTestCase {
 
         Event event = Event.findByEffector(p2);
 
-        assertEquals 'comment', event.type
-        assertEquals c.id, event.refId
+        assertEquals 'like', event.type
+        assertEquals c, event.comment
+        assertEquals buy, event.buy
         assertEquals p1, event.initiator
     }
 
@@ -45,8 +47,8 @@ class IGetItPersistenceEventListenerTest extends GroovyTestCase {
 
         Event event = Event.findByEffector(p1);
 
-        assertEquals 'buy', event.type
-        assertEquals buy.id, event.refId
+        assertEquals 'like', event.type
+        assertEquals buy, event.buy
         assertEquals p2, event.initiator
     }
 
@@ -57,8 +59,7 @@ class IGetItPersistenceEventListenerTest extends GroovyTestCase {
 
         Event event = Event.findByEffector(p1);
 
-        assertEquals 'person', event.type
-        assertEquals p2.id, event.refId
+        assertEquals 'personFollower', event.type
         assertEquals p2, event.initiator
     }
 

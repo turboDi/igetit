@@ -4,6 +4,7 @@ import com.odobo.grails.plugin.springsecurity.rest.RestAuthenticationToken
 import com.odobo.grails.plugin.springsecurity.rest.token.generation.TokenGenerator
 import com.odobo.grails.plugin.springsecurity.rest.token.storage.TokenStorageService
 import grails.transaction.Transactional
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import ru.jconsulting.igetit.auth.PersonRole
@@ -13,7 +14,6 @@ import ru.jconsulting.igetit.auth.Role
 class AccountService {
 
     def userDetailsService
-    def mailService
     TokenGenerator tokenGenerator
     TokenStorageService tokenStorageService
 
@@ -21,23 +21,7 @@ class AccountService {
         assert p.save()
         def authority = Role.findByAuthority('ROLE_USER')
         PersonRole.create p, authority
-        if (!p.oAuthProvider) {
-            mailService.sendMail {
-                async true
-                to p.email
-                subject "Welcome to IGetIt"
-                html view: '/account/email', model: [p: p]
-            }
-        }
         tryReAuthenticate(p.username)
-    }
-
-    def verify(String token, String email) {
-        Person p = Person.findByConfirmTokenAndEmail(token, email)
-        if (p) {
-            p.emailConfirmed = true
-            p.save()
-        }
     }
 
     def tryReAuthenticate(String username, String oAuthProvider = null) {
@@ -54,6 +38,9 @@ class AccountService {
     }
 
     def retrieveToken(UserDetails principal) {
+        if (!principal.enabled) {
+            throw new AccessDeniedException("This user was deleted")
+        }
         String tokenValue = tokenGenerator.generateToken()
         tokenStorageService.storeToken(tokenValue, principal)
         new RestAuthenticationToken(principal, principal.password, principal.authorities, tokenValue)

@@ -2,7 +2,7 @@ package ru.jconsulting.igetit.storage
 
 import org.apache.commons.io.FileUtils
 import ru.jconsulting.igetit.Image
-import ru.jconsulting.igetit.ImageUtils
+import ru.jconsulting.igetit.image.ImageUtils
 
 class FileSystemStorage implements Storage {
 

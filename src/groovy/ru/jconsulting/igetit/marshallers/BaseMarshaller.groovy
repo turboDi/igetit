@@ -7,7 +7,7 @@ import ru.jconsulting.igetit.Person
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 13.12.14 23:32
  */
 abstract class BaseMarshaller {
@@ -23,7 +23,8 @@ abstract class BaseMarshaller {
         [
                 id : person.id,
                 name : person.fullName,
-                avatar : person.avatar
+                avatar : person.avatar,
+                deleted : person.deleted
         ]
     }
 }

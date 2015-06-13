@@ -5,7 +5,7 @@ import ru.jconsulting.igetit.Image
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 13.10.14 22:28
  */
 public interface Storage {

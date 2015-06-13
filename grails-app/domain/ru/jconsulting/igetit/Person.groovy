@@ -21,9 +21,13 @@ class Person {
     boolean accountLocked
     boolean passwordExpired
     boolean emailConfirmed
-    String confirmToken = ''
+    String confirmToken = UUID.randomUUID()
     String oAuthProvider
+    int followersCount
 
+    boolean deleted
+
+    static hasMany = [buys: Buy]
     static transients = ['springSecurityService']
     static embedded = ['city']
 
@@ -35,11 +39,19 @@ class Person {
         avatar nullable: true
         city nullable: true
         oAuthProvider nullable: true
+        lastActivity bindable: false
+        enabled bindable: false
+        accountExpired bindable: false
+        accountLocked bindable: false
+        passwordExpired bindable: false
+        emailConfirmed bindable: false
+        deleted bindable: false
     }
 
     static mapping = {
         password column: '`password`'
         avatar cascade: 'save-update, delete'
+        followersCount formula: "(select count(*) from person_follower pf where pf.person_id = id)"
     }
 
     Set<Role> getAuthorities() {
@@ -53,6 +65,9 @@ class Person {
     def beforeUpdate() {
         if (isDirty('password')) {
             encodePassword()
+        }
+        if (isDirty('email')) {
+            emailConfirmed = false
         }
     }
 

@@ -7,7 +7,7 @@ import grails.converters.JSON
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 04.10.14 13:55
  */
 class IGetItRestAuthenticationTokenJsonRenderer extends DefaultRestAuthenticationTokenJsonRenderer {

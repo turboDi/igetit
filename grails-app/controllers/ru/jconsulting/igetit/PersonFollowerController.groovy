@@ -1,12 +1,9 @@
 package ru.jconsulting.igetit
 
 import grails.plugin.springsecurity.annotation.Secured
-import grails.rest.RestfulController
 
 @Secured(['ROLE_USER'])
-class PersonFollowerController extends RestfulController<PersonFollower> {
-
-    static allowedMethods = [save: "POST", delete: "DELETE"]
+class PersonFollowerController extends IGetItRestfulController<PersonFollower> {
 
     PersonFollowerController() {
         super(PersonFollower)
@@ -16,7 +13,7 @@ class PersonFollowerController extends RestfulController<PersonFollower> {
     protected List<PersonFollower> listAllResources(Map params) {
         if (params.personId) {
             def pid = params.personId
-            PersonFollower.where {person.id == pid}.list(params)
+            PersonFollower.where { person.id == pid && deleted == false }.list(params)
         } else {
             throw new IllegalStateException("Followers list requested without required 'personId' parameter")
         }
@@ -38,6 +35,7 @@ class PersonFollowerController extends RestfulController<PersonFollower> {
             PersonFollower.where {
                 person.id == pid
                 follower == getAuthenticatedUser()
+                deleted == false
             }.get()
         } else {
             throw new IllegalStateException("Follower query requested without required 'personId' parameter")

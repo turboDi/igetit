@@ -109,7 +109,7 @@ environments {
                 password = System.getenv("MAILER_PASSWORD")
             }
         }
-        grails.mail.default.from = "IGetIt <no-reply@mail.igetit.com>"
+        grails.mail.default.from = "MyChoice <no-reply@mychoiceapp.ru>"
     }
     test {
         grails.mail.disabled = true
@@ -132,7 +132,11 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 
-    debug  'grails.app.controllers.ru.jconsulting'
+    warn   'grails.app.services.grails.plugin.mail'
+
+    debug  'grails.app.controllers.ru.jconsulting',
+           'grails.app.services.ru.jconsulting'
+    //debug  'org.hibernate.SQL'
 }
 
 // Added by the Spring Security Core plugin:
@@ -143,7 +147,9 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/like/save':                   ['ROLE_USER'],
         '/like/delete':                 ['ROLE_USER'],
         '/like/index':                  ['ROLE_USER'],
-        '/person/save':                 ['denyAll']  // all registrations should pass through account controller
+        '/category/save':               ['ROLE_ADMIN'],
+        '/category/delete':             ['ROLE_ADMIN'],
+        '/category/update':             ['ROLE_ADMIN']
 ]
 
 grails.plugin.springsecurity.rest.login.useJsonCredentials = true
@@ -152,3 +158,8 @@ grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = 'ru.
 
 grails.plugin.likeable.liker.className = 'ru.jconsulting.igetit.Person'
 grails.plugin.likeable.liker.evaluator = { delegate.getAuthenticatedUser() }
+
+site {
+    url = 'http://mychoiceapp.ru'
+    email = 'info@mychoiceapp.ru'
+}

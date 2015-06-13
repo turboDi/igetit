@@ -8,15 +8,19 @@ import spock.lang.Specification
 @Mock([Person, PersonFollower])
 class PersonFollowerControllerSpec extends Specification {
 
-    Person user1, user2, user3
+    Person user1, user2, user3, user4
 
     def setup() {
         Person.metaClass.encodePassword { -> }
         user1 = new Person(username: 'user1@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         user3 = new Person(username: 'user3@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
+        user4 = new Person(username: 'user4@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         PersonFollower.create user1, user2, true
         PersonFollower.create user1, user3, true
+        PersonFollower pf = new PersonFollower(person: user1, follower: user4)
+        pf.deleted = true
+        pf.save(flush: true)
         controller.metaClass.getAuthenticatedUser = { -> user3 }
         controller.params.format = 'json'
     }
@@ -52,13 +56,13 @@ class PersonFollowerControllerSpec extends Specification {
 
     void "test stop following"() {
         given:
-        params.personId = user1
+        params.personId = user1.id
         when:
         controller.delete()
         then:
         response.status == 204
-        PersonFollower.countByPersonAndFollower(user1, user3) == 0
-        PersonFollower.countByPerson(user1) == 1
+        PersonFollower.countByPersonAndFollowerAndDeleted(user1, user3, false) == 0
+        PersonFollower.countByPersonAndDeleted(user1, false) == 1
     }
 
     void "test query without personId parameter"() {
@@ -73,5 +77,15 @@ class PersonFollowerControllerSpec extends Specification {
         controller.delete()
         then:
         thrown(IllegalStateException)
+    }
+
+    void "test query deleted personFollower"() {
+        given:
+        controller.metaClass.getAuthenticatedUser = { -> user4 }
+        params.personId = user1.id
+        when:
+        controller.delete()
+        then:
+        response.status == 404
     }
 }

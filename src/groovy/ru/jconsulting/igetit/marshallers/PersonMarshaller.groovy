@@ -16,10 +16,11 @@ class PersonMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     avatar: person.avatar,
                     city: person.city,
                     buysCount: Buy.countByOwner(person),
-                    followersCount: PersonFollower.countByPerson(person),
+                    followersCount: person.followersCount,
                     followedCount: PersonFollower.countByFollower(person),
                     iFollow: PersonFollower.countByPersonAndFollower(person, currentPerson()) > 0,
-                    lastActivity: person.lastActivity
+                    lastActivity: person.lastActivity,
+                    deleted: person.deleted
             ]
         }
     }

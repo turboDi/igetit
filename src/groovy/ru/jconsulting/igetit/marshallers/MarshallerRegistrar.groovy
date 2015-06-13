@@ -3,7 +3,7 @@ package ru.jconsulting.igetit.marshallers
 /**
  *
  *
- * @author Дмитрий Борисов
+ * @author Dmitriy Borisov
  * @created 05.05.14 22:00
  */
 public interface MarshallerRegistrar {

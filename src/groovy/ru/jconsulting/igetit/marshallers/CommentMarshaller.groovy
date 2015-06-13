@@ -10,11 +10,12 @@ class CommentMarshaller extends BaseMarshaller implements MarshallerRegistrar {
         JSON.registerObjectMarshaller(Comment) { Comment comment ->
             return [
                     id: comment.id,
-                    created: comment.dateCreated,
+                    dateCreated: comment.dateCreated,
                     text: comment.text,
                     author: marshallPerson(comment.author),
                     likes: comment.getTotalLikes(),
-                    iLiked: comment.userLiked(currentPerson())
+                    iLiked: comment.userLiked(currentPerson()),
+                    deleted: comment.deleted
             ]
         }
     }

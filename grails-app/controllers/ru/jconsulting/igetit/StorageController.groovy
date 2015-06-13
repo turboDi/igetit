@@ -2,11 +2,16 @@ package ru.jconsulting.igetit
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.access.AccessDeniedException
+import ru.jconsulting.igetit.image.Thumbnail
 
 import static org.springframework.http.HttpStatus.*
 
-@Secured(['ROLE_USER'])
+@Secured(['permitAll'])
 class StorageController {
+
+    static namespace = "v1"
+    static allowedMethods = [upload: "POST", delete: "DELETE"]
 
     def storageService
 
@@ -25,6 +30,9 @@ class StorageController {
             missingParameter 'folderId'
             return
         }
+        if (Image.countByFolderId(params.folderId)) {
+            throw new AccessDeniedException('This image is still referenced by another entity')
+        }
         log.debug("Deleting images with folder '$params.folderId'")
         storageService.delete params.folderId
         render status: NO_CONTENT
@@ -39,9 +47,9 @@ class StorageController {
 
     private Map thumbnails() {
         [
-                s: params.int('s') ?: 128,
-                m: params.int('m') ?: 256,
-                l: params.int('l') ?: 512
+                s: new Thumbnail(size: params.int('s') ?: 128, x: params.int('x'), y: params.int('y'), width: params.int('width')),
+                m: new Thumbnail(size: params.int('m') ?: 256, x: params.int('x'), y: params.int('y'), width: params.int('width')),
+                l: new Thumbnail(size: params.int('l'))
         ]
     }
 }

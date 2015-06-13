@@ -6,11 +6,7 @@ class Buy implements Likeable {
 
     String name
 
-    Brand brand
-
     Category category
-
-    Person owner
 
     Price price
 
@@ -18,16 +14,23 @@ class Buy implements Likeable {
 
     List images
 
-    static hasMany = [comments : Comment, images : Image]
+    int likesCount
+
+    boolean deleted
+
+    static hasMany = [comments: Comment, images: Image]
+    static belongsTo = [owner: Person]
+    static embedded = ['price']
 
     static constraints = {
         name nullable: true
-        brand nullable: true
         category nullable: true
         price nullable: true
+        deleted bindable: false
     }
 
     static mapping = {
         images cascade: "all-delete-orphan"
+        likesCount formula: "(select count(*) from l_like l where l.like_ref = id and l.type = 'buy')"
     }
 }
