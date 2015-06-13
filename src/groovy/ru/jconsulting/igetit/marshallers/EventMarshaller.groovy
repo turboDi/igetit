@@ -35,14 +35,14 @@ class EventMarshaller extends BaseMarshaller implements MarshallerRegistrar {
     private marshallBuy(Buy buy) {
         [
                 image: buy.images?.iterator()?.next(),
-                link: grailsLinkGenerator.link(absolute: true, controller: 'buy', action: 'show', params: [id: buy.id])
+                link: grailsLinkGenerator.link(absolute: true, uri: "/api/buys/$buy.id")
         ]
     }
 
     private marshallComment(Comment comment) {
         [
                 text: comment.text,
-                link: grailsLinkGenerator.link(absolute: true, controller: 'comment', action: 'show', params: [id: comment.id])
+                link: grailsLinkGenerator.link(absolute: true, uri: "/api/comments/$comment.id")
         ]
     }
 }
