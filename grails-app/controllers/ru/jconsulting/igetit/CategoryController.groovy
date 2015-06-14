@@ -8,4 +8,9 @@ class CategoryController extends IGetItRestfulController<Category> {
     CategoryController() {
         super(Category)
     }
+
+    @Override
+    protected List<Category> listAllResources(Map params) {
+        Category.list(params)
+    }
 }
