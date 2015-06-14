@@ -7,7 +7,6 @@ import static org.springframework.http.HttpStatus.*
 class VerificationController {
 
     static namespace = "v1"
-    static allowedMethods = [resend: "POST", verify: "GET"]
 
     def emailService
 

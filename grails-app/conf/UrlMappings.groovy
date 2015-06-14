@@ -37,11 +37,15 @@ class UrlMappings {
 
         "/api/categories"(resources: "category", version: "1.0", namespace: "v1")
 
-        "/api/storage/$folderId?"(controller: "storage", version: "1.0", namespace: "v1")
+        "/api/storage/$folderId?"(controller: "storage", version: "1.0", namespace: "v1") {
+            action = [POST: "upload", DELETE: "delete"]
+        }
 
         "/api/subscription/$action"(controller: "subscription", version: "1.0", namespace: "v1")
         "/api/search/$action"(controller: "search", version: "1.0", namespace: "v1")
-        "/api/verification"(controller: "verification", version: "1.0", namespace: "v1")
+        "/api/verification"(controller: "verification", version: "1.0", namespace: "v1") {
+            action = [POST: "resend", GET: "verify"]
+        }
 
         "403"(controller: "error", action: "handleForbidden")
         "404"(controller: "error", action: "handleNotFound")

@@ -24,6 +24,17 @@ abstract class IGetItRestfulController<T> extends RestfulController<T> {
         this.excludedBindParams = excludedBindParams
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    def index(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        def rs = listAllResources(params)
+        if (rs.empty) {
+            log.debug("No $resource found")
+        }
+        respond rs
+    }
+
     @Transactional
     def delete() {
         def instance = queryForResource(params.id as Serializable)
