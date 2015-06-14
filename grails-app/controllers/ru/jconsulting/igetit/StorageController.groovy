@@ -11,7 +11,6 @@ import static org.springframework.http.HttpStatus.*
 class StorageController {
 
     static namespace = "v1"
-    static allowedMethods = [upload: "POST", delete: "DELETE"]
 
     def storageService
 
