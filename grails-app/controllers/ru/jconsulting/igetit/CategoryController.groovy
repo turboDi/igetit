@@ -13,4 +13,9 @@ class CategoryController extends IGetItRestfulController<Category> {
     protected List<Category> listAllResources(Map params) {
         Category.list(params)
     }
+
+    @Override
+    protected Category queryForResource(Serializable id) {
+        Category.get(id)
+    }
 }
