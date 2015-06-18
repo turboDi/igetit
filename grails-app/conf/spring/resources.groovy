@@ -4,6 +4,7 @@ import com.google.api.services.drive.DriveScopes
 import grails.util.Environment
 import org.codehaus.groovy.grails.orm.hibernate.HibernateEventListeners
 import ru.jconsulting.igetit.EventProducer
+import ru.jconsulting.igetit.IGetItExceptionResolver
 import ru.jconsulting.igetit.PersonEmailListener
 import ru.jconsulting.igetit.storage.FileSystemStorage
 import ru.jconsulting.igetit.storage.GoogleDriveServiceFactory
@@ -62,5 +63,9 @@ beans = {
                 bean.autowire = true
             }
         }
+    }
+
+    exceptionHandler(IGetItExceptionResolver) {
+        exceptionMappings = ['java.lang.Exception': '/error']
     }
 }
