@@ -20,7 +20,7 @@ class Thumbnail {
     BufferedImage image
 
     def crop() {
-        if (x && y && width && image) {
+        if (x != null && y != null && width && image) {
             def cropped = Scalr.crop(image, x, y, width, width)
             image.flush()
             image = cropped

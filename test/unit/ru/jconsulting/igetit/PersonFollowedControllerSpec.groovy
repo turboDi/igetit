@@ -39,7 +39,7 @@ class PersonFollowedControllerSpec extends Specification {
         when:
         controller.index(10)
         then:
-        response.status == 404
+        thrown(IllegalStateException)
     }
 
     void "test get nonexistent followed"() {
