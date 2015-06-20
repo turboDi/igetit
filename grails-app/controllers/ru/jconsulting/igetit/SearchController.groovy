@@ -12,10 +12,12 @@ class SearchController {
     def searchService
 
     def buys() {
+        params.categoryId = params.long('categoryId')
         render searchService.searchBuys(params) as JSON
     }
 
     def persons() {
+        params.categoryId = params.long('categoryId')
         render searchService.searchPersons(params) as JSON
     }
 }

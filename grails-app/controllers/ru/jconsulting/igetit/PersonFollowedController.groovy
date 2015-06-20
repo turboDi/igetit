@@ -10,13 +10,13 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 @Secured(['ROLE_USER'])
 class PersonFollowedController {
 
+    static namespace = "v1"
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         def pid = params.personId as Serializable
         if (!pid) {
-            log.error("Followed list requested without required 'personId' parameter")
-            render status: NOT_FOUND
-            return
+            throw new IllegalStateException("Followed list requested without required 'personId' parameter")
         }
         if (Person.get(pid)) {
             JSON.use('personFollowed') {

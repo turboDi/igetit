@@ -1,7 +1,5 @@
 package ru.jconsulting.igetit
 
-import org.springframework.security.access.AccessDeniedException
-
 import static org.springframework.http.HttpStatus.*
 
 class ErrorController {
@@ -16,7 +14,8 @@ class ErrorController {
         }
     }
 
-    def handleAccessDeniedException(AccessDeniedException e) {
+    def handleAccessDeniedException() {
+        def e = request.exception
         render(status: FORBIDDEN, contentType: "application/json") {
             status = FORBIDDEN.value()
             message = e.message
