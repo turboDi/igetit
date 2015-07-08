@@ -30,7 +30,7 @@ abstract class IGetItRestfulController<T> extends RestfulController<T> {
         params.max = Math.min(max ?: 10, 100)
         def rs = listAllResources(params)
         if (rs.empty) {
-            log.debug("No $resource found")
+            log.debug("No $resourceName found")
         }
         respond rs
     }
