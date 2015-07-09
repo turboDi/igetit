@@ -26,10 +26,17 @@ class EventProducer extends AbstractPersistenceEventListener {
     @Autowired
     public EventProducer(Datastore ds) {
         super(ds)
-        operator(inputs: [eventQueue], maxForks: 10) { event ->
-            Event.withTransaction {
-                log.debug("Saving event $event")
-                event.save()
+        operator(inputs: [eventQueue], maxForks: 10) { Event event ->
+            try {
+                Event.withTransaction {
+                    log.debug("Saving event $event")
+                    if (event.type == 'comment') {
+                        event.comment.refresh()
+                    }
+                    event.save()
+                }
+            } catch (Exception e) {
+                log.error("Failed to produce new event", e)
             }
         }
     }
@@ -38,7 +45,7 @@ class EventProducer extends AbstractPersistenceEventListener {
     protected void onPersistenceEvent(AbstractPersistenceEvent event) {
         def newEvent = initEvent(event.entityObject)
         if (newEvent && newEvent.effector != newEvent.initiator) {
-            log.debug("Sending new event $newEvent($newEvent.type) for $newEvent.effector to event queue")
+            log.debug("Sending new event $newEvent to event queue")
             saveNewEvent(newEvent)
         }
     }

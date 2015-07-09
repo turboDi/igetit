@@ -14,14 +14,16 @@ class SearchServiceSpec extends Specification {
 
     def setup() {
         City city = new City(placeId: placeId, description: '123')
-        category = new Category(name: 'Test').save(flush: true)
-        p1 = new Person(username: 'p1@ww.ww', city: city, fullName: 'FIO', password: '123').save(flush: true, failOnError: true)
-        p2 = new Person(username: 'p2@ww.ww', fullName: 'FIO', password: '123').save(flush: true, failOnError: true)
-        p3 = new Person(username: 'p3@ww.ww', fullName: 'FIO', password: '123').save(flush: true, failOnError: true)
-        buy1 = new Buy(name: buyName, owner: p1, category: category).save(flush: true, failOnError: true)
-        buy2 = new Buy(name: buyName, owner: p2, category: category).save(flush: true, failOnError: true)
-        buy3 = new Buy(name: buyName, owner: p3).save(flush: true, failOnError: true)
-
+        category = new Category(name: 'Test').save()
+        p1 = new Person(username: 'p1@ww.ww', city: city, fullName: 'FIO', password: '123').save()
+        p2 = new Person(username: 'p2@ww.ww', fullName: 'FIO', password: '123').save()
+        p3 = new Person(username: 'p3@ww.ww', fullName: 'FIO', password: '123').save()
+        buy1 = new Buy(name: buyName, owner: p1, category: category).save()
+        buy2 = new Buy(name: buyName, owner: p2, category: category).save()
+        buy3 = new Buy(name: buyName, owner: p3).save()
+        new Buy(owner: p1, category: category).save()
+        new Buy(owner: p1, category: category).save()
+        new Buy(owner: p1, category: category).save()
     }
 
     void "test search buy"() {
@@ -36,7 +38,7 @@ class SearchServiceSpec extends Specification {
     void "test search person"() {
         when:
         def personsByNameAndCity = searchService.searchPersons(term: 'FI', placeId: placeId)
-        def personsByNameAndCategory = searchService.searchPersons(term: 'FI', categoryId: category.id, sort: 'username')
+        def personsByNameAndCategory = searchService.searchPersons(term: 'FI', categoryId: category.id, sort: 'username', max: 3)
         then:
         [p1] == personsByNameAndCity
         [p1, p2] == personsByNameAndCategory

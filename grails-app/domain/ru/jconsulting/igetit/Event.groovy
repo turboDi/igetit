@@ -1,5 +1,8 @@
 package ru.jconsulting.igetit
 
+import groovy.transform.ToString
+
+@ToString
 class Event {
 
     Person effector
