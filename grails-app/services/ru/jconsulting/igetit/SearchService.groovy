@@ -24,8 +24,12 @@ class SearchService {
         }
     }
 
+    @SuppressWarnings("GroovyAssignabilityCheck")
     def searchPersons(Map params) {
-        Person.createCriteria().list(params) {
+        def ids = Person.createCriteria().list(params) {
+            projections {
+                groupProperty('id')
+            }
             eq 'deleted', false
             if (params.term) {
                 ilike 'fullName', "%$params.term%"
@@ -38,5 +42,6 @@ class SearchService {
                 eq 'b.category.id', params.categoryId
             }
         }
+        Person.getAll(ids)
     }
 }

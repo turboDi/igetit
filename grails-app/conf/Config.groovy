@@ -135,7 +135,8 @@ log4j = {
     warn   'grails.app.services.grails.plugin.mail'
 
     debug  'grails.app.controllers.ru.jconsulting',
-           'grails.app.services.ru.jconsulting'
+           'grails.app.services.ru.jconsulting',
+           'ru.jconsulting'
     //debug  'org.hibernate.SQL'
 }
 
