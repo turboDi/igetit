@@ -33,14 +33,7 @@ class EventProducer extends AbstractPersistenceEventListener {
                     event.save()
                 }
             } catch (Exception e) {
-                log.debug('Failed to produce new event', e)
-                //FIXME: sometimes comment persisting occurs after event persisting and causes constraint violation error
-                if (event.retryCount++ > 3) {
-                    log.error('Failed to produce new event', e)
-                } else {
-                    sleep 1000
-                    saveNewEvent(event)
-                }
+                log.error('Failed to produce new event', e)
             }
         }
     }
@@ -69,7 +62,7 @@ class EventProducer extends AbstractPersistenceEventListener {
                 return new Event(
                         effector: obj.buy.owner,
                         initiator: obj.author,
-                        comment: obj,
+                        comment: obj.text,
                         buy: obj.buy,
                         type: 'comment'
                 );
@@ -81,7 +74,7 @@ class EventProducer extends AbstractPersistenceEventListener {
                         effector: target.owner,
                         initiator: initiator,
                         buy: isBuy ? target : target.buy,
-                        comment: isBuy ? null : target,
+                        comment: isBuy ? null : target.text,
                         type: 'like'
                 )
             case PersonFollower:

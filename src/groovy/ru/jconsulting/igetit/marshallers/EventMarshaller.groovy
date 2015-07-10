@@ -1,10 +1,7 @@
 package ru.jconsulting.igetit.marshallers
 
 import grails.converters.JSON
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-import org.springframework.beans.factory.annotation.Autowired
 import ru.jconsulting.igetit.Buy
-import ru.jconsulting.igetit.Comment
 import ru.jconsulting.igetit.Event
 
 /**
@@ -15,9 +12,6 @@ import ru.jconsulting.igetit.Event
  */
 class EventMarshaller extends BaseMarshaller implements MarshallerRegistrar {
 
-    @Autowired
-    LinkGenerator grailsLinkGenerator
-
     @Override
     void register() {
         JSON.registerObjectMarshaller(Event) { Event event ->
@@ -25,24 +19,17 @@ class EventMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     id: event.id,
                     person: marshallPerson(event.initiator),
                     buy: event.buy ? marshallBuy(event.buy) : null,
-                    comment: event.comment ? marshallComment(event.comment) : null,
+                    comment: event.comment,
                     type: event.type,
                     dateCreated: event.dateCreated
             ]
         }
     }
 
-    private marshallBuy(Buy buy) {
+    private static marshallBuy(Buy buy) {
         [
-                image: buy.images?.iterator()?.next(),
-                link: grailsLinkGenerator.link(absolute: true, uri: "/api/buys/$buy.id")
-        ]
-    }
-
-    private marshallComment(Comment comment) {
-        [
-                text: comment.text,
-                link: grailsLinkGenerator.link(absolute: true, uri: "/api/comments/$comment.id")
+                id: buy.id,
+                image: buy.images?.iterator()?.next()
         ]
     }
 }
