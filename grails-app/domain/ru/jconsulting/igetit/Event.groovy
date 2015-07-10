@@ -11,15 +11,11 @@ class Event {
 
     Buy buy
 
-    Comment comment
+    String comment
 
     String type
 
     Date dateCreated
-
-    transient int retryCount
-
-    static transients = ['retryCount']
 
     static constraints = {
         buy nullable: true

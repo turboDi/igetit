@@ -18,12 +18,12 @@ class EventProducerTest extends GroovyTestCase {
 
     void testAddComment() {
         prepareCommonData()
-        def c = new Comment(text: "123", author: p2, buy: buy).save()
+        new Comment(text: "123", author: p2, buy: buy).save()
 
         Event event = Event.findByEffector(p1);
 
         assertEquals 'comment', event.type
-        assertEquals c, event.comment
+        assertEquals '123', event.comment
         assertEquals buy, event.buy
         assertEquals p2, event.initiator
     }
@@ -36,7 +36,7 @@ class EventProducerTest extends GroovyTestCase {
         Event event = Event.findByEffector(p2);
 
         assertEquals 'like', event.type
-        assertEquals c, event.comment
+        assertEquals '123', event.comment
         assertEquals buy, event.buy
         assertEquals p1, event.initiator
     }
