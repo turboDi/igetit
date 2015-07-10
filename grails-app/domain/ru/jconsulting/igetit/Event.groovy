@@ -19,6 +19,8 @@ class Event {
 
     transient int retryCount
 
+    static transients = ['retryCount']
+
     static constraints = {
         buy nullable: true
         comment nullable: true
