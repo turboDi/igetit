@@ -30,13 +30,17 @@ class EventProducer extends AbstractPersistenceEventListener {
             try {
                 Event.withTransaction {
                     log.debug("Saving event $event")
-                    if (event.type == 'comment') {
-                        event.comment.refresh()
-                    }
                     event.save()
                 }
             } catch (Exception e) {
-                log.error("Failed to produce new event", e)
+                log.debug('Failed to produce new event', e)
+                //FIXME: sometimes comment persisting occurs after event persisting and causes constraint violation error
+                if (event.retryCount++ > 3) {
+                    log.error('Failed to produce new event', e)
+                } else {
+                    Thread.sleep(1000)
+                    saveNewEvent(event)
+                }
             }
         }
     }

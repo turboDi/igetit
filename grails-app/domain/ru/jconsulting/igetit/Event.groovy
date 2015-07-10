@@ -17,6 +17,8 @@ class Event {
 
     Date dateCreated
 
+    transient int retryCount
+
     static constraints = {
         buy nullable: true
         comment nullable: true
