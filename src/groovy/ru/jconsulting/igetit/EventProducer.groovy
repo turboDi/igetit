@@ -38,7 +38,7 @@ class EventProducer extends AbstractPersistenceEventListener {
                 if (event.retryCount++ > 3) {
                     log.error('Failed to produce new event', e)
                 } else {
-                    Thread.sleep(1000)
+                    sleep 1000
                     saveNewEvent(event)
                 }
             }
