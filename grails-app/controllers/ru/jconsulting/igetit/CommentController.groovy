@@ -14,7 +14,7 @@ class CommentController extends IGetItRestfulController<Comment> {
     protected List<Comment> listAllResources(Map params) {
         if (params.buyId) {
             def bid = params.buyId
-            Comment.where {buy.id == bid}.list(params)
+            Comment.where { buy.id == bid && deleted == false }.list(params)
         } else {
             throw new IllegalStateException("Comments list requested without required 'buyId' parameter")
         }
@@ -36,6 +36,9 @@ class CommentController extends IGetItRestfulController<Comment> {
         Comment comment = super.queryForResource(id) as Comment
         def currentUser = getAuthenticatedUser()
         if (request.method != 'GET' && comment && !comment.author.equals(currentUser)) {
+            if (request.method == 'DELETE' && comment.buy.owner.equals(currentUser)) {
+                return comment
+            }
             log.error("Invalid $request.method attempt by '$currentUser' of '$comment'")
             throw new AccessDeniedException('This comment belongs to another user')
         }
