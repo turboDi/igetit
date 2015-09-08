@@ -51,7 +51,7 @@ class Person {
     static mapping = {
         password column: '`password`'
         avatar cascade: 'save-update, delete'
-        followersCount formula: "(select count(*) from person_follower pf where pf.person_id = id)"
+        followersCount formula: "(select count(*) from person_follower pf where pf.person_id = id and not pf.deleted)"
     }
 
     Set<Role> getAuthorities() {
