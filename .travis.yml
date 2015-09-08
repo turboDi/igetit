@@ -10,7 +10,8 @@ before_deploy:
 - chmod +x grailsw
 deploy:
   provider: heroku
-  app: igetit
-  on: master
+  app:
+    master: mychoice
+    develop: igetit
   api_key:
     secure: "L8V6Ru17ty3ouAuJzdBToZMcSX9DqaelfNsjeP3+5+Wtioa0mWJ+UkrrbCUskp5K8C+EmEhxIAd5+DzvrBT3Q8DwPFmlW/TDrSGLcdU4u98vZTMzUJhQNI4P6KudR1B1utc2kWf8786fpN8bvSv9V+zYIA/Pt16w2UOF6DvlJGM="
