@@ -6,7 +6,16 @@ import grails.transaction.Transactional
 class SearchService {
 
     def searchBuys(Map params) {
+        def sort
+        if (params.sort instanceof Map) {
+            sort = params.remove('sort')
+        }
         Buy.createCriteria().list(params) {
+            if (sort) {
+                for (e in sort) {
+                    order(e.key, e.value)
+                }
+            }
             eq 'deleted', false
             if (params.term) {
                 ilike 'name', "%$params.term%"
@@ -26,9 +35,25 @@ class SearchService {
 
     @SuppressWarnings("GroovyAssignabilityCheck")
     def searchPersons(Map params) {
+        def sort
+        if (params.sort instanceof Map) {
+            sort = params.remove('sort')
+        }
         def ids = Person.createCriteria().list(params) {
+            if (sort) {
+                for (e in sort) {
+                    order(e.key, e.value)
+                }
+            }
             projections {
                 groupProperty('id')
+                if (sort) {
+                    for (e in sort) {
+                        groupProperty(e.key)
+                    }
+                } else if (params.sort) {
+                    groupProperty(params.sort)
+                }
             }
             eq 'deleted', false
             if (params.term) {
@@ -42,6 +67,6 @@ class SearchService {
                 eq 'b.category.id', params.categoryId
             }
         }
-        Person.getAll(ids)
+        Person.getAll(sort || params.sort ? ids.collect { it[0] } : ids)
     }
 }
