@@ -13,7 +13,7 @@ public class IGetItExceptionResolver extends GrailsExceptionResolver {
 
     @Override
     protected void logStackTrace(Exception e, HttpServletRequest request) {
-        if (e instanceof AccessDeniedException) {
+        if (e instanceof AccessDeniedException || e instanceof NotFoundException) {
             return;
         }
         super.logStackTrace(e, request);

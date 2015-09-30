@@ -49,7 +49,7 @@ abstract class IGetItRestfulController<T> extends RestfulController<T> {
 
     @Override
     protected List<T> listAllResources(Map params) {
-        resource.where { eq 'deleted', false }.list(params)
+        resource.findAllByDeleted(false, params)
     }
 
     @Override

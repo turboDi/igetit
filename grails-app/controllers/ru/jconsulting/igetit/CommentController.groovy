@@ -13,8 +13,11 @@ class CommentController extends IGetItRestfulController<Comment> {
     @Override
     protected List<Comment> listAllResources(Map params) {
         if (params.buyId) {
-            def bid = params.buyId
-            Comment.where { buy.id == bid && deleted == false }.list(params)
+            def buy = Buy.get(params.buyId)
+            if (!buy) {
+                throw new NotFoundException("There is no such buy with id=${params.buyId}")
+            }
+            Comment.findAllByBuyAndDeleted(buy, false, params)
         } else {
             throw new IllegalStateException("Comments list requested without required 'buyId' parameter")
         }
