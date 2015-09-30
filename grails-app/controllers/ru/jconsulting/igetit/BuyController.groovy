@@ -13,8 +13,11 @@ class BuyController extends IGetItRestfulController<Buy> {
     @Override
     protected List<Buy> listAllResources(Map params) {
         if (params.personId) {
-            def pid = params.personId
-            Buy.where { owner.id == pid && deleted == false }.list(params)
+            def person = Person.get(params.personId)
+            if (!person) {
+                throw new NotFoundException("There is no such person with id=${params.personId}")
+            }
+            Buy.findAllByOwnerAndDeleted(person, false, params)
         } else {
             super.listAllResources(params)
         }

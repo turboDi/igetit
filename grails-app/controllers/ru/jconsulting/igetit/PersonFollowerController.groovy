@@ -12,8 +12,11 @@ class PersonFollowerController extends IGetItRestfulController<PersonFollower> {
     @Override
     protected List<PersonFollower> listAllResources(Map params) {
         if (params.personId) {
-            def pid = params.personId
-            PersonFollower.where { person.id == pid && deleted == false }.list(params)
+            def person = Person.get(params.personId)
+            if (!person) {
+                throw new NotFoundException("There is no such person with id=${params.personId}")
+            }
+            PersonFollower.findAllByPersonAndDeleted(person, false, params)
         } else {
             throw new IllegalStateException("Followers list requested without required 'personId' parameter")
         }

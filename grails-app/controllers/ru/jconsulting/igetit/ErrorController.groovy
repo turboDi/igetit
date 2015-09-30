@@ -22,6 +22,14 @@ class ErrorController {
         }
     }
 
+    def handleNotFoundException() {
+        def e = request.exception
+        render(status: NOT_FOUND, contentType: "application/json") {
+            status = NOT_FOUND.value()
+            message = e.message
+        }
+    }
+
     def handleNotFound() {
         log.error("Wrong url $request.forwardURI")
         render(status: NOT_FOUND, contentType: "application/json") {

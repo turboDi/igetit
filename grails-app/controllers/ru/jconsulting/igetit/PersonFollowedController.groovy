@@ -18,9 +18,10 @@ class PersonFollowedController {
         if (!pid) {
             throw new IllegalStateException("Followed list requested without required 'personId' parameter")
         }
-        if (Person.get(pid)) {
+        def person = Person.get(pid)
+        if (person) {
             JSON.use('personFollowed') {
-                render PersonFollower.where { follower.id == pid && deleted == false }.list(params) as JSON
+                render PersonFollower.findAllByFollowerAndDeleted(person, false, params) as JSON
             }
         } else {
             render status: NOT_FOUND
