@@ -28,7 +28,7 @@ class PersonControllerSpec extends Specification {
         accountService.tryReAuthenticate(_ as String) >> { u -> [username: u] }
         controller.accountService = accountService
 
-        controller.restAuthenticationTokenJsonRenderer = [generateJson : {t ->
+        controller.accessTokenJsonRenderer = [generateJson : {t ->
             (t as JSON).toString()
         }]
 

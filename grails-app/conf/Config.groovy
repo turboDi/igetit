@@ -153,10 +153,6 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/category/update':             ['ROLE_ADMIN']
 ]
 
-grails.plugin.springsecurity.rest.login.useJsonCredentials = true
-grails.plugin.springsecurity.rest.token.storage.useGorm = true
-grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = 'ru.jconsulting.igetit.auth.AuthenticationToken'
-
 grails.plugin.likeable.liker.className = 'ru.jconsulting.igetit.Person'
 grails.plugin.likeable.liker.evaluator = { delegate.getAuthenticatedUser() }
 

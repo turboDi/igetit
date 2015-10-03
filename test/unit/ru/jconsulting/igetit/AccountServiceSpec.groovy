@@ -1,10 +1,11 @@
 package ru.jconsulting.igetit
 
-import com.odobo.grails.plugin.springsecurity.rest.token.generation.TokenGenerator
-import com.odobo.grails.plugin.springsecurity.rest.token.storage.TokenStorageService
+import grails.plugin.springsecurity.rest.token.AccessToken
+import grails.plugin.springsecurity.rest.token.generation.TokenGenerator
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import ru.jconsulting.igetit.auth.PersonRole
@@ -29,8 +30,9 @@ class AccountServiceSpec extends Specification {
             throw new UsernameNotFoundException('')
         }
         service.userDetailsService = userDetailsService.createMock()
-        service.tokenGenerator = [ generateToken: { UUID.randomUUID().toString() } ] as TokenGenerator
-        service.tokenStorageService = [ storeToken: { t, u -> } ] as TokenStorageService
+        service.tokenGenerator = [ generateAccessToken: { UserDetails u ->
+            new AccessToken(u, u.authorities, UUID.randomUUID().toString())
+        } ] as TokenGenerator
     }
 
     void "test reauth existent"() {

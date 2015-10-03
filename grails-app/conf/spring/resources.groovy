@@ -8,7 +8,6 @@ import ru.jconsulting.igetit.IGetItExceptionResolver
 import ru.jconsulting.igetit.PersonEmailListener
 import ru.jconsulting.igetit.storage.FileSystemStorage
 import ru.jconsulting.igetit.storage.GoogleDriveServiceFactory
-import ru.jconsulting.igetit.auth.IGetItRestAuthenticationTokenJsonRenderer
 import ru.jconsulting.igetit.marshallers.*
 import ru.jconsulting.igetit.storage.GoogleDriveStorage
 
@@ -29,8 +28,6 @@ beans = {
     customMarshallerRegistrar(MarshallerListRegistrar)
 
     storage(FileSystemStorage)
-
-    restAuthenticationTokenJsonRenderer(IGetItRestAuthenticationTokenJsonRenderer)
 
     eventProducer(EventProducer)
     personEmailListener(PersonEmailListener)

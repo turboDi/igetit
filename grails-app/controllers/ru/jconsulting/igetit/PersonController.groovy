@@ -10,7 +10,7 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
 class PersonController extends IGetItRestfulController<Person> {
 
     def accountService
-    def restAuthenticationTokenJsonRenderer
+    def accessTokenJsonRenderer
 
     PersonController() {
         super(Person, ['username', 'confirmToken', 'oAuthProvider'])
@@ -19,13 +19,12 @@ class PersonController extends IGetItRestfulController<Person> {
     @Override
     @Secured(['permitAll'])
     def save() {
-        def token = null
         if (!params.oAuthProvider) {
             params.email = params.username
         } else {
             params.password = 'N/A'
-            token = accountService.tryReAuthenticate(params.username, params.oAuthProvider)
         }
+        def token = params.oAuthProvider ? accountService.tryReAuthenticate(params.username, params.oAuthProvider) : null
         if (!token) {
             def p = new Person(params)
             p.validate()
@@ -36,13 +35,16 @@ class PersonController extends IGetItRestfulController<Person> {
             }
             token = accountService.register(p)
         }
-        render JSON.parse(restAuthenticationTokenJsonRenderer.generateJson(token)) as JSON
+        render JSON.parse(accessTokenJsonRenderer.generateJson(token)) as JSON
     }
 
     @Override
     protected Person queryForResource(Serializable id) {
-        Person person = super.queryForResource(id) as Person
         def currentUser = getAuthenticatedUser()
+        if ('me' == id) {
+            return currentUser
+        }
+        Person person = super.queryForResource(id) as Person
         if (request.method != 'GET' && person && !person.equals(currentUser)) {
             log.error("Invalid $request.method attempt by '$currentUser' of '$person'")
             throw new AccessDeniedException('You can\'t modify another user\'s info')

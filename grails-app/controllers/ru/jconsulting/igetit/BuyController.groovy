@@ -13,7 +13,7 @@ class BuyController extends IGetItRestfulController<Buy> {
     @Override
     protected List<Buy> listAllResources(Map params) {
         if (params.personId) {
-            def person = Person.get(params.personId)
+            def person = 'me' == params.personId ? getAuthenticatedUser() : Person.get(params.personId)
             if (!person) {
                 throw new NotFoundException("There is no such person with id=${params.personId}")
             }
