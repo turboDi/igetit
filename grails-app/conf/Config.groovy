@@ -155,6 +155,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 
 grails.plugin.likeable.liker.className = 'ru.jconsulting.igetit.Person'
 grails.plugin.likeable.liker.evaluator = { delegate.getAuthenticatedUser() }
+grails.plugin.likeable.permission.evaluator = { true }
 
 site {
     url = 'http://mychoiceapp.ru'

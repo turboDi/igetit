@@ -63,7 +63,7 @@ grails.project.dependency.resolution = {
         compile ':spring-security-rest:1.5.2', {
             excludes: 'spring-security-core'
         }
-        compile ':likeable:0.3.2'
+        compile ':likeable:0.4.0'
         compile ':mail:1.0.7'
 
         // plugins needed at runtime but not for compilation

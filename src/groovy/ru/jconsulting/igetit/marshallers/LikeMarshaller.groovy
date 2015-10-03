@@ -17,6 +17,7 @@ class LikeMarshaller extends BaseMarshaller implements MarshallerRegistrar {
         JSON.registerObjectMarshaller(Like) { Like like ->
             Person p = like.liker as Person
             return [
+                    id: like.id,
                     liker: marshallPerson(p) << [
                             city: p.city,
                             iFollow: PersonFollower.countByPersonAndFollowerAndDeleted(p, currentPerson(), false) > 0
