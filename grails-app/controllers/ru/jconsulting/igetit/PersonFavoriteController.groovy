@@ -25,10 +25,8 @@ class PersonFavoriteController extends IGetItRestfulController<PersonFavorite> {
 
     @Override
     protected PersonFavorite queryForResource(Serializable id) {
-        PersonFavorite.where {
-            person == getAuthenticatedUser()
-            buy.id == id
-        }.get()
+        def personFavorite = PersonFavorite.get(id)
+        personFavorite.person == getAuthenticatedUser() ? personFavorite : null
     }
 
     @Override
