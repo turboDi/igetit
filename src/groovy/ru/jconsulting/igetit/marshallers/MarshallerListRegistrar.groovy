@@ -2,8 +2,6 @@ package ru.jconsulting.igetit.marshallers
 
 import org.springframework.beans.factory.annotation.Autowired
 
-import javax.annotation.PostConstruct
-
 /**
  *
  *
@@ -15,7 +13,6 @@ class MarshallerListRegistrar {
     @Autowired
     List<MarshallerRegistrar> marshallerList = []
 
-    @PostConstruct
     void register() {
         marshallerList.each{ it.register() }
     }
