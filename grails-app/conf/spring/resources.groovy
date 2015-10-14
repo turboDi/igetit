@@ -67,10 +67,12 @@ beans = {
         exceptionMappings = ['java.lang.Exception': '/error']
     }
 
-    flyway(Flyway) { bean ->
-        bean.initMethod = 'migrate'
-        dataSource = ref('dataSource')
-        locations = 'migrations'
+    if (Environment.current != Environment.TEST) {
+        flyway(Flyway) { bean ->
+            bean.initMethod = 'migrate'
+            dataSource = ref('dataSource')
+            locations = 'migrations'
+        }
     }
 
     def sessionFactoryBeanDef = getBeanDefinition('sessionFactory')

@@ -9,6 +9,7 @@ import spock.lang.Specification
 class PersonFollowerControllerSpec extends Specification {
 
     Person user1, user2, user3, user4
+    PersonFollower pf
 
     def setup() {
         Person.metaClass.encodePassword { -> }
@@ -17,10 +18,10 @@ class PersonFollowerControllerSpec extends Specification {
         user3 = new Person(username: 'user3@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         user4 = new Person(username: 'user4@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         PersonFollower.create user1, user2, true
-        PersonFollower.create user1, user3, true
-        PersonFollower pf = new PersonFollower(person: user1, follower: user4)
-        pf.deleted = true
-        pf.save(flush: true)
+        pf = PersonFollower.create user1, user3, true
+        PersonFollower pf1 = new PersonFollower(person: user1, follower: user4)
+        pf1.deleted = true
+        pf1.save(flush: true)
         controller.metaClass.getAuthenticatedUser = { -> user3 }
         controller.params.format = 'json'
     }
@@ -56,7 +57,7 @@ class PersonFollowerControllerSpec extends Specification {
 
     void "test stop following"() {
         given:
-        params.personId = user1.id
+        params.id = pf.id
         when:
         controller.delete()
         then:
@@ -68,13 +69,6 @@ class PersonFollowerControllerSpec extends Specification {
     void "test query without personId parameter"() {
         when:
         controller.index()
-        then:
-        thrown(IllegalStateException)
-    }
-
-    void "test delete without personId parameter"() {
-        when:
-        controller.delete()
         then:
         thrown(IllegalStateException)
     }
