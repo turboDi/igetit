@@ -20,7 +20,7 @@ class LikeMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     id: like.id,
                     liker: marshallPerson(p) << [
                             city: p.city,
-                            iFollow: PersonFollower.countByPersonAndFollowerAndDeleted(p, currentPerson(), false) > 0
+                            myFollow: PersonFollower.findByPersonAndFollowerAndDeleted(p, currentPerson(), false)?.id
                     ],
                     dateCreated: like.dateCreated
             ]
