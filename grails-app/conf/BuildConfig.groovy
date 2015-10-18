@@ -26,7 +26,7 @@ grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
         // specify dependency exclusions here; for example, uncomment this to disable ehcache:
-        excludes 'log4j'
+        // excludes 'log4j'
     }
     log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
@@ -62,7 +62,7 @@ grails.project.dependency.resolution = {
         compile ':cache:1.1.1'
         compile ":spring-security-core:2.0-RC5"
         compile ':spring-security-rest:1.5.2', {
-            excludes: 'spring-security-core'
+            excludes 'spring-security-core', 'log4j-over-slf4j'
         }
         compile ':likeable:0.4.0'
         compile ':mail:1.0.7'
