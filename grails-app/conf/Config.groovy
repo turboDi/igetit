@@ -153,6 +153,9 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/category/delete':             ['ROLE_ADMIN'],
         '/category/update':             ['ROLE_ADMIN']
 ]
+grails.plugin.springsecurity.filterChain.chainMap = [
+        '/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'
+]
 
 grails.plugin.likeable.liker.className = 'ru.jconsulting.igetit.Person'
 grails.plugin.likeable.liker.evaluator = { delegate.getAuthenticatedUser() }
