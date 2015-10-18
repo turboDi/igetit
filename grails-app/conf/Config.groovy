@@ -159,7 +159,7 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 
 grails.plugin.likeable.liker.className = 'ru.jconsulting.igetit.Person'
 grails.plugin.likeable.liker.evaluator = { delegate.getAuthenticatedUser() }
-grails.plugin.likeable.permission.evaluator = { true }
+grails.plugin.likeable.permission.evaluator = { liker, likeable -> true }
 
 site {
     url = 'http://mychoiceapp.ru'
