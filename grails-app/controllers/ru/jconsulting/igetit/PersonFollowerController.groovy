@@ -25,11 +25,19 @@ class PersonFollowerController extends IGetItRestfulController<PersonFollower> {
 
     @Override
     protected PersonFollower createResource(Map params) {
-        Person person = 'me' == params.personId ? getAuthenticatedUser() : Person.get(params.personId)
-        if (!person) {
-            log.error("Couldn't find person with id '$params.personId'")
+        def currentUser = getAuthenticatedUser()
+        Person person = 'me' == params.personId ? currentUser : Person.get(params.personId)
+        if (person) {
+            PersonFollower pf = PersonFollower.findByPersonAndFollowerAndDeleted(person, currentUser, true)
+            if (pf) {
+                pf.deleted = false
+                return pf
+            } else {
+                return new PersonFollower(person: person, follower: currentUser)
+            }
+        } else {
+            throw new NotFoundException("There is no such person with id=${params.personId}")
         }
-        new PersonFollower(person: person, follower: getAuthenticatedUser())
     }
 
     @Override

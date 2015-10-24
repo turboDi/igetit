@@ -51,8 +51,7 @@ class PersonFollowerControllerSpec extends Specification {
         when:
         controller.save()
         then:
-        response.status == 422
-        response.json.errors.size() == 1
+        thrown(NotFoundException)
     }
 
     void "test stop following"() {
@@ -81,5 +80,16 @@ class PersonFollowerControllerSpec extends Specification {
         controller.delete()
         then:
         response.status == 404
+    }
+
+    void "test restore deleted personFollower"() {
+        given:
+        controller.metaClass.getAuthenticatedUser = { -> user4 }
+        params.personId = user1.id
+        when:
+        controller.save()
+        then:
+        response.status == 201
+        PersonFollower.countByPersonAndFollowerAndDeleted(user1, user4, false) == 1
     }
 }

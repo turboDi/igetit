@@ -23,6 +23,7 @@ class PersonFollowedControllerSpec extends Specification {
 
         PersonFollower.create user1, user2, true
         pf = PersonFollower.create user1, user3, true
+        controller.metaClass.getAuthenticatedUser = { -> user3 }
     }
 
     void "test get all followed"() {
