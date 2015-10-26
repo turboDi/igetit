@@ -20,6 +20,7 @@ class ImageControllerSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
+        Person.metaClass.accountService = [ isPasswordValid: { p, e -> true } ]
         user = new Person(username: 'user@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         Person user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         def p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))

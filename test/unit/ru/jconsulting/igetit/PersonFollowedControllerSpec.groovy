@@ -14,6 +14,7 @@ class PersonFollowedControllerSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
+        Person.metaClass.accountService = [ isPasswordValid: { p, e -> true } ]
         user1 = new Person(username: 'user1@ww.ww', fullName: 'FIO1', password: 'pwd').save(flush: true, failOnError: true)
         user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO2', password: 'pwd').save(flush: true, failOnError: true)
         user3 = new Person(username: 'user3@ww.ww', fullName: 'FIO3', password: 'pwd').save(flush: true, failOnError: true)

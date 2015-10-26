@@ -12,13 +12,14 @@ class SubscriptionServiceSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
+        Person.metaClass.accountService = [ isPasswordValid: { p, e -> true } ]
         user1 = new Person(username: 'user1@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         Price p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
         new Buy(name: 'buy1', owner: user1, price: p).save(flush: true, failOnError: true)
         new Buy(name: 'buy2', owner: user2, price: p).save(flush: true, failOnError: true)
-        new Event(effector: user1, initiator: user2, text: '123', refId: 1, type: '123', args: '123').save(flush: true, failOnError: true)
-        new Event(effector: user1, initiator: user2, text: '123', refId: 1, type: '123', args: '123').save(flush: true, failOnError: true)
+        new Event(effector: user1, initiator: user2, type: '123').save(flush: true, failOnError: true)
+        new Event(effector: user1, initiator: user2, type: '123').save(flush: true, failOnError: true)
     }
 
     void "test tape"() {

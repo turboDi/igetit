@@ -13,6 +13,7 @@ class EmailServiceSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
+        Person.metaClass.accountService = [ isPasswordValid: { p, e -> true } ]
         user = new Person(username: 'user@ww.ww', email: 'user@ww.ww', fullName: 'FIO', password: 'pwd', confirmToken: '1').save(flush: true, failOnError: true)
     }
 

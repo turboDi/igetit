@@ -12,6 +12,7 @@ import ru.jconsulting.igetit.auth.Role
 class AccountService {
 
     def userDetailsService
+    def passwordEncoder
     TokenGenerator tokenGenerator
 
     def register(Person p) {
@@ -36,5 +37,21 @@ class AccountService {
 
     def getUserRole() {
         Role.findByAuthority('ROLE_USER')
+    }
+
+    def isPasswordValid(Person p, errors) {
+        def valid = true
+        if (p.isAttached() && p.isDirty('password')) {
+            def oldPassword = p.getPersistentValue('password')
+            if (!p.oldPassword || !passwordEncoder.isPasswordValid(oldPassword, p.oldPassword, null)) {
+                errors.rejectValue('oldPassword', 'validation.password.old.invalid.message', null, 'Current password is incorrect')
+                valid = false
+            }
+            if (passwordEncoder.isPasswordValid(oldPassword, p.password, null)) {
+                errors.rejectValue('password', 'validation.password.new.same.message', null, 'Please choose a different password from your current one')
+                valid = false
+            }
+        }
+        valid
     }
 }

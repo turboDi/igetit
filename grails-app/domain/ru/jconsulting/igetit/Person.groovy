@@ -6,9 +6,11 @@ import ru.jconsulting.igetit.auth.Role
 class Person {
 
     transient springSecurityService
+    transient accountService
 
     String username
     String password
+    String oldPassword
     String email
     Image avatar
     String fullName
@@ -28,13 +30,16 @@ class Person {
     boolean deleted
 
     static hasMany = [buys: Buy]
-    static transients = ['springSecurityService']
+    static transients = ['springSecurityService', 'accountService', 'oldPassword']
     static embedded = ['city']
 
     static constraints = {
         username blank: false, unique: true
         email nullable: true, email: true, unique: true
-        password blank: false
+        password blank: false, validator: { val, obj, errors ->
+            obj.accountService.isPasswordValid(obj, errors)
+        }
+        oldPassword bindable: true
         fullName blank: false
         avatar nullable: true
         city nullable: true
