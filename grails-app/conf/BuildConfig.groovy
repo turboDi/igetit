@@ -56,7 +56,7 @@ grails.project.dependency.resolution = {
 
     plugins {
         // plugins for the build system only
-        build ":tomcat:7.0.52.1"
+        build ":jetty:3.0.0"
 
         // plugins for the compile step
         compile ':cache:1.1.1'

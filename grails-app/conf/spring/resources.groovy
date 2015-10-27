@@ -5,6 +5,7 @@ import grails.util.Environment
 import org.codehaus.groovy.grails.orm.hibernate.HibernateEventListeners
 import org.flywaydb.core.Flyway
 import ru.jconsulting.igetit.EventProducer
+import ru.jconsulting.igetit.HeaderBearerTokenReader
 import ru.jconsulting.igetit.IGetItExceptionResolver
 import ru.jconsulting.igetit.PersonEmailListener
 import ru.jconsulting.igetit.storage.FileSystemStorage
@@ -29,6 +30,7 @@ beans = {
     customMarshallerRegistrar(MarshallerListRegistrar)
 
     storage(FileSystemStorage)
+    tokenReader(HeaderBearerTokenReader)
 
     eventProducer(EventProducer)
     personEmailListener(PersonEmailListener)
