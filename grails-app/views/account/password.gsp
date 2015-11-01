@@ -73,7 +73,7 @@
                                                                                 <tbody>
                                                                                 <tr>
                                                                                     <td height="24px" id="ecxwelcome_header_wrapper" style="padding:20px 24px 0 24px;">
-                                                                                        <span style="font-size:22px;line-height:32px;font-weight:500;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;" id="ecxwelcome_header">${message(code: 'email.welcome.text', locale: locale)}, <span id="ecxheader_username" style="color:#681B74;text-decoration:none;font-size:22px;line-height:32px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;"> ${p.fullName}</span>!</span>
+                                                                                        <span style="font-size:22px;line-height:32px;font-weight:500;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;" id="ecxwelcome_header">${message(code: 'email.greeting.text', locale: locale)} <span id="ecxheader_username" style="color:#681B74;text-decoration:none;font-size:22px;line-height:32px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;"> ${p.fullName}</span>!</span>
                                                                                     </td>
                                                                                 </tr>
                                                                                 </tbody>
@@ -82,7 +82,7 @@
                                                                                 <tbody>
                                                                                 <tr>
                                                                                     <td height="20px" id="ecxwelcome_body_wrapper" style="padding:16px 24px 0 24px;">
-                                                                                        <span style="font-size:16px;line-height:20px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;" id="ecxwelcome_body">${message(code: 'email.confirm.text', locale: locale)}</span>
+                                                                                        <span style="font-size:16px;line-height:20px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;" id="ecxwelcome_body">${message(code: 'email.password.new.text', locale: locale)}</span>
                                                                                     </td>
                                                                                 </tr>
                                                                                 </tbody>
@@ -90,10 +90,19 @@
                                                                             <table cellspacing="0" cellpadding="0" width="100%" style="border-collapse:collapse;">
                                                                                 <tbody>
                                                                                 <tr>
-                                                                                    <td height="17px" id="ecxwelcome_cta_wrapper" style="padding:30px 0 38px 0;">
+                                                                                    <td height="17px" id="ecxwelcome_cta_wrapper" style="padding:30px 0 0 0;">
                                                                                         <center>
-                                                                                            <a id="ecxwelcome_cta" style="color:#681B74;text-decoration:none;border-radius:3px;border:1px solid #681B74;padding:10px 19px 12px 19px;font-size:17px;font-weight:500;white-space:nowrap;border-collapse:collapse;display:inline-block;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;" href="${createLink(absolute:'true', controller:'account', action:'verify', params:[key: key])}" target="_blank">${message(code: 'email.confirm.button.text', locale: locale)}</a>
+                                                                                            <span style="color:#681B74;text-decoration:none;padding:10px 19px 12px 19px;font-size:17px;font-weight:500;white-space:nowrap;border-collapse:collapse;display:inline-block;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;">${newPassword}</span>
                                                                                         </center>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            <table cellspacing="0" cellpadding="0" width="100%" style="border-collapse:collapse;">
+                                                                                <tbody>
+                                                                                <tr>
+                                                                                    <td height="20px" id="ecxwelcome_footer_wrapper" style="padding:16px 24px 38px 24px;">
+                                                                                        <span style="font-size:16px;line-height:20px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;" id="ecxwelcome_footer">${message(code: 'email.password.change.text', locale: locale)}</span>
                                                                                     </td>
                                                                                 </tr>
                                                                                 </tbody>

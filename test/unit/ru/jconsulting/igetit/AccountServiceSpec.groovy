@@ -36,6 +36,7 @@ class AccountServiceSpec extends Specification {
             new AccessToken(u, u.authorities, UUID.randomUUID().toString())
         } ] as TokenGenerator
         service.passwordEncoder = [ isPasswordValid: { p1, p2, salt -> p1 == p2 } ]
+        service.passwordGenerator = [ generate: { n -> '123' }]
     }
 
     void "test reauth existent"() {
@@ -99,5 +100,13 @@ class AccountServiceSpec extends Specification {
         then:
         !service.isPasswordValid(user, errors)
         errors.errorCount == 1
+    }
+
+    void "test reset password"() {
+        when:
+        def pwd = service.resetPassword(user)
+        then:
+        pwd == '123'
+        user.password == '123'
     }
 }

@@ -43,8 +43,11 @@ class UrlMappings {
 
         "/api/subscription/$action"(controller: "subscription", version: "1.0", namespace: "v1")
         "/api/search/$action"(controller: "search", version: "1.0", namespace: "v1")
-        "/api/verification"(controller: "verification", version: "1.0", namespace: "v1") {
-            action = [POST: "resend", GET: "verify"]
+        "/api/account/verification"(controller: "account", version: "1.0", namespace: "v1") {
+            action = [POST: "sendVerification", GET: "verify"]
+        }
+        "/api/account/password"(controller: "account", version: "1.0", namespace: "v1") {
+            action = [POST: "resetPassword"]
         }
 
         "403"(controller: "error", action: "handleForbidden")

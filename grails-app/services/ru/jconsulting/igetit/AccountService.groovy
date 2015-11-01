@@ -13,6 +13,7 @@ class AccountService {
 
     def userDetailsService
     def passwordEncoder
+    def passwordGenerator
     TokenGenerator tokenGenerator
 
     def register(Person p) {
@@ -37,6 +38,13 @@ class AccountService {
 
     def getUserRole() {
         Role.findByAuthority('ROLE_USER')
+    }
+
+    def resetPassword(Person p) {
+        def newPassword = passwordGenerator.generate(9)
+        p.password = newPassword
+        p.save(validate: false)
+        newPassword
     }
 
     def isPasswordValid(Person p, errors) {

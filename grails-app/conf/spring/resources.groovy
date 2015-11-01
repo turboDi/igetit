@@ -5,9 +5,10 @@ import grails.util.Environment
 import org.codehaus.groovy.grails.orm.hibernate.HibernateEventListeners
 import org.flywaydb.core.Flyway
 import ru.jconsulting.igetit.EventProducer
-import ru.jconsulting.igetit.HeaderBearerTokenReader
+import ru.jconsulting.igetit.security.HeaderBearerTokenReader
 import ru.jconsulting.igetit.IGetItExceptionResolver
 import ru.jconsulting.igetit.PersonEmailListener
+import ru.jconsulting.igetit.security.PasswordGenerator
 import ru.jconsulting.igetit.storage.FileSystemStorage
 import ru.jconsulting.igetit.storage.GoogleDriveServiceFactory
 import ru.jconsulting.igetit.marshallers.*
@@ -31,6 +32,7 @@ beans = {
 
     storage(FileSystemStorage)
     tokenReader(HeaderBearerTokenReader)
+    passwordGenerator(PasswordGenerator)
 
     eventProducer(EventProducer)
     personEmailListener(PersonEmailListener)

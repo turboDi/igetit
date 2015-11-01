@@ -15,7 +15,7 @@ class PersonEmailListenerSpec extends NonTransactionalIntegrationSpec {
         Person.withNewTransaction {
             new Person(username: 'p1@ww.ww', fullName: 'FIO', password: '123', email: 'p1@ww.ww').save(failOnError: true)
         }
-        esMock.sendConfirmationEmail(_ as Person) >> { Person p -> }
+        esMock.sendVerification(_ as Person) >> { Person p -> }
         personEmailListener.emailService = esMock
     }
 
@@ -29,7 +29,7 @@ class PersonEmailListenerSpec extends NonTransactionalIntegrationSpec {
             new Person(username: 'p2@ww.ww', fullName: 'FIO', password: '123', email: 'p2@ww.ww').save(failOnError: true)
         }
         then:
-        1 * esMock.sendConfirmationEmail(_)
+        1 * esMock.sendVerification(_)
     }
 
     void "test update person email"() {
@@ -40,7 +40,7 @@ class PersonEmailListenerSpec extends NonTransactionalIntegrationSpec {
             p.save()
         }
         then:
-        1 * esMock.sendConfirmationEmail(_)
+        1 * esMock.sendVerification(_)
     }
 
     void "test update person name"() {
@@ -51,6 +51,6 @@ class PersonEmailListenerSpec extends NonTransactionalIntegrationSpec {
             p.save()
         }
         then:
-        0 * esMock.sendConfirmationEmail(_)
+        0 * esMock.sendVerification(_)
     }
 }
