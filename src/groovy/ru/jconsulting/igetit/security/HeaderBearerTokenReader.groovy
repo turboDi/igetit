@@ -18,9 +18,14 @@ class HeaderBearerTokenReader extends BearerTokenReader {
     @Override
     AccessToken findToken(HttpServletRequest request) {
         String tokenValue = null
+        String header = request.getHeader('Authorization')
 
-        if (request.getHeader('Authorization')?.startsWith('Bearer')) {
-            tokenValue = request.getHeader('Authorization').substring(7)
+        if (header?.startsWith('Bearer')) {
+            if (header.length() > 7) {
+                tokenValue = header.substring(7)
+            } else {
+                log.error("Bearer Token Header had invalid format: {$header}")
+            }
         }
 
         return tokenValue ? new AccessToken(tokenValue) : null
