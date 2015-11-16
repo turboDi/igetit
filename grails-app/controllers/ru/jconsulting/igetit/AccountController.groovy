@@ -22,17 +22,21 @@ class AccountController {
         }
     }
 
+    @Secured(['permitAll'])
+    def resetPassword(String email) {
+        Person p
+        if (!email || !(p = Person.findByEmail(email))) {
+            render status: NOT_FOUND
+        } else {
+            emailService.sendPassword(p, accountService.resetPassword(p))
+            render status: OK
+        }
+    }
+
     @Secured(['ROLE_USER'])
     def sendVerification() {
         Person p = getAuthenticatedUser() as Person
         emailService.sendVerification(p)
-        render status: OK
-    }
-
-    @Secured(['ROLE_USER'])
-    def resetPassword() {
-        Person p = getAuthenticatedUser() as Person
-        emailService.sendPassword(p, accountService.resetPassword(p))
         render status: OK
     }
 }
