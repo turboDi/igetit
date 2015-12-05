@@ -99,12 +99,6 @@ CREATE TABLE person_role (
   person_id bigint NOT NULL
 );
 
-CREATE TABLE price (
-  id bigint NOT NULL,
-  currency character varying(255) NOT NULL,
-  value numeric(19,2) NOT NULL
-);
-
 CREATE TABLE role (
   id bigint NOT NULL,
   authority character varying(255) NOT NULL
