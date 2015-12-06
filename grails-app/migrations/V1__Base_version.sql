@@ -184,14 +184,6 @@ CREATE SEQUENCE seq_person_follower
   CACHE 1
   OWNED BY person_follower.id;
 
-CREATE SEQUENCE seq_price
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1
-  OWNED BY price.id;
-
 CREATE SEQUENCE seq_role
   START WITH 1
   INCREMENT BY 1
@@ -251,9 +243,6 @@ ADD CONSTRAINT person_role_pk PRIMARY KEY (role_id, person_id);
 
 ALTER TABLE ONLY person
 ADD CONSTRAINT person_username_key UNIQUE (username);
-
-ALTER TABLE ONLY price
-ADD CONSTRAINT price_pk PRIMARY KEY (id);
 
 ALTER TABLE ONLY role
 ADD CONSTRAINT role_authority_key UNIQUE (authority);
