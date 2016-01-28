@@ -7,6 +7,7 @@ import com.google.api.client.util.Base64
 import com.google.api.client.util.SecurityUtils
 import com.google.api.services.drive.Drive
 
+import java.security.PrivateKey
 import java.security.spec.PKCS8EncodedKeySpec
 
 /**
@@ -18,16 +19,17 @@ import java.security.spec.PKCS8EncodedKeySpec
 class GoogleDriveServiceFactory {
 
     String appName
+    String accountId
+    String privateKey
+    String privateKeyFilePath
 
-    Drive createDrive(HttpTransport httpTransport, JsonFactory jsonFactory, String accountId, Collection<String> scopes, String privateKey) {
-
-        byte[] bytes = Base64.decodeBase64(privateKey)
+    Drive createDrive(HttpTransport httpTransport, JsonFactory jsonFactory, Collection<String> scopes) {
 
         def credential = new GoogleCredential.Builder().setTransport(httpTransport)
                 .setJsonFactory(jsonFactory)
                 .setServiceAccountId(accountId)
                 .setServiceAccountScopes(scopes)
-                .setServiceAccountPrivateKey(SecurityUtils.getRsaKeyFactory().generatePrivate(new PKCS8EncodedKeySpec(bytes)))
+                .setServiceAccountPrivateKey(retrievePrivateKey())
                 .build();
 
         credential.refreshToken();
@@ -35,5 +37,17 @@ class GoogleDriveServiceFactory {
         new Drive.Builder(httpTransport, jsonFactory, credential)
                 .setApplicationName(appName)
                 .build()
+    }
+
+    private PrivateKey retrievePrivateKey() {
+        if (privateKeyFilePath) {
+            SecurityUtils.loadPrivateKeyFromKeyStore(SecurityUtils.getPkcs12KeyStore(),
+                    new FileInputStream(privateKeyFilePath), "notasecret", "privatekey", "notasecret");
+        } else if (privateKey) {
+            byte[] bytes = Base64.decodeBase64(privateKey)
+            SecurityUtils.getRsaKeyFactory().generatePrivate(new PKCS8EncodedKeySpec(bytes))
+        } else {
+            throw new IllegalStateException('GDrive requires either private key string or file location specified')
+        }
     }
 }

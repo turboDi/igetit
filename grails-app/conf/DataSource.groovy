@@ -1,5 +1,7 @@
 import ru.jconsulting.igetit.postgres.TableNameSequencePostgresDialect
 
+import static ru.jconsulting.igetit.utils.SystemUtils.env
+
 dataSource {
     pooled = true
     jmxExport = true
@@ -34,30 +36,9 @@ environments {
     }
     production {
         dataSource {
-            uri = new URI(System.env.DATABASE_URL)
-
-            url = "jdbc:postgresql://"+uri.host+uri.path
-            username = uri.userInfo.split(":")[0]
-            password = uri.userInfo.split(":")[1]
-            properties {
-               jmxEnabled = true
-               initialSize = 5
-               maxActive = 50
-               minIdle = 5
-               maxIdle = 25
-               maxWait = 10000
-               maxAge = 10 * 60000
-               timeBetweenEvictionRunsMillis = 5000
-               minEvictableIdleTimeMillis = 60000
-               validationQuery = "SELECT 1"
-               validationQueryTimeout = 3
-               validationInterval = 15000
-               testOnBorrow = true
-               testWhileIdle = true
-               testOnReturn = false
-               jdbcInterceptors = "ConnectionState"
-               defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
-            }
+            url = "jdbc:postgresql://${env('RDS_HOSTNAME')}:5432/${env('RDS_DB_NAME')}"
+            username = env('RDS_USERNAME')
+            password = env('RDS_PASSWORD')
             dialect = TableNameSequencePostgresDialect
         }
     }

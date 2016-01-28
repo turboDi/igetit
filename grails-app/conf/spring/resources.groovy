@@ -14,6 +14,8 @@ import ru.jconsulting.igetit.storage.GoogleDriveServiceFactory
 import ru.jconsulting.igetit.marshallers.*
 import ru.jconsulting.igetit.storage.GoogleDriveStorage
 
+import static ru.jconsulting.igetit.utils.SystemUtils.env
+
 //noinspection GroovyUnusedAssignment
 beans = {
 
@@ -51,15 +53,16 @@ beans = {
             jsonFactory(JacksonFactory)
             driveServiceFactory(GoogleDriveServiceFactory) {
                 appName = grailsApplication.metadata['app.name']
+                accountId = env("DRIVE_ACCOUNT_ID")
+                privateKey = env("DRIVE_PRIVATE_KEY")
+                privateKeyFilePath = env("DRIVE_PRIVATE_KEY_FILE")
             }
 
             driveService(
                     driveServiceFactory: "createDrive",
                     httpTransport,
                     jsonFactory,
-                    System.getenv("DRIVE_ACCOUNT_ID"),
-                    DriveScopes.DRIVE,
-                    System.getenv("DRIVE_PRIVATE_KEY")
+                    DriveScopes.DRIVE
             )
 
             storage(GoogleDriveStorage) { bean ->

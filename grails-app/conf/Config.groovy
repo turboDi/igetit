@@ -1,3 +1,5 @@
+import static ru.jconsulting.igetit.utils.SystemUtils.env
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -100,13 +102,13 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        grails.serverURL = System.getenv("SERVER_URL")
+        grails.serverURL = env("SERVER_URL")
 
         grails {
             mail {
                 host = "smtp.sendgrid.net"
-                username = System.getenv("MAILER_USERNAME")
-                password = System.getenv("MAILER_PASSWORD")
+                username = env("MAILER_USERNAME")
+                password = env("MAILER_PASSWORD")
             }
         }
         grails.mail.default.from = "MyChoice <no-reply@mychoiceapp.ru>"
@@ -162,6 +164,7 @@ grails.plugin.springsecurity.filterChain.chainMap = [
         '/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'
 ]
 grails.plugin.springsecurity.rest.token.storage.jwt.expiration = 1800
+grails.plugin.springsecurity.rest.login.endpointUrl = '/login'
 
 grails.plugin.likeable.liker.className = 'ru.jconsulting.igetit.Person'
 grails.plugin.likeable.liker.evaluator = { delegate.getAuthenticatedUser() }

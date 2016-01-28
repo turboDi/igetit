@@ -5,7 +5,7 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.work.dir = "target/work"
 grails.project.target.level = 1.7
 grails.project.source.level = 1.7
-//grails.project.war.file = "target/${appName}-${appVersion}.war"
+grails.project.war.file = "target/${appName}.war"
 
 grails.project.fork = [
     // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
@@ -20,6 +20,12 @@ grails.project.fork = [
     // configure settings for the Console UI JVM
     console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
 ]
+
+grails.war.resources = { stagingDir, args ->
+    copy(todir: "${stagingDir}/.ebextensions") {
+        fileset(dir: ".ebextensions", includes: "*")
+    }
+}
 
 grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {
@@ -51,7 +57,7 @@ grails.project.dependency.resolution = {
         compile 'org.imgscalr:imgscalr-lib:4.2'
         compile 'org.flywaydb:flyway-core:3.2.1'
 
-        runtime 'org.postgresql:postgresql:9.3-1103-jdbc41'
+        runtime 'org.postgresql:postgresql:9.4-1206-jdbc41'
     }
 
     plugins {
@@ -59,7 +65,7 @@ grails.project.dependency.resolution = {
         build ":jetty:3.0.0"
 
         // plugins for the compile step
-        compile ':cache:1.1.1'
+        compile ':cache:1.1.8'
         compile ":spring-security-core:2.0-RC5"
         compile ':spring-security-rest:1.5.2', {
             excludes 'spring-security-core', 'log4j-over-slf4j'
