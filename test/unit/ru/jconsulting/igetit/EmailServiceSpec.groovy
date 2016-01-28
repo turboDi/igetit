@@ -3,10 +3,13 @@ package ru.jconsulting.igetit
 import grails.plugin.mail.MailService
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
+import grails.test.mixin.TestMixin
+import grails.test.mixin.web.GroovyPageUnitTestMixin
 import spock.lang.Specification
 
 @TestFor(EmailService)
 @Mock([Person, MailService])
+@TestMixin(GroovyPageUnitTestMixin)
 class EmailServiceSpec extends Specification {
 
     Person user
@@ -55,5 +58,15 @@ class EmailServiceSpec extends Specification {
         Person p = service.verify('123456')
         then:
         !p && !user.emailConfirmed
+    }
+
+    void "test verify mail contents"() {
+        when:
+        String key = service.encodeKey(user)
+        def content = render(view: '/account/verify', model: [p: user, key: key, siteCfg: [url: 'site', email: 'info']])
+        then:
+        content.contains key
+        content.contains 'site'
+        content.contains 'info'
     }
 }

@@ -92,7 +92,7 @@
                                                                                 <tr>
                                                                                     <td height="17px" id="ecxwelcome_cta_wrapper" style="padding:30px 0 38px 0;">
                                                                                         <center>
-                                                                                            <a id="ecxwelcome_cta" style="color:#681B74;text-decoration:none;border-radius:3px;border:1px solid #681B74;padding:10px 19px 12px 19px;font-size:17px;font-weight:500;white-space:nowrap;border-collapse:collapse;display:inline-block;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;" href="${createLink(absolute:'true', uri: '/api/account/verification', params:[key: key])}" target="_blank">${message(code: 'email.verify.confirm.button.text', locale: locale)}</a>
+                                                                                            <a id="ecxwelcome_cta" style="color:#681B74;text-decoration:none;border-radius:3px;border:1px solid #681B74;padding:10px 19px 12px 19px;font-size:17px;font-weight:500;white-space:nowrap;border-collapse:collapse;display:inline-block;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;" href="${createLink(absolute:'true', uri: "/api/account/verification?key=$key")}" target="_blank">${message(code: 'email.verify.confirm.button.text', locale: locale)}</a>
                                                                                         </center>
                                                                                     </td>
                                                                                 </tr>
