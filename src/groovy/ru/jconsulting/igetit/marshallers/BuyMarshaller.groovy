@@ -16,6 +16,8 @@ class BuyMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     category: buy.category,
                     owner: marshallPerson(buy.owner),
                     price: buy.price,
+                    shop: buy.shop,
+                    city: buy.city,
                     dateCreated: buy.dateCreated,
                     images: buy.images,
                     commentsCount: Comment.countByBuyAndDeleted(buy, false),

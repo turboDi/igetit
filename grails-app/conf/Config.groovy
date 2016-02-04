@@ -151,7 +151,12 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/like/index':                  ['ROLE_USER'],
         '/category/save':               ['ROLE_ADMIN'],
         '/category/delete':             ['ROLE_ADMIN'],
-        '/category/update':             ['ROLE_ADMIN']
+        '/category/update':             ['ROLE_ADMIN'],
+        '/shop/delete':                 ['ROLE_ADMIN'],
+        '/shop/update':                 ['ROLE_ADMIN'],
+        '/city/save':                   ['ROLE_ADMIN'],
+        '/city/delete':                 ['ROLE_ADMIN'],
+        '/city/update':                 ['ROLE_ADMIN']
 ]
 grails.plugin.springsecurity.filterChain.chainMap = [
         '/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'

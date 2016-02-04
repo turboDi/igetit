@@ -15,6 +15,7 @@ class CityMarshaller implements MarshallerRegistrar {
     void register() {
         JSON.registerObjectMarshaller(City) { City city ->
             return [
+                    id: city.id,
                     placeId: city.placeId,
                     description: city.description
             ]

@@ -24,10 +24,11 @@ class SearchService {
                 eq 'category.id', params.categoryId
             }
             if (params.placeId) {
-                delegate.owner {
-                    city {
-                        eq 'placeId', params.placeId
-                    }
+                eq 'city.placeId', params.placeId
+            }
+            if (params.shopName) {
+                shop {
+                    ilike 'name', "%$params.shopName%"
                 }
             }
         }
@@ -68,5 +69,26 @@ class SearchService {
             }
         }
         Person.getAll(sort || params.sort ? ids.collect { it[0] } : ids)
+    }
+
+    def searchShops(Map params) {
+        def sort
+        if (params.sort instanceof Map) {
+            sort = params.remove('sort')
+        }
+        Shop.createCriteria().list(params) {
+            if (sort) {
+                for (e in sort) {
+                    order(e.key, e.value)
+                }
+            }
+            eq 'deleted', false
+            if (params.term) {
+                ilike 'name', "%$params.term%"
+            }
+            if (params.placeId) {
+                eq 'city.placeId', params.placeId
+            }
+        }
     }
 }

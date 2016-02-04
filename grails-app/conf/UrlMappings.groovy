@@ -36,6 +36,10 @@ class UrlMappings {
         "/api/favorites"(resources: "personFavorite", includes: ['index', 'save', 'delete'], version: "1.0", namespace: "v1")
 
         "/api/categories"(resources: "category", version: "1.0", namespace: "v1")
+        "/api/cities"(resources: "city", version: "1.0", namespace: "v1") {
+            "/shops"(resources: "shop", version: "1.0", namespace: "v1")
+        }
+        "/api/shops"(resources: "shop", version: "1.0", namespace: "v1")
 
         "/api/storage/$folderId?"(controller: "storage", version: "1.0", namespace: "v1") {
             action = [POST: "upload", DELETE: "delete"]

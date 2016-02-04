@@ -27,6 +27,10 @@ class BuyController extends IGetItRestfulController<Buy> {
     protected Buy createResource(Map params) {
         Buy buy = super.createResource(params) as Buy
         buy.owner = getAuthenticatedUser() as Person
+        if (!buy.city) {
+            log.debug("User '$buy.owner' hasn't specified buy's city")
+            buy.city = buy.owner.city
+        }
         log.debug("User '$buy.owner' is about to create new buy: $buy.name")
         buy
     }

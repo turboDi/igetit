@@ -10,6 +10,10 @@ class Buy implements Likeable {
 
     Price price
 
+    Shop shop
+
+    City city
+
     Date dateCreated
 
     List images
@@ -20,12 +24,14 @@ class Buy implements Likeable {
 
     static hasMany = [comments: Comment, images: Image]
     static belongsTo = [owner: Person]
-    static embedded = ['price']
+    static embedded = ['price', 'city']
 
     static constraints = {
         name nullable: true
         category nullable: true
         price nullable: true
+        shop nullable: true
+        city nullable: true
         deleted bindable: false
     }
 

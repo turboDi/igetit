@@ -28,6 +28,7 @@ beans = {
     personFavoriteMarshaller(PersonFavoriteMarshaller)
     personFollowerMarshaller(PersonFollowerMarshaller)
     likeMarshaller(LikeMarshaller)
+    shopMarshaller(ShopMarshaller)
     customMarshallerRegistrar(MarshallerListRegistrar)
 
     storage(FileSystemStorage)
