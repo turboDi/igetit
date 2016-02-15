@@ -16,10 +16,14 @@ class Shop {
         sourceId nullable: true
         deleted bindable: false
         name blank: false, validator: { val, obj, errors ->
-            obj.sourceId || obj.eshop && UrlValidator.getInstance().isValid(val)
+            if (!obj.sourceId && (!obj.eshop || !UrlValidator.getInstance().isValid(val))) {
+                errors.rejectValue('name', 'validation.eshop.url')
+            }
         }
         city nullable: true, validator: { val, obj, errors ->
-            !obj.eshop || !city
+            if (obj.eshop && obj.city) {
+                errors.rejectValue('city', 'validation.eshop.city')
+            }
         }
     }
 }
