@@ -16,7 +16,7 @@ class SearchServiceSpec extends Specification {
     def setup() {
         City city = new City(placeId: placeId, description: '123')
         shop = new Shop(name: '123', city: city, sourceId: '123').save(failOnError: true)
-        category = new Category(name: 'Test').save()
+        category = new Category(name: 'Test', gender: Category.Gender.FEMALE).save()
         p1 = new Person(username: 'p1@ww.ww', fullName: 'FIO', password: '123').save()
         p2 = new Person(username: 'p2@ww.ww', city: city, fullName: 'FIO', password: '123').save()
         p3 = new Person(username: 'p3@ww.ww', fullName: 'FIO', password: '123').save()
