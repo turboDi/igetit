@@ -2,14 +2,6 @@ class ParseRequestFilters {
 
     def filters = {
 
-        saveOrUpdateAction(action: 'save|update') {
-            before = {
-                if (request.JSON) {
-                    params << request.JSON
-                }
-            }
-        }
-
         indexAction(action: 'index|buys|persons') {
             before = {
                 if (params.sort?.class?.isArray()) {

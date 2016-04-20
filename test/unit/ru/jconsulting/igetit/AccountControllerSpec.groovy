@@ -12,7 +12,6 @@ class AccountControllerSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
-        Person.metaClass.accountService = [ isPasswordValid: { p, e -> true } ]
         Person user = new Person(username: 'user@ww.ww', email: 'user@ww.ww', fullName: 'FIO', password: 'pwd', confirmToken: '1').save(flush: true, failOnError: true)
 
         emailService.verify(_ as String) >> {String key -> if (key == '123') user}

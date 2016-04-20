@@ -21,12 +21,11 @@ class PersonControllerSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
-        Person.metaClass.accountService = [ isPasswordValid: { p, e -> true } ]
         user1 = new Person(username: 'user1@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
 
         accountService.register(_ as Person) >> {Person u -> [username: u.username] }
-        accountService.tryReAuthenticate(_ as String) >> { u -> [username: u] }
+        accountService.tryReAuthenticate(_ as Person) >> {Person u -> [username: u.username] }
         controller.accountService = accountService
 
         controller.accessTokenJsonRenderer = [generateJson : {t ->
@@ -78,10 +77,9 @@ class PersonControllerSpec extends Specification {
         when:
         controller.save()
         then:
-        params.email == 'qwe@ww.ww'
         response.status == 200
         response.json.username == 'qwe@ww.ww'
-        0 * accountService.tryReAuthenticate(_,_)
+        0 * accountService.tryReAuthenticate(_)
     }
 
     void "test register with invalid params"() {
@@ -93,7 +91,8 @@ class PersonControllerSpec extends Specification {
         then:
         response.status == 422
         response.json.errors.size() == 1
-        0 * accountService.tryReAuthenticate(_,_)
+        0 * accountService.tryReAuthenticate(_)
+        0 * accountService.register(_)
     }
 
     void "test register with oauth"() {
@@ -104,9 +103,8 @@ class PersonControllerSpec extends Specification {
         when:
         controller.save()
         then:
-        params.password == 'N/A'
         response.status == 200
         response.json.username == 'qqq'
-        1 * accountService.tryReAuthenticate(_,_)
+        0 * accountService.register(_)
     }
 }

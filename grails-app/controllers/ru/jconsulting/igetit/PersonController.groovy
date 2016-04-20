@@ -4,7 +4,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.security.access.AccessDeniedException
 
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
+import static org.springframework.http.HttpStatus.OK
 
 @Secured(['ROLE_USER'])
 class PersonController extends IGetItRestfulController<Person> {
@@ -13,29 +13,45 @@ class PersonController extends IGetItRestfulController<Person> {
     def accessTokenJsonRenderer
 
     PersonController() {
-        super(Person, ['username', 'confirmToken', 'oAuthProvider'])
+        super(Person)
     }
 
     @Override
     @Secured(['permitAll'])
     def save() {
-        if (!params.oAuthProvider) {
-            params.email = params.username
-        } else {
-            params.password = 'N/A'
-        }
-        def token = params.oAuthProvider ? accountService.tryReAuthenticate(params.username, params.oAuthProvider) : null
+        def person = new Person(params)
+        def token = person.oAuthProvider ? accountService.tryReAuthenticate(person) : null
         if (!token) {
-            def p = new Person(params)
-            p.validate()
-            if (p.hasErrors()) {
-                response.status = UNPROCESSABLE_ENTITY.value()
-                render p.errors as JSON
+            person.validate()
+
+            if (person.hasErrors()) {
+                respond person.errors, view:'edit' // STATUS CODE 422
                 return
             }
-            token = accountService.register(p)
+
+            token = accountService.register(person)
         }
         render JSON.parse(accessTokenJsonRenderer.generateJson(token)) as JSON
+    }
+
+    @Override
+    def update() {
+        Person person = queryForResource(params.id as Serializable)
+        if (person == null) {
+            notFound()
+            return
+        }
+
+        bindData(person, getParametersToBind(), [exclude: ['oAuthProvider', 'username']])
+
+        if (person.hasErrors()) {
+            respond person.errors, view:'edit' // STATUS CODE 422
+            return
+        }
+
+        accountService.update(person)
+
+        respond person, [status: OK]
     }
 
     @Override

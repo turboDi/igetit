@@ -163,7 +163,6 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 grails.plugin.springsecurity.filterChain.chainMap = [
         '/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'
 ]
-grails.plugin.springsecurity.rest.token.storage.jwt.expiration = 1800
 grails.plugin.springsecurity.rest.login.endpointUrl = '/login'
 
 grails.plugin.likeable.liker.className = 'ru.jconsulting.igetit.Person'

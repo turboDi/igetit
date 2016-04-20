@@ -8,36 +8,39 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import ru.jconsulting.igetit.auth.PersonRole
 import ru.jconsulting.igetit.auth.Role
 
+import static grails.plugin.springsecurity.SpringSecurityUtils.authoritiesToRoles
+
 @Transactional
 class AccountService {
 
     def userDetailsService
-    def passwordEncoder
     def passwordGenerator
     TokenGenerator tokenGenerator
 
-    def register(Person p) {
-        assert p.save()
-        PersonRole.create p, getUserRole()
-        tryReAuthenticate(p.username)
-    }
-
-    def tryReAuthenticate(String username, String oAuthProvider = null) {
+    @Transactional(readOnly = true)
+    def tryReAuthenticate(Person person) {
         try {
-            UserDetails principal = userDetailsService.loadUserByUsername(username)
-            if (!principal.enabled) {
-                throw new AccessDeniedException("This user was deleted")
+            def token = generateToken(person)
+            if (!authoritiesToRoles(token.authorities).contains('ROLE_OAUTH_USER')) {
+                throw new AccessDeniedException("This user is not configured to login via OAuth")
             }
-            tokenGenerator.generateAccessToken(principal)
-        } catch (UsernameNotFoundException e) {
-            if (!oAuthProvider) {
-                throw e
-            }
+            token
+        } catch (UsernameNotFoundException ignored) {
+            log.debug('Requested Person not found, reauth failed...')
         }
     }
 
-    def getUserRole() {
-        Role.findByAuthority('ROLE_USER')
+    def register(Person person) {
+        assert person.save()
+        PersonRole.create person, getUserRole()
+        if (person.oAuthProvider) {
+            PersonRole.create person, getOAuthUserRole()
+        }
+        generateToken(person)
+    }
+
+    def update(Person p) {
+        assert p.save()
     }
 
     def resetPassword(Person p) {
@@ -47,19 +50,19 @@ class AccountService {
         newPassword
     }
 
-    def isPasswordValid(Person p, errors) {
-        def valid = true
-        if (p.isAttached() && p.isDirty('password')) {
-            def oldPassword = p.getPersistentValue('password')
-            if (!p.oldPassword || !passwordEncoder.isPasswordValid(oldPassword, p.oldPassword, null)) {
-                errors.rejectValue('oldPassword', 'validation.password.old.invalid.message', null, 'Current password is incorrect')
-                valid = false
-            }
-            if (passwordEncoder.isPasswordValid(oldPassword, p.password, null)) {
-                errors.rejectValue('password', 'validation.password.new.same.message', null, 'Please choose a different password from your current one')
-                valid = false
-            }
+    private getUserRole() {
+        Role.findByAuthority('ROLE_USER')
+    }
+
+    private getOAuthUserRole() {
+        Role.findByAuthority('ROLE_OAUTH_USER')
+    }
+
+    private generateToken(Person person) {
+        UserDetails principal = userDetailsService.loadUserByUsername(person.username)
+        if (!principal.enabled) {
+            throw new AccessDeniedException("This user was deleted")
         }
-        valid
+        tokenGenerator.generateAccessToken(principal)
     }
 }

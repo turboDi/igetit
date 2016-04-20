@@ -5,6 +5,7 @@ import grails.util.Environment
 import org.codehaus.groovy.grails.orm.hibernate.HibernateEventListeners
 import org.flywaydb.core.Flyway
 import ru.jconsulting.igetit.EventProducer
+import ru.jconsulting.igetit.utils.ConstraintRegistrar
 import ru.jconsulting.igetit.security.HeaderBearerTokenReader
 import ru.jconsulting.igetit.IGetItExceptionResolver
 import ru.jconsulting.igetit.PersonEmailListener
@@ -31,7 +32,12 @@ beans = {
     personFollowerMarshaller(PersonFollowerMarshaller)
     likeMarshaller(LikeMarshaller)
     shopMarshaller(ShopMarshaller)
-    customMarshallerRegistrar(MarshallerListRegistrar)
+    customMarshallerRegistrar(MarshallerListRegistrar) { bean ->
+        bean.initMethod = 'register'
+    }
+    customConstraintRegistrar(ConstraintRegistrar) { bean ->
+        bean.initMethod = 'register'
+    }
 
     storage(FileSystemStorage)
     tokenReader(HeaderBearerTokenReader)
@@ -85,6 +91,6 @@ beans = {
 
     def sessionFactoryBeanDef = getBeanDefinition('sessionFactory')
     if (sessionFactoryBeanDef) {
-        sessionFactoryBeanDef.dependsOn = ['flyway']
+        sessionFactoryBeanDef.dependsOn = ['flyway', 'customConstraintRegistrar']
     }
 }

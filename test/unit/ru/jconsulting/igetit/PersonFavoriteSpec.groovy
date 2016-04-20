@@ -15,7 +15,6 @@ class PersonFavoriteSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
-        Person.metaClass.accountService = [ isPasswordValid: { p, e -> true } ]
         user = new Person(username: 'user1@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         buy = new Buy(name: 'buy', owner: user, price: new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))).save(flush: true, failOnError: true)
     }

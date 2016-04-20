@@ -13,15 +13,9 @@ import static org.springframework.http.HttpStatus.NO_CONTENT
 abstract class IGetItRestfulController<T> extends RestfulController<T> {
 
     static namespace = "v1"
-    final List excludedBindParams
 
     IGetItRestfulController(Class<T> resource) {
-        this(resource, [])
-    }
-
-    IGetItRestfulController(Class<T> resource, List excludedBindParams) {
         super(resource)
-        this.excludedBindParams = excludedBindParams
     }
 
     @Override
@@ -55,15 +49,6 @@ abstract class IGetItRestfulController<T> extends RestfulController<T> {
     @Override
     protected T queryForResource(Serializable id) {
         resource.findNotDeletedById(id)
-    }
-
-    @Override
-    protected Map getParametersToBind() {
-        Map map = super.getParametersToBind()
-        excludedBindParams.each { param ->
-            map.remove(param)
-        }
-        map
     }
 
     protected void doDelete(T instance) {

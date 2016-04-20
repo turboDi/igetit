@@ -8,7 +8,7 @@ class Category {
     static constraints = {
     }
 
-    public enum Gender {
+    public static enum Gender {
         MALE, FEMALE
     }
 }

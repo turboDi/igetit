@@ -3,7 +3,9 @@ package ru.jconsulting.igetit
 import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.security.access.AccessDeniedException
 
-@Secured(['ROLE_USER'])
+import static grails.plugin.springsecurity.SpringSecurityUtils.ifNotGranted
+
+@Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class BuyController extends IGetItRestfulController<Buy> {
 
     BuyController() {
@@ -39,7 +41,7 @@ class BuyController extends IGetItRestfulController<Buy> {
     protected Buy queryForResource(Serializable id) {
         Buy buy = super.queryForResource(id) as Buy
         def currentUser = getAuthenticatedUser()
-        if (request.method != 'GET' && buy && !buy.owner.equals(currentUser)) {
+        if (request.method != 'GET' && buy && ifNotGranted('ROLE_ADMIN') && !buy.owner.equals(currentUser)) {
             log.error("Invalid $request.method attempt by '$currentUser' of '$buy'")
             throw new AccessDeniedException('This buy belongs to another user')
         }

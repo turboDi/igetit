@@ -1,5 +1,6 @@
 package ru.jconsulting.igetit
 
+import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.test.mixin.TestFor
 import grails.test.mixin.TestMixin
 import grails.test.mixin.domain.DomainClassUnitTestMixin
@@ -16,7 +17,7 @@ class BuyControllerSpec extends Specification {
     def setup() {
         mockDomains(Person, Price)
         Person.metaClass.encodePassword { -> }
-        Person.metaClass.accountService = [ isPasswordValid: { p, e -> true } ]
+        SpringSecurityUtils.metaClass.static.ifNotGranted = { String a -> true }
         user1 = new Person(username: 'user1@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         Price p = new Price(value: new BigDecimal(1), currency: Currency.getInstance('USD'))
