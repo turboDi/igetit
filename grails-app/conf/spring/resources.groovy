@@ -32,9 +32,7 @@ beans = {
     personFollowerMarshaller(PersonFollowerMarshaller)
     likeMarshaller(LikeMarshaller)
     shopMarshaller(ShopMarshaller)
-    customMarshallerRegistrar(MarshallerListRegistrar) { bean ->
-        bean.initMethod = 'register'
-    }
+    customMarshallerRegistrar(MarshallerListRegistrar)
     customConstraintRegistrar(ConstraintRegistrar) { bean ->
         bean.initMethod = 'register'
     }
