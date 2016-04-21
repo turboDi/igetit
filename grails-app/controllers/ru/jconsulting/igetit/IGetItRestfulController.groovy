@@ -48,7 +48,11 @@ abstract class IGetItRestfulController<T> extends RestfulController<T> {
 
     @Override
     protected T queryForResource(Serializable id) {
-        resource.findNotDeletedById(id)
+        if (request.method == 'GET') {
+            super.queryForResource(id)
+        } else {
+            resource.findNotDeletedById(id)
+        }
     }
 
     protected void doDelete(T instance) {
