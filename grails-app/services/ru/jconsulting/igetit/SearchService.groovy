@@ -18,7 +18,7 @@ class SearchService {
             }
             eq 'deleted', false
             if (params.term) {
-                ilike 'name', "%$params.term%"
+                textSearch 'name', params.term
             }
             if (params.categoryId) {
                 eq 'category.id', params.categoryId

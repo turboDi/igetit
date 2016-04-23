@@ -27,7 +27,7 @@ class Buy implements Likeable {
     static embedded = ['price', 'city']
 
     static constraints = {
-        name nullable: true
+        name nullable: true, maxSize: 500
         category nullable: true
         price nullable: true
         shop nullable: true
@@ -36,6 +36,7 @@ class Buy implements Likeable {
     }
 
     static mapping = {
+        name type: 'text'
         images cascade: "all-delete-orphan"
         likesCount formula: "(select count(*) from l_like l where l.like_ref = id and l.type = 'buy')"
     }
