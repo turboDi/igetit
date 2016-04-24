@@ -63,9 +63,17 @@ class SearchService {
             if (params.placeId) {
                 eq 'city.placeId', params.placeId
             }
-            if (params.categoryId) {
-                createAlias 'buys', 'b'
-                eq 'b.category.id', params.categoryId
+            if (params.categoryId || params.shopName) {
+                buys {
+                    if (params.categoryId) {
+                        eq 'category.id', params.categoryId
+                    }
+                    if (params.shopName) {
+                        shop {
+                            ilike 'name', "%$params.shopName%"
+                        }
+                    }
+                }
             }
         }
         Person.getAll(sort || params.sort ? ids.collect { it[0] } : ids)

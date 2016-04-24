@@ -43,9 +43,11 @@ class SearchServiceSpec extends Specification {
         when:
         def personsByNameAndCity = searchService.searchPersons(term: 'FI', placeId: placeId)
         def personsByNameAndCategory = searchService.searchPersons(term: 'FI', categoryId: category.id, sort: 'username', max: 3)
+        def personsByNameAndShop = searchService.searchPersons(term: 'FI', shopName: '2')
         then:
         [p2] == personsByNameAndCity
         [p1, p2] == personsByNameAndCategory
+        [p3] == personsByNameAndShop
     }
 
     void "test search shop"() {
