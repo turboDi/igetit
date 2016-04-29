@@ -14,7 +14,6 @@ class PersonSpec extends Specification {
     UUID personName = UUID.randomUUID()
 
     void setup() {
-        EventProducer.metaClass.saveNewEvent = { Event e -> }
         p1 = new Person(username: 'p1@ww.ww', fullName: personName, password: '123').save(flush: true, failOnError: true)
         p2 = new Person(username: 'p2@ww.ww', fullName: personName, password: '123').save(flush: true, failOnError: true)
         p3 = new Person(username: 'test', fullName: personName, oAuthProvider: 'google').save(flush: true, failOnError: true)

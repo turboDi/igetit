@@ -19,7 +19,7 @@ class EventMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     id: event.id,
                     person: marshallPerson(event.initiator),
                     buy: event.buy ? marshallBuy(event.buy) : null,
-                    comment: event.comment,
+                    comment: event.comment?.text,
                     type: event.type,
                     dateCreated: event.dateCreated
             ]

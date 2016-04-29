@@ -14,7 +14,6 @@ class BuySpec extends Specification {
     String buyName = UUID.randomUUID()
 
     def setup() {
-        EventProducer.metaClass.saveNewEvent = { Event e -> }
         Person p1 = new Person(username: 'p1@ww.ww', fullName: 'FIO', password: '123').save(flush: true, failOnError: true)
         Person p2 = new Person(username: 'p2@ww.ww', fullName: 'FIO', password: '123').save(flush: true, failOnError: true)
         Person p3 = new Person(username: 'p3@ww.ww', fullName: 'FIO', password: '123').save(flush: true, failOnError: true)

@@ -5,6 +5,8 @@ import org.codehaus.groovy.grails.validation.Constraint
 import org.codehaus.groovy.grails.validation.ConstraintFactory
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PostConstruct
+
 /**
  *
  *
@@ -16,6 +18,7 @@ class ConstraintRegistrar {
     @Autowired
     def passwordEncoder
 
+    @PostConstruct
     def register() {
         ConstrainedProperty.registerNewConstraint(ChangePasswordConstraint.CHANGE_PASSWORD_CONSTRAINT, new ConstraintFactory() {
             @Override

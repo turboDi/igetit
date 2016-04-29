@@ -4,7 +4,6 @@ import com.google.api.services.drive.DriveScopes
 import grails.util.Environment
 import org.codehaus.groovy.grails.orm.hibernate.HibernateEventListeners
 import org.flywaydb.core.Flyway
-import ru.jconsulting.igetit.EventProducer
 import ru.jconsulting.igetit.utils.ConstraintRegistrar
 import ru.jconsulting.igetit.security.HeaderBearerTokenReader
 import ru.jconsulting.igetit.IGetItExceptionResolver
@@ -32,17 +31,16 @@ beans = {
     personFollowerMarshaller(PersonFollowerMarshaller)
     likeMarshaller(LikeMarshaller)
     shopMarshaller(ShopMarshaller)
-    customMarshallerRegistrar(MarshallerListRegistrar)
-    customConstraintRegistrar(ConstraintRegistrar) { bean ->
-        bean.initMethod = 'register'
-    }
+    convertersConfigurationInitializer(MarshallerListInitializer)
+    customConstraintRegistrar(ConstraintRegistrar)
 
     storage(FileSystemStorage)
     tokenReader(HeaderBearerTokenReader)
     passwordGenerator(PasswordGenerator)
 
-    eventProducer(EventProducer)
-    personEmailListener(PersonEmailListener)
+    personEmailListener(PersonEmailListener) { bean ->
+        bean.autowire = 'byName'
+    }
 
     hibernateEventListeners(HibernateEventListeners) {
         listenerMap = [
