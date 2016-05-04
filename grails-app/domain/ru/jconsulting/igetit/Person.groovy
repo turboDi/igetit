@@ -32,7 +32,7 @@ class Person {
 
     static hasMany = [buys: Buy]
     static transients = ['springSecurityService', 'oldPassword']
-    static embedded = ['city']
+    static embedded = ['city', 'avatar']
 
     static constraints = {
         username blank: false, unique: true, validator: { val, obj, errors ->

@@ -4,7 +4,6 @@ import org.hibernate.event.PostInsertEvent
 import org.hibernate.event.PostInsertEventListener
 import org.hibernate.event.PostUpdateEvent
 import org.hibernate.event.PostUpdateEventListener
-import org.springframework.beans.factory.annotation.Autowired
 
 /**
  *
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired
  */
 class PersonEmailListener implements PostUpdateEventListener, PostInsertEventListener {
 
-    @Autowired
     def emailService
 
     @Override

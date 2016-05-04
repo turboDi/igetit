@@ -44,6 +44,7 @@ class PersonController extends IGetItRestfulController<Person> {
 
         bindData(person, getParametersToBind(), [exclude: ['oAuthProvider', 'username']])
 
+        person.validate()
         if (person.hasErrors()) {
             respond person.errors, view:'edit' // STATUS CODE 422
             return

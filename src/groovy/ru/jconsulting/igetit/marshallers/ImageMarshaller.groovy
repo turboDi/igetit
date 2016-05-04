@@ -20,7 +20,6 @@ class ImageMarshaller implements MarshallerRegistrar {
     void register() {
         JSON.registerObjectMarshaller(Image){ Image image ->
             return [
-                    id: image.id,
                     filename: image.filename,
                     folderId: image.folderId,
                     url: storage.getURL(image)

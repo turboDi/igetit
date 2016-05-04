@@ -3,7 +3,12 @@ import ru.jconsulting.igetit.postgres.TextSearchExpression
 
 class BootStrap {
 
+    def emailService
+    def personEmailListener
+
     def init = { servletContext ->
+
+        personEmailListener.emailService = emailService
 
         HibernateCriteriaBuilder.metaClass.textSearch = { String propertyName, propertyValue ->
             propertyName = calculatePropertyName(propertyName)

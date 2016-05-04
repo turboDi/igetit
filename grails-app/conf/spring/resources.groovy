@@ -38,9 +38,7 @@ beans = {
     tokenReader(HeaderBearerTokenReader)
     passwordGenerator(PasswordGenerator)
 
-    personEmailListener(PersonEmailListener) { bean ->
-        bean.autowire = 'byName'
-    }
+    personEmailListener(PersonEmailListener)
 
     hibernateEventListeners(HibernateEventListeners) {
         listenerMap = [
