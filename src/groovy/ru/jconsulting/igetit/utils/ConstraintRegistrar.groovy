@@ -4,6 +4,7 @@ import org.codehaus.groovy.grails.validation.ConstrainedProperty
 import org.codehaus.groovy.grails.validation.Constraint
 import org.codehaus.groovy.grails.validation.ConstraintFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 
 import javax.annotation.PostConstruct
 
@@ -16,6 +17,7 @@ import javax.annotation.PostConstruct
 class ConstraintRegistrar {
 
     @Autowired
+    @Qualifier("passwordEncoder")
     def passwordEncoder
 
     @PostConstruct

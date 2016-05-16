@@ -1,6 +1,5 @@
 package ru.jconsulting.igetit.utils
 
-import org.apache.bcel.generic.NEW
 import org.codehaus.groovy.grails.validation.AbstractConstraint
 import org.springframework.validation.Errors
 import ru.jconsulting.igetit.Person
