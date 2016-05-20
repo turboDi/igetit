@@ -1,6 +1,7 @@
 package ru.jconsulting.igetit
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import org.springframework.security.access.AccessDeniedException
@@ -21,6 +22,7 @@ class PersonControllerSpec extends Specification {
 
     def setup() {
         Person.metaClass.encodePassword { -> }
+        SpringSecurityUtils.metaClass.static.ifNotGranted = { String a -> true }
         user1 = new Person(username: 'user1@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
         user2 = new Person(username: 'user2@ww.ww', fullName: 'FIO', password: 'pwd').save(flush: true, failOnError: true)
 

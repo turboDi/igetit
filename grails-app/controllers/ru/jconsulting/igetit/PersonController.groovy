@@ -4,9 +4,10 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.security.access.AccessDeniedException
 
+import static grails.plugin.springsecurity.SpringSecurityUtils.ifNotGranted
 import static org.springframework.http.HttpStatus.OK
 
-@Secured(['ROLE_USER'])
+@Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class PersonController extends IGetItRestfulController<Person> {
 
     def accountService
@@ -62,7 +63,7 @@ class PersonController extends IGetItRestfulController<Person> {
             return currentUser
         }
         Person person = super.queryForResource(id) as Person
-        if (request.method != 'GET' && person && !person.equals(currentUser)) {
+        if (request.method != 'GET' && person && ifNotGranted('ROLE_ADMIN') && !person.equals(currentUser)) {
             log.error("Invalid $request.method attempt by '$currentUser' of '$person'")
             throw new AccessDeniedException('You can\'t modify another user\'s info')
         }
