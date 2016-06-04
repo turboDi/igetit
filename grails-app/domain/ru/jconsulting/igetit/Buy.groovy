@@ -12,6 +12,8 @@ class Buy implements Likeable {
 
     Shop shop
 
+    String link
+
     City city
 
     Date dateCreated
@@ -27,10 +29,11 @@ class Buy implements Likeable {
     static embedded = ['price', 'city']
 
     static constraints = {
-        name nullable: true, maxSize: 500
+        name nullable: true, maxSize: 1000
         category nullable: true
         price nullable: true
         shop nullable: true
+        link nullable: true, maxSize: 1000
         city nullable: true
         deleted bindable: false
     }

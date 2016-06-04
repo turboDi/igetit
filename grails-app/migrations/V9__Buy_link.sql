@@ -1,0 +1,1 @@
+ALTER TABLE buy ADD link TEXT;
