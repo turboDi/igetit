@@ -26,9 +26,10 @@ class ShopController extends IGetItRestfulController<Shop> {
 
     @Override
     protected Shop createResource(Map params) {
-        if (!params.eshop) {
+        Shop shop = super.createResource(params) as Shop
+        if (!shop.eshop) {
             throw new AccessDeniedException('You have no rights to create offline shop')
         }
-        super.createResource(params)
+        shop
     }
 }
