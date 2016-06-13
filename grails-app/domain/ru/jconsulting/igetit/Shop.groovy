@@ -5,6 +5,7 @@ import org.codehaus.groovy.grails.validation.routines.UrlValidator
 class Shop {
 
     String name
+    String url
     String sourceId
     City city
     boolean eshop
@@ -15,9 +16,10 @@ class Shop {
     static constraints = {
         sourceId nullable: true
         deleted bindable: false
-        name blank: false, validator: { val, obj, errors ->
-            if (!obj.sourceId && (!obj.eshop || !UrlValidator.getInstance().isValid(val))) {
-                errors.rejectValue('name', 'validation.eshop.url')
+        name nullable: true
+        url nullable: true, validator: { val, obj, errors ->
+            if (obj.eshop && !UrlValidator.getInstance().isValid(val)) {
+                errors.rejectValue('url', 'validation.eshop.url')
             }
         }
         city nullable: true, validator: { val, obj, errors ->

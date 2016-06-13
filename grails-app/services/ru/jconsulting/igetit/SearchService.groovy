@@ -92,7 +92,10 @@ class SearchService {
             }
             eq 'deleted', false
             if (params.term) {
-                ilike 'name', "%$params.term%"
+                or {
+                    ilike 'name', "%$params.term%"
+                    ilike 'url', "%$params.term%"
+                }
             }
             or {
                 eq 'city.placeId', params.placeId

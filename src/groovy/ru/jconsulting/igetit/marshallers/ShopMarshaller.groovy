@@ -17,6 +17,7 @@ class ShopMarshaller implements MarshallerRegistrar {
             return [
                     id: shop.id,
                     name: shop.name,
+                    url: shop.url,
                     city: shop.city,
                     eshop: shop.eshop,
                     deleted: shop.deleted
