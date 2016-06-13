@@ -94,8 +94,9 @@ class SearchService {
             if (params.term) {
                 ilike 'name', "%$params.term%"
             }
-            if (params.placeId) {
+            or {
                 eq 'city.placeId', params.placeId
+                eq 'eshop', true
             }
         }
     }
