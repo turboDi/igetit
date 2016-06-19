@@ -6,6 +6,7 @@ import com.google.api.services.drive.model.File
 import com.google.api.services.drive.model.ParentReference
 import ru.jconsulting.igetit.Image
 import ru.jconsulting.igetit.image.ImageUtils
+import static ru.jconsulting.igetit.utils.SystemUtils.env
 
 /**
  *
@@ -35,7 +36,7 @@ class GoogleDriveStorage implements Storage {
     }
 
     File createFolder(String name) {
-        createFolder(name, System.getenv("DRIVE_ROOT_ID"))
+        createFolder(name, env("DRIVE_ROOT_ID"))
     }
 
     def deleteFolder(String folderId) {

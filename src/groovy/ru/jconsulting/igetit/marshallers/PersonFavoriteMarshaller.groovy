@@ -14,7 +14,10 @@ class PersonFavoriteMarshaller extends BaseMarshaller implements MarshallerRegis
     @Override
     void register() {
         JSON.registerObjectMarshaller(PersonFavorite) { PersonFavorite personFavorite ->
-            personFavorite.buy
+            [
+                    id: personFavorite.id,
+                    buy: personFavorite.buy
+            ]
         }
     }
 }

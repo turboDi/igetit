@@ -4,46 +4,66 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.security.access.AccessDeniedException
 
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
+import static grails.plugin.springsecurity.SpringSecurityUtils.ifNotGranted
+import static org.springframework.http.HttpStatus.OK
 
-@Secured(['ROLE_USER'])
+@Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class PersonController extends IGetItRestfulController<Person> {
 
     def accountService
-    def restAuthenticationTokenJsonRenderer
+    def accessTokenJsonRenderer
 
     PersonController() {
-        super(Person, ['username', 'confirmToken', 'oAuthProvider'])
+        super(Person)
     }
 
     @Override
     @Secured(['permitAll'])
     def save() {
-        def token = null
-        if (!params.oAuthProvider) {
-            params.email = params.username
-        } else {
-            params.password = 'N/A'
-            token = accountService.tryReAuthenticate(params.username, params.oAuthProvider)
-        }
+        def person = new Person(params)
+        def token = person.oAuthProvider ? accountService.tryReAuthenticate(person) : null
         if (!token) {
-            def p = new Person(params)
-            p.validate()
-            if (p.hasErrors()) {
-                response.status = UNPROCESSABLE_ENTITY.value()
-                render p.errors as JSON
+            person.validate()
+
+            if (person.hasErrors()) {
+                respond person.errors, view:'edit' // STATUS CODE 422
                 return
             }
-            token = accountService.register(p)
+
+            token = accountService.register(person)
         }
-        render JSON.parse(restAuthenticationTokenJsonRenderer.generateJson(token)) as JSON
+        render JSON.parse(accessTokenJsonRenderer.generateJson(token)) as JSON
+    }
+
+    @Override
+    def update() {
+        Person person = queryForResource(params.id as Serializable)
+        if (person == null) {
+            notFound()
+            return
+        }
+
+        bindData(person, getParametersToBind(), [exclude: ['oAuthProvider', 'username']])
+
+        person.validate()
+        if (person.hasErrors()) {
+            respond person.errors, view:'edit' // STATUS CODE 422
+            return
+        }
+
+        accountService.update(person)
+
+        respond person, [status: OK]
     }
 
     @Override
     protected Person queryForResource(Serializable id) {
-        Person person = super.queryForResource(id) as Person
         def currentUser = getAuthenticatedUser()
-        if (request.method != 'GET' && person && !person.equals(currentUser)) {
+        if ('me' == id) {
+            return currentUser
+        }
+        Person person = super.queryForResource(id) as Person
+        if (request.method != 'GET' && person && ifNotGranted('ROLE_ADMIN') && !person.equals(currentUser)) {
             log.error("Invalid $request.method attempt by '$currentUser' of '$person'")
             throw new AccessDeniedException('You can\'t modify another user\'s info')
         }

@@ -1,0 +1,12 @@
+branch-defaults:
+  aws:
+    environment: mychoice-prod
+global:
+  application_name: MyChoice
+  default_ec2_keyname: mychoice
+  default_platform: 64bit Amazon Linux 2015.09 v2.0.4 running Tomcat 8 Java 8
+  default_region: eu-central-1
+  profile: eb-cli
+  sc: git
+deploy:
+  artifact: target/igetit.war

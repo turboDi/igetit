@@ -1,6 +1,7 @@
 package ru.jconsulting.igetit
 
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.access.AccessDeniedException
 
 @Secured(['ROLE_USER'])
 class PersonFollowerController extends IGetItRestfulController<PersonFollower> {
@@ -12,7 +13,7 @@ class PersonFollowerController extends IGetItRestfulController<PersonFollower> {
     @Override
     protected List<PersonFollower> listAllResources(Map params) {
         if (params.personId) {
-            def person = Person.get(params.personId)
+            def person = 'me' == params.personId ? getAuthenticatedUser() : Person.get(params.personId)
             if (!person) {
                 throw new NotFoundException("There is no such person with id=${params.personId}")
             }
@@ -24,24 +25,29 @@ class PersonFollowerController extends IGetItRestfulController<PersonFollower> {
 
     @Override
     protected PersonFollower createResource(Map params) {
-        Person person = Person.get(params.personId as Serializable)
-        if (!person) {
-            log.error("Couldn't find person with id '$params.personId'")
+        def currentUser = getAuthenticatedUser()
+        Person person = 'me' == params.personId ? currentUser : Person.get(params.personId)
+        if (person) {
+            PersonFollower pf = PersonFollower.findByPersonAndFollowerAndDeleted(person, currentUser, true)
+            if (pf) {
+                pf.deleted = false
+                return pf
+            } else {
+                return new PersonFollower(person: person, follower: currentUser)
+            }
+        } else {
+            throw new NotFoundException("There is no such person with id=${params.personId}")
         }
-        new PersonFollower(person: person, follower: getAuthenticatedUser())
     }
 
     @Override
     protected PersonFollower queryForResource(Serializable id) {
-        if (params.personId) {
-            def pid = params.personId
-            PersonFollower.where {
-                person.id == pid
-                follower == getAuthenticatedUser()
-                deleted == false
-            }.get()
-        } else {
-            throw new IllegalStateException("Follower query requested without required 'personId' parameter")
+        PersonFollower pf = super.queryForResource(id) as PersonFollower
+        def currentUser = getAuthenticatedUser()
+        if (request.method != 'GET' && pf && !pf.follower.equals(currentUser)) {
+            log.error("Invalid $request.method attempt by '$currentUser' of '$pf'")
+            throw new AccessDeniedException('You can\'t operate other followers')
         }
+        pf
     }
 }

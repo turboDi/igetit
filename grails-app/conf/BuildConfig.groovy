@@ -5,7 +5,7 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.work.dir = "target/work"
 grails.project.target.level = 1.7
 grails.project.source.level = 1.7
-//grails.project.war.file = "target/${appName}-${appVersion}.war"
+grails.project.war.file = "target/${appName}.war"
 
 grails.project.fork = [
     // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
@@ -21,12 +21,18 @@ grails.project.fork = [
     console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
 ]
 
+grails.war.resources = { stagingDir, args ->
+    copy(todir: "${stagingDir}/.ebextensions") {
+        fileset(dir: ".ebextensions", includes: "*")
+    }
+}
+
 grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
         // specify dependency exclusions here; for example, uncomment this to disable ehcache:
-        // excludes 'ehcache'
+        // excludes 'log4j'
     }
     log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
@@ -49,19 +55,22 @@ grails.project.dependency.resolution = {
         compile 'com.google.api-client:google-api-client:1.18.0-rc'
         compile 'com.google.apis:google-api-services-drive:v2-rev123-1.18.0-rc'
         compile 'org.imgscalr:imgscalr-lib:4.2'
+        compile 'org.flywaydb:flyway-core:3.2.1'
 
-        runtime 'org.postgresql:postgresql:9.3-1103-jdbc41'
+        runtime 'org.postgresql:postgresql:9.4-1206-jdbc41'
     }
 
     plugins {
         // plugins for the build system only
-        build ":tomcat:7.0.52.1"
+        build ":jetty:3.0.0"
 
         // plugins for the compile step
-        compile ':cache:1.1.1'
+        compile ':cache:1.1.8'
         compile ":spring-security-core:2.0-RC5"
-        compile (":spring-security-rest:1.3.4") { excludes 'spring-security-core' }
-        compile ':likeable:0.3.2'
+        compile ':spring-security-rest:1.5.2', {
+            excludes 'spring-security-core', 'log4j-over-slf4j'
+        }
+        compile ':likeable:0.4.0'
         compile ':mail:1.0.7'
 
         // plugins needed at runtime but not for compilation

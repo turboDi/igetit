@@ -1,8 +1,6 @@
 package ru.jconsulting.igetit
 
-import com.odobo.grails.plugin.springsecurity.rest.RestAuthenticationToken
-import com.odobo.grails.plugin.springsecurity.rest.token.generation.TokenGenerator
-import com.odobo.grails.plugin.springsecurity.rest.token.storage.TokenStorageService
+import grails.plugin.springsecurity.rest.token.generation.TokenGenerator
 import grails.transaction.Transactional
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.userdetails.UserDetails
@@ -10,39 +8,61 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import ru.jconsulting.igetit.auth.PersonRole
 import ru.jconsulting.igetit.auth.Role
 
+import static grails.plugin.springsecurity.SpringSecurityUtils.authoritiesToRoles
+
 @Transactional
 class AccountService {
 
     def userDetailsService
+    def passwordGenerator
     TokenGenerator tokenGenerator
-    TokenStorageService tokenStorageService
 
-    def register(Person p) {
-        assert p.save()
-        def authority = Role.findByAuthority('ROLE_USER')
-        PersonRole.create p, authority
-        tryReAuthenticate(p.username)
-    }
-
-    def tryReAuthenticate(String username, String oAuthProvider = null) {
+    @Transactional(readOnly = true)
+    def tryReAuthenticate(Person person) {
         try {
-            UserDetails existing = userDetailsService.loadUserByUsername(username)
-            if (existing) {
-                retrieveToken(existing)
+            def token = generateToken(person)
+            if (!authoritiesToRoles(token.authorities).contains('ROLE_OAUTH_USER')) {
+                throw new AccessDeniedException("This user is not configured to login via OAuth")
             }
-        } catch (UsernameNotFoundException e) {
-            if (!oAuthProvider) {
-                throw e
-            }
+            token
+        } catch (UsernameNotFoundException ignored) {
+            log.debug('Requested Person not found, reauth failed...')
         }
     }
 
-    def retrieveToken(UserDetails principal) {
+    def register(Person person) {
+        assert person.save()
+        PersonRole.create person, getUserRole()
+        if (person.oAuthProvider) {
+            PersonRole.create person, getOAuthUserRole()
+        }
+        generateToken(person)
+    }
+
+    def update(Person p) {
+        assert p.save()
+    }
+
+    def resetPassword(Person p) {
+        def newPassword = passwordGenerator.generate(9)
+        p.password = newPassword
+        p.save(validate: false)
+        newPassword
+    }
+
+    private getUserRole() {
+        Role.findByAuthority('ROLE_USER')
+    }
+
+    private getOAuthUserRole() {
+        Role.findByAuthority('ROLE_OAUTH_USER')
+    }
+
+    private generateToken(Person person) {
+        UserDetails principal = userDetailsService.loadUserByUsername(person.username)
         if (!principal.enabled) {
             throw new AccessDeniedException("This user was deleted")
         }
-        String tokenValue = tokenGenerator.generateToken()
-        tokenStorageService.storeToken(tokenValue, principal)
-        new RestAuthenticationToken(principal, principal.password, principal.authorities, tokenValue)
+        tokenGenerator.generateAccessToken(principal)
     }
 }

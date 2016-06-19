@@ -1,5 +1,6 @@
 package ru.jconsulting.igetit
 
+import org.apache.commons.validator.EmailValidator
 import ru.jconsulting.igetit.auth.PersonRole
 import ru.jconsulting.igetit.auth.Role
 
@@ -13,39 +14,60 @@ class Person {
     Image avatar
     String fullName
     City city
+    String oAuthProvider
 
     Date dateCreated
     Date lastActivity = new Date()
+    boolean deleted
+    boolean emailConfirmed
+    String confirmToken = UUID.randomUUID()
+
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
-    boolean emailConfirmed
-    String confirmToken = UUID.randomUUID()
-    String oAuthProvider
-    int followersCount
 
-    boolean deleted
+    int followersCount
+    String oldPassword
 
     static hasMany = [buys: Buy]
-    static transients = ['springSecurityService']
-    static embedded = ['city']
+    static transients = ['springSecurityService', 'oldPassword']
+    static embedded = ['city', 'avatar']
 
     static constraints = {
-        username blank: false, unique: true
+        username blank: false, unique: true, validator: { val, obj, errors ->
+            if (!obj.oAuthProvider && !EmailValidator.getInstance().isValid(val)) {
+                Object[] args = ['username', Person.name, val]
+                errors.rejectValue('username', 'default.invalid.email.message', args, null)
+            }
+            errors.hasErrors()
+        }
+        password nullable: true, changePassword: 'NEW', validator: { val, obj, errors ->
+            if (!obj.oAuthProvider && !val) {
+                Object[] args = ['password', Person.name]
+                errors.rejectValue('password', 'default.blank.message', args, null)
+            }
+            errors.hasErrors()
+        }
+        oldPassword changePassword: 'CURRENT'
         email nullable: true, email: true, unique: true
-        password blank: false
-        fullName blank: false
         avatar nullable: true
+        fullName blank: false
         city nullable: true
         oAuthProvider nullable: true
+
+        dateCreated bindable: false
         lastActivity bindable: false
+        deleted bindable: false
+        emailConfirmed bindable: false
+        confirmToken bindable: false
+
         enabled bindable: false
         accountExpired bindable: false
         accountLocked bindable: false
         passwordExpired bindable: false
-        emailConfirmed bindable: false
-        deleted bindable: false
+
+        followersCount bindable: false
     }
 
     static mapping = {
@@ -59,6 +81,9 @@ class Person {
     }
 
     def beforeInsert() {
+        if (!email && !oAuthProvider) {
+            email = username
+        }
         encodePassword()
     }
 
@@ -72,6 +97,6 @@ class Person {
     }
 
     protected void encodePassword() {
-        password = springSecurityService.encodePassword(password)
+        password = oAuthProvider ? 'N/A' : springSecurityService.encodePassword(password)
     }
 }

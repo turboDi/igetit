@@ -4,9 +4,9 @@ import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
-@TestFor(VerificationController)
+@TestFor(AccountController)
 @Mock(Person)
-class VerificationControllerSpec extends Specification {
+class AccountControllerSpec extends Specification {
 
     EmailService emailService = Mock(EmailService)
 

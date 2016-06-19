@@ -18,7 +18,7 @@ class PersonMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     buysCount: Buy.countByOwnerAndDeleted(person, false),
                     followersCount: person.followersCount,
                     followedCount: PersonFollower.countByFollowerAndDeleted(person, false),
-                    iFollow: PersonFollower.countByPersonAndFollowerAndDeleted(person, currentPerson(), false) > 0,
+                    myFollow: PersonFollower.findByPersonAndFollowerAndDeleted(person, currentPerson(), false)?.id,
                     lastActivity: person.lastActivity,
                     deleted: person.deleted
             ]

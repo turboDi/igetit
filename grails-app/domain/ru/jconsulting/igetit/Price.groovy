@@ -14,6 +14,6 @@ class Price {
     static belongsTo = Buy
 
     static constraints = {
-        value max: new BigDecimal(1000000), scale: 2
+        value scale: 2
     }
 }

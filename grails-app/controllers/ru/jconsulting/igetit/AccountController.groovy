@@ -2,13 +2,15 @@ package ru.jconsulting.igetit
 
 import grails.plugin.springsecurity.annotation.Secured
 
-import static org.springframework.http.HttpStatus.*
+import static org.springframework.http.HttpStatus.NOT_FOUND
+import static org.springframework.http.HttpStatus.OK
 
-class VerificationController {
+class AccountController {
 
     static namespace = "v1"
 
     def emailService
+    def accountService
 
     @Secured(['permitAll'])
     def verify(String key) {
@@ -20,10 +22,21 @@ class VerificationController {
         }
     }
 
+    @Secured(['permitAll'])
+    def resetPassword(String email) {
+        Person p
+        if (!email || !(p = Person.findByEmail(email))) {
+            render status: NOT_FOUND
+        } else {
+            emailService.sendPassword(p, accountService.resetPassword(p))
+            render status: OK
+        }
+    }
+
     @Secured(['ROLE_USER'])
-    def resend() {
+    def sendVerification() {
         Person p = getAuthenticatedUser() as Person
-        emailService.sendConfirmationEmail(p)
+        emailService.sendVerification(p)
         render status: OK
     }
 }

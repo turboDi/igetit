@@ -32,7 +32,7 @@ class PersonEmailListener implements PostUpdateEventListener, PostInsertEventLis
     def processEvent(event, condition = { true }) {
         def p = event.entity
         if (p instanceof Person && p.email && condition()) {
-            emailService.sendConfirmationEmail(p)
+            emailService.sendVerification(p)
         }
     }
 }

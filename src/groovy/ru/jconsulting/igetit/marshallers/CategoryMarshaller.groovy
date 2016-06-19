@@ -16,7 +16,8 @@ class CategoryMarshaller implements MarshallerRegistrar {
         JSON.registerObjectMarshaller(Category) { Category category ->
             return [
                     id: category.id,
-                    name: category.name
+                    name: category.name,
+                    gender: category.gender.name()
             ]
         }
     }

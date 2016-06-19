@@ -14,7 +14,7 @@ class CommentMarshaller extends BaseMarshaller implements MarshallerRegistrar {
                     text: comment.text,
                     author: marshallPerson(comment.author),
                     likes: comment.getTotalLikes(),
-                    iLiked: comment.userLiked(currentPerson()),
+                    myLike: comment.userLike(currentPerson())?.id,
                     deleted: comment.deleted
             ]
         }

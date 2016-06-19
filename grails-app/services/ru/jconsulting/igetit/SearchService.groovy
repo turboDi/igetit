@@ -18,16 +18,17 @@ class SearchService {
             }
             eq 'deleted', false
             if (params.term) {
-                ilike 'name', "%$params.term%"
+                textSearch 'name', params.term
             }
             if (params.categoryId) {
                 eq 'category.id', params.categoryId
             }
             if (params.placeId) {
-                delegate.owner {
-                    city {
-                        eq 'placeId', params.placeId
-                    }
+                eq 'city.placeId', params.placeId
+            }
+            if (params.shopName) {
+                shop {
+                    ilike 'name', "%$params.shopName%"
                 }
             }
         }
@@ -62,11 +63,44 @@ class SearchService {
             if (params.placeId) {
                 eq 'city.placeId', params.placeId
             }
-            if (params.categoryId) {
-                createAlias 'buys', 'b'
-                eq 'b.category.id', params.categoryId
+            if (params.categoryId || params.shopName) {
+                buys {
+                    if (params.categoryId) {
+                        eq 'category.id', params.categoryId
+                    }
+                    if (params.shopName) {
+                        shop {
+                            ilike 'name', "%$params.shopName%"
+                        }
+                    }
+                }
             }
         }
         Person.getAll(sort || params.sort ? ids.collect { it[0] } : ids)
+    }
+
+    def searchShops(Map params) {
+        def sort
+        if (params.sort instanceof Map) {
+            sort = params.remove('sort')
+        }
+        Shop.createCriteria().list(params) {
+            if (sort) {
+                for (e in sort) {
+                    order(e.key, e.value)
+                }
+            }
+            eq 'deleted', false
+            if (params.term) {
+                or {
+                    ilike 'name', "%$params.term%"
+                    ilike 'url', "%$params.term%"
+                }
+            }
+            or {
+                eq 'city.placeId', params.placeId
+                eq 'eshop', true
+            }
+        }
     }
 }

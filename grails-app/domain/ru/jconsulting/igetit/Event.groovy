@@ -11,7 +11,7 @@ class Event {
 
     Buy buy
 
-    String comment
+    Comment comment
 
     String type
 

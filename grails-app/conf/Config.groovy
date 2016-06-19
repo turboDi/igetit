@@ -1,3 +1,5 @@
+import static ru.jconsulting.igetit.utils.SystemUtils.env
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -100,13 +102,13 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        grails.serverURL = System.getenv("SERVER_URL")
+        grails.serverURL = env("SERVER_URL")
 
         grails {
             mail {
                 host = "smtp.sendgrid.net"
-                username = System.getenv("MAILER_USERNAME")
-                password = System.getenv("MAILER_PASSWORD")
+                username = env("MAILER_USERNAME")
+                password = env("MAILER_PASSWORD")
             }
         }
         grails.mail.default.from = "MyChoice <no-reply@mychoiceapp.ru>"
@@ -138,6 +140,7 @@ log4j = {
            'grails.app.services.ru.jconsulting',
            'ru.jconsulting'
     //debug  'org.hibernate.SQL'
+    info 'org.flywaydb'
 }
 
 // Added by the Spring Security Core plugin:
@@ -150,15 +153,21 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/like/index':                  ['ROLE_USER'],
         '/category/save':               ['ROLE_ADMIN'],
         '/category/delete':             ['ROLE_ADMIN'],
-        '/category/update':             ['ROLE_ADMIN']
+        '/category/update':             ['ROLE_ADMIN'],
+        '/shop/delete':                 ['ROLE_ADMIN'],
+        '/shop/update':                 ['ROLE_ADMIN'],
+        '/city/save':                   ['ROLE_ADMIN'],
+        '/city/delete':                 ['ROLE_ADMIN'],
+        '/city/update':                 ['ROLE_ADMIN']
 ]
-
-grails.plugin.springsecurity.rest.login.useJsonCredentials = true
-grails.plugin.springsecurity.rest.token.storage.useGorm = true
-grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = 'ru.jconsulting.igetit.auth.AuthenticationToken'
+grails.plugin.springsecurity.filterChain.chainMap = [
+        '/**': 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'
+]
+grails.plugin.springsecurity.rest.login.endpointUrl = '/login'
 
 grails.plugin.likeable.liker.className = 'ru.jconsulting.igetit.Person'
 grails.plugin.likeable.liker.evaluator = { delegate.getAuthenticatedUser() }
+grails.plugin.likeable.permission.evaluator = { liker, likeable -> true }
 
 site {
     url = 'http://mychoiceapp.ru'

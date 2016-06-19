@@ -10,6 +10,7 @@ import spock.lang.Specification
 class PersonFollowedControllerSpec extends Specification {
 
     Person user1, user2, user3
+    PersonFollower pf
 
     def setup() {
         Person.metaClass.encodePassword { -> }
@@ -21,7 +22,8 @@ class PersonFollowedControllerSpec extends Specification {
         new PersonFollowerMarshaller().register()
 
         PersonFollower.create user1, user2, true
-        PersonFollower.create user1, user3, true
+        pf = PersonFollower.create user1, user3, true
+        controller.metaClass.getAuthenticatedUser = { -> user3 }
     }
 
     void "test get all followed"() {
@@ -31,7 +33,7 @@ class PersonFollowedControllerSpec extends Specification {
         controller.index(10)
         then:
         response.json*.followed.id == [user1.id]
-        response.json*.followed.iFollow == [true]
+        response.json*.followed.myFollow == [pf.id]
         response.json*.followed.name == [user1.fullName]
     }
 
